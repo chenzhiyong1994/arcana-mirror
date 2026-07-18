@@ -1,0 +1,21 @@
+<view class="page">
+  <view class="eyebrow">LOCAL HISTORY</view>
+  <view class="title">你的本地记录</view>
+  <view class="subtitle">只保存在当前设备的小程序存储中，不使用账号，也不会跨设备同步。</view>
+
+  <view wx:if="{{items.length}}" class="history-list">
+    <view wx:for="{{items}}" wx:key="id" class="history-item" data-id="{{item.id}}" bindtap="openReading">
+      <view class="history-main">
+        <view class="meta">{{item.kind}} · {{item.date}} · {{item.source}}</view>
+        <view class="card-title">{{item.card}}</view>
+      </view>
+      <button class="delete" data-id="{{item.id}}" catchtap="deleteReading">删除</button>
+    </view>
+  </view>
+
+  <view wx:else class="empty-panel">
+    <view class="empty-title">还没有历史记录</view>
+    <view class="muted">每日牌会自动保存；主题解读需要你在结果页主动保存。</view>
+    <button class="primary" bindtap="startReading">开始一次主题解读</button>
+  </view>
+</view>

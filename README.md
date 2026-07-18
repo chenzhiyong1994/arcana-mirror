@@ -2,15 +2,16 @@
 
 > 翻开牌面，也照见自己。
 
-阿卡纳心镜是一款以塔罗为交互媒介的微信小程序，通过短仪式、结构化 AI 解读和个人记录，帮助用户整理困扰、获得新的观察角度并形成一个可执行的小行动。
+阿卡纳心镜是一款以塔罗为交互媒介的微信小程序，通过短仪式、结构化模拟解读和可选的本地历史，帮助用户整理困扰、获得新的观察角度并形成一个可执行的小行动。
 
 它是一项非商业化个人作品集项目，不宣称预测未来，也不替代心理、医疗、法律或金融专业意见。
 
 ## 当前状态
 
-- 阶段：产品与视觉基准已确定，准备进入 CloudBase/模型技术 Spike 和低保真原型
-- MVP：22 张大阿卡纳、每日静态单牌、主题单牌 AI 解读、安全阻断与降级、日记、历史和删除
-- 技术方向：微信原生小程序 TypeScript + CloudBase 模块化单体 + 薄 LLM Adapter
+- 阶段：本地 MVP 功能闭环已完成，等待低保真交互验收
+- 工程：微信原生小程序 TypeScript + 本地 Repository + 模拟 AI Provider；CloudBase 与真实 AI 后置
+- MVP：22 张大阿卡纳、每日静态单牌、主题单牌模拟解读、安全阻断与降级、可选本地历史和删除
+- 视觉：当前只实现低保真功能界面，高保真视觉与精细交互独立推进
 - 首版预算：64—80 小时，80 小时硬上限
 
 ## 主视觉
@@ -28,15 +29,29 @@
 5. [开发路线与作品集计划](docs/product/04-development-roadmap.md)
 6. [Claude Opus 4.8 架构审查](docs/product/05-claude-architecture-review.md)
 7. [PRD 自检报告](docs/product/06-prd-review.md)
-8. [卡片风格基准](assets/tarot-card-style/README.md)
+8. [长程开发执行基线](docs/product/07-execution-baseline.md)
+9. [卡片风格基准](assets/tarot-card-style/README.md)
 
 ## 仓库结构
 
 ```text
-assets/       # 卡片、品牌与界面视觉资产
-docs/         # 产品、架构、评审和设计资料
-src/          # 后续小程序与云函数代码
-workspace/    # 临时工作文件，不进入版本库
+apps/miniprogram/  # 微信原生小程序与本地适配器
+assets/            # 卡片、品牌与界面视觉资产
+docs/              # 产品、架构、评审和验收资料
+tests/             # 领域、安全与模拟解读契约测试
+workspace/         # 临时工作文件，不进入版本库
 ```
+
+## 本地运行
+
+```powershell
+npm install
+npm run typecheck
+npm test
+```
+
+随后在微信开发者工具中导入仓库根目录。工程默认使用 `touristappid`，也可以在开发者工具的本地私有配置中换成测试 AppID。设置页可切换模拟成功、超时、非法结构和不安全输出四种模式，用于验证正常路径与降级路径。
+
+本阶段不接入 CloudBase、真实 AI、微信云身份或账号系统。每日一牌会自动保存在当前设备；主题解读仅在结果页主动选择后保存。所有历史均可单条删除或全部清空，不跨设备同步，也不包含日记字段。
 
 本仓库自 2026-07-19 起作为阿卡纳心镜项目的唯一维护源。原 ProductManager 仓库只保留迁移前快照与位置说明。

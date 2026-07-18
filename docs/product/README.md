@@ -16,10 +16,11 @@
 4. [开发路线与作品集计划](04-development-roadmap.md)
 5. [Claude Opus 4.8 架构审查](05-claude-architecture-review.md)
 6. [PRD 自检与修订记录](06-prd-review.md)
+7. [长程开发执行基线](07-execution-baseline.md)
 
 ## 当前阶段
 
-- 当前状态：方案设计
-- 下一里程碑：完成 2—3 天 CloudBase/模型技术 Spike，并同步产出低保真原型
+- 当前状态：本地 MVP 功能闭环已完成
+- 下一里程碑：低保真可视交互复验；CloudBase 与真实 AI 等待独立指令
 - 产品负责人/开发者：个人开发者
 - 文档日期：2026-07-19

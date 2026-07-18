@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["miniprogram-api-typings"],
+    "lib": ["ES2020"]
+  },
+  "include": ["apps/miniprogram/**/*.ts", "tests/**/*.ts"]
+}

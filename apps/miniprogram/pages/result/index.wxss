@@ -1,0 +1,18 @@
+.title.small { font-size: 38rpx; }
+.loading-state { padding-top: 180rpx; }
+.source { display: inline-block; margin-top: 16rpx; padding: 8rpx 14rpx; border: 1rpx solid var(--gold); color: var(--gold); font-size: 22rpx; }
+.source.fallback { border-color: #b9814f; color: #d5a36f; }
+.reason { margin-top: 12rpx; color: var(--muted); font-size: 22rpx; }
+.mini-card { display: flex; width: 260rpx; height: 390rpx; box-sizing: border-box; margin: 38rpx auto; padding: 20rpx; border: 2rpx solid var(--gold); align-items: center; justify-content: space-between; flex-direction: column; background: #181612; }
+.mini-roman { color: var(--gold); font-size: 26rpx; }
+.mini-symbol { color: var(--paper-dim); font-size: 96rpx; }
+.mini-name { color: var(--muted); font-size: 20rpx; letter-spacing: 2rpx; }
+.question-panel { padding-top: 10rpx; }
+.question-text { padding: 8rpx 0 12rpx; color: var(--paper-dim); font-size: 28rpx; line-height: 1.65; }
+.content-block { margin-top: 44rpx; }
+.content-label { color: var(--gold); font-size: 23rpx; letter-spacing: 3rpx; }
+.content-text { margin-top: 16rpx; color: var(--paper-dim); font-size: 30rpx; line-height: 1.72; }
+.secondary-text { color: var(--muted); }
+.emphasis { padding: 30rpx; border-left: 4rpx solid var(--gold); background: rgba(168, 137, 80, 0.08); }
+.reflection { margin-top: 16rpx; font-size: 36rpx; line-height: 1.55; }
+.disclaimer { margin: 52rpx 0 20rpx; color: var(--muted); font-size: 22rpx; line-height: 1.6; }

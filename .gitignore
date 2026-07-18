@@ -10,3 +10,4 @@ Thumbs.db
 workspace/
 tmp/
 *.log
+project.private.config.json

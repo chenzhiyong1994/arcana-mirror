@@ -4,7 +4,9 @@
 
 推荐采用：
 
-> **微信原生小程序（TypeScript）+ CloudBase 单一 `api` 云函数 + CloudBase 数据库/存储 + 可替换的薄 LLM Adapter**。
+> **当前阶段：微信原生小程序（TypeScript）+ 微信本地存储 Repository + 模拟 Interpretation Provider。长期候选：CloudBase 单一 `api` 云函数 + CloudBase 数据库/存储 + 可替换的薄 LLM Adapter。**
+
+当前开发顺序调整为先完成本地 MVP：页面依赖 `ReadingRepository` 与 `InterpretationProvider` 契约，分别使用微信本地存储实现和模拟解读实现。CloudBase 与真实模型在本地闭环验收后再替换接入；本地实现不是第二套生产后端。
 
 首版不采用微服务、消息队列、Redis、向量数据库、Kubernetes 或复杂工作流引擎。这些能力对当前访问规模没有必要，反而会稀释项目重点。
 
@@ -24,7 +26,7 @@
 1. AI 服务不可用时，用户仍能完成抽牌和基础解读；
 2. 抽牌结果不可被客户端随意篡改，同一次请求可幂等恢复；
 3. 模型供应商可替换，业务层不依赖特定 SDK；
-4. 私密问题、日记和密钥不进入前端包、公共日志或代码仓库；
+4. 私密问题和密钥不进入公共日志或代码仓库；
 5. Prompt、牌义和模型配置可版本化并可复现；
 6. 能通过单元测试、契约测试和离线 AI 评估验证关键质量；
 7. 单人可以理解、部署和维护整个系统。
@@ -73,7 +75,7 @@ graph TB
     subgraph Application[应用服务：模块化单体]
         Controller[接口与鉴权]
         ReadingSvc[Reading Application Service]
-        JournalSvc[Journal Application Service]
+        HistorySvc[History Application Service]
         SafetySvc[Safety Policy]
         InterpretSvc[Interpretation Orchestrator]
         EvalSvc[Validation & Evaluation]
@@ -96,11 +98,11 @@ graph TB
 
     Pages --> Components --> ClientStore --> ApiClient
     ApiClient --> Controller
-    Controller --> ReadingSvc & JournalSvc
+    Controller --> ReadingSvc & HistorySvc
     ReadingSvc --> SafetySvc --> InterpretSvc --> EvalSvc
     ReadingSvc --> DrawDomain & ReadingDomain & ContentDomain
-    JournalSvc --> PrivacyDomain
-    ReadingSvc & JournalSvc --> Repo
+    HistorySvc --> PrivacyDomain
+    ReadingSvc & HistorySvc --> Repo
     InterpretSvc --> LLMAdapter
     Controller --> AuthAdapter
     Application --> Logger
@@ -151,7 +153,6 @@ MVP 通过 `wx.cloud.callFunction({ name: "api", data })` 调用单一 `api` 云
 | `reading.interpret` | 为主题问题生成或恢复解读 | `(reading_id, prompt_version)` 状态抢占；同一任务复用 |
 | `reading.get` | 获取本人 Reading 详情 | 不适用 |
 | `reading.list` | 分页获取本人历史 | 不适用 |
-| `journal.put` | 保存心情、笔记和行动 | MVP 采用 last-write-wins，返回 `updated_at` |
 | `checkin.put` | 提交或更新回访（P1） | 每 Reading 一条，更新 `updated_at` |
 | `reading.delete` | 删除本人记录 | 是 |
 | `card.list` | 获取牌库版本和内容（P1） | 客户端按版本缓存 |
@@ -330,7 +331,7 @@ interface FallbackInterpreter {
 | 越权读取 | 猜测其他 readingId | 服务端按当前主体校验归属；使用不可枚举 ID |
 | 密钥泄露 | AppSecret/LLM Key 打进小程序包 | 仅服务端环境变量；提交前 secret scan |
 | Prompt 注入 | 用户要求忽略规则或输出系统提示 | 输入隔离、最小工具权限、输出校验、不回显提示词 |
-| 隐私泄露 | 日志记录原问题或日记 | 默认日志脱敏；只记录长度、类别和哈希/原因码 |
+| 隐私泄露 | 日志记录原问题 | 默认日志脱敏；只记录长度、类别和哈希/原因码 |
 | 分享泄露 | 海报包含敏感问题 | 默认只展示牌面、主题和用户主动选择的短句 |
 | 重放/刷接口 | 自动重复生成 | 鉴权、限流、幂等键、服务端状态机 |
 | 内容伤害 | 确定性、恐吓或高风险建议 | 输入/输出双层安全、固定边界文案和阻断路径 |
@@ -353,7 +354,6 @@ interface FallbackInterpreter {
 | 问题 | 生成解读 | 用户选择保存时受控存储；临时数据设置 `expire_at` | 不记录原文 | 用户删除/定时过期清理 |
 | 抽牌事实 | 保证一致与回看 | 随 Reading 保存 | 可记录 ID 和数量 | 随 Reading 删除 |
 | AI 解读 | 展示和回看 | 保存结构化结果 | 不记录完整内容 | 随 Reading 删除 |
-| 日记/行动 | 用户价值 | 加密或受控存储 | 不记录 | 用户删除 |
 | 安全决定 | 审计和改进 | 类别、动作、原因码 | 可记录 | 按短期策略清理 |
 | 运行指标 | 稳定性 | 聚合或去标识 | 可记录 | 按固定周期清理 |
 
@@ -363,7 +363,7 @@ MVP 的实际保护级别定义为：传输加密、数据库访问控制、服�
 
 ### 10.1 CloudBase 路径
 
-- 集合按领域划分：users、decks、cards、spreads、readings、interpretations、journals、checkins、prompt_versions；
+- 未来云端集合按领域划分：users、decks、cards、spreads、readings、interpretations、checkins、prompt_versions；本地阶段只存 Reading 聚合；
 - Reading 与 ReadingCard 可在低复杂度首版内嵌，但应限制文档大小并保持卡牌事实不可变；
 - 使用云函数进行所有私密数据读写，不开放客户端直连私密集合；
 - 为 `subject_id + daily_date + type`、`subject_id + action + clientRequestId` 建唯一约束或等效幂等控制；
@@ -388,7 +388,7 @@ MVP 只实现 CloudBase。PostgreSQL 迁移在 MVP 完成后重新评估，不�
 
 允许记录：`request_id`、伪匿名主体 ID、reading_id、action、状态迁移、错误码、耗时、模型标识、Prompt 版本、token 用量、结果来源。
 
-禁止记录：微信 AppSecret、模型密钥、原始问题、日记、完整 AI 输出、Cookie/会话令牌。
+禁止记录：微信 AppSecret、模型密钥、原始问题、完整 AI 输出、Cookie/会话令牌。
 
 ### 11.2 关键指标
 

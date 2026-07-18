@@ -1,0 +1,15 @@
+{
+  "name": "arcana-mirror",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "miniprogram-api-typings": "^5.2.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}

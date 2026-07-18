@@ -1,0 +1,9 @@
+.history-list { margin-top: 44rpx; border-top: 1rpx solid rgba(168, 137, 80, 0.35); }
+.history-item { display: flex; align-items: center; justify-content: space-between; padding: 28rpx 0; border-bottom: 1rpx solid rgba(168, 137, 80, 0.25); }
+.history-main { flex: 1; min-width: 0; }
+.meta { color: var(--muted); font-size: 22rpx; }
+.card-title { margin-top: 10rpx; font-size: 32rpx; }
+.delete { width: auto; margin-left: 24rpx; padding: 10rpx 14rpx; border: 1rpx solid rgba(166, 82, 72, 0.7); background: transparent; color: #d58a80; font-size: 22rpx; line-height: 36rpx; }
+.empty-panel { margin-top: 50rpx; padding: 40rpx 28rpx; border: 1rpx dashed rgba(168, 137, 80, 0.45); }
+.empty-title { font-size: 34rpx; }
+.empty-panel .muted { margin-top: 16rpx; }

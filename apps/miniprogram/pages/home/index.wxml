@@ -1,0 +1,35 @@
+<view class="page">
+  <view class="eyebrow">ARCANA MIRROR · LOCAL MVP</view>
+  <view class="title">
+    <view>翻开牌面，</view>
+    <view>也照见自己。</view>
+  </view>
+  <view class="subtitle">本地模拟数据，仅供娱乐与自我反思。</view>
+
+  <view class="panel daily-panel">
+    <view class="section-label">今日</view>
+    <view wx:if="{{today}}" class="daily-title">{{today.title}}</view>
+    <view wx:else class="daily-title">今天还没有抽牌</view>
+    <button class="primary" bindtap="startDaily">{{today ? '再次查看今日牌' : '抽取每日一牌'}}</button>
+  </view>
+
+  <button class="secondary" bindtap="startQuestion">带着一个困扰开始</button>
+
+  <view class="section-head">
+    <view class="section-label">最近历史</view>
+    <button class="text-button" bindtap="openHistory">查看全部</button>
+  </view>
+
+  <view wx:if="{{recent.length}}" class="history-list">
+    <view wx:for="{{recent}}" wx:key="id" class="history-row" data-id="{{item.id}}" bindtap="openReading">
+      <view>
+        <view class="history-type">{{item.typeLabel}} · {{item.date}}</view>
+        <view class="history-title">{{item.title}}</view>
+      </view>
+      <view class="arrow">›</view>
+    </view>
+  </view>
+  <view wx:else class="empty">尚无记录。主题解读只有在你明确保存后才会出现在这里。</view>
+
+  <button class="text-button settings-link" bindtap="openSettings">本地测试设置与数据说明</button>
+</view>

@@ -1,0 +1,24 @@
+<view class="page">
+  <view class="eyebrow">QUESTION</view>
+  <view class="title">先把问题说清楚</view>
+  <view class="subtitle">关注你能观察和选择的部分，不要求牌面替你预测结果。</view>
+
+  <view class="field-label">主题</view>
+  <view class="topic-grid">
+    <button wx:for="{{topics}}" wx:key="value" class="topic {{selectedTopic === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectTopic">{{item.label}}</button>
+  </view>
+
+  <view class="field-label">你的困扰</view>
+  <textarea class="question-input" value="{{question}}" maxlength="200" placeholder="例如：我该如何理解最近和朋友之间的疏远？" placeholder-class="placeholder" bindinput="updateQuestion" />
+  <view class="count">{{count}} / 200</view>
+
+  <view wx:if="{{decision}}" class="panel decision {{isBlocked ? 'blocked' : ''}}">
+    <view class="decision-code">{{decision.reasonCode}}</view>
+    <view class="decision-message">{{decision.message}}</view>
+    <view wx:if="{{decision.suggestedQuestion}}" class="suggestion">建议改为：{{decision.suggestedQuestion}}</view>
+    <button wx:if="{{canAdoptRewrite}}" class="secondary" bindtap="adoptRewrite">采用改写并继续</button>
+  </view>
+
+  <button wx:if="{{!isBlocked}}" class="primary" bindtap="submitQuestion">检查问题并继续</button>
+  <view class="privacy-note">主题结果默认不保存。只有你在结果页主动选择后，它才会进入本地历史。</view>
+</view>

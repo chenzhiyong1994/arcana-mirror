@@ -1,0 +1,57 @@
+import { getCard } from "../../core/cards";
+import { orientationLabel } from "../../core/interpretation";
+import type { Reading, Topic } from "../../core/types";
+import { readingService } from "../../services/app-services";
+
+const TOPIC_LABELS: Record<Topic, string> = { relationship: "感情", interpersonal: "人际", career: "事业", self: "自我" };
+
+function toItem(reading: Reading) {
+  const card = getCard(reading.cards[0].cardId);
+  return {
+    id: reading.id,
+    kind: reading.type === "daily" ? "每日一牌" : TOPIC_LABELS[reading.topic ?? "self"],
+    date: reading.businessDate,
+    card: `${card.name} · ${orientationLabel(reading.cards[0].orientation)}`,
+    source: reading.interpretation?.source === "fallback" ? "降级" : reading.interpretation?.source === "mock" ? "模拟 AI" : "静态牌义",
+  };
+}
+
+Page({
+  data: { items: [] as ReturnType<typeof toItem>[] },
+
+  onShow() {
+    this.refresh();
+  },
+
+  refresh() {
+    this.setData({ items: readingService.listHistory().map(toItem) });
+  },
+
+  openReading(event: WechatMiniprogram.TouchEvent) {
+    const id = String(event.currentTarget.dataset.id ?? "");
+    if (id) wx.navigateTo({ url: `/pages/result/index?id=${id}&from=history` });
+  },
+
+  deleteReading(event: WechatMiniprogram.TouchEvent) {
+    const id = String(event.currentTarget.dataset.id ?? "");
+    if (!id) return;
+    wx.showModal({
+      title: "删除这条记录？",
+      content: "删除后无法在本小程序内恢复。",
+      confirmColor: "#a65248",
+      success: (result) => {
+        if (!result.confirm) return;
+        try {
+          readingService.deleteHistory(id);
+          this.refresh();
+        } catch {
+          wx.showToast({ title: "删除失败", icon: "none" });
+        }
+      },
+    });
+  },
+
+  startReading() {
+    wx.navigateTo({ url: "/pages/question/index" });
+  },
+});

@@ -1,0 +1,12 @@
+.daily-panel { margin-top: 56rpx; }
+.section-label { color: var(--gold); font-size: 24rpx; letter-spacing: 4rpx; }
+.daily-title { margin-top: 16rpx; font-size: 36rpx; line-height: 1.4; }
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-top: 56rpx; }
+.section-head .text-button { margin: 0; padding: 8rpx 0; }
+.history-list { border-top: 1rpx solid rgba(168, 137, 80, 0.3); }
+.history-row { display: flex; align-items: center; justify-content: space-between; padding: 26rpx 0; border-bottom: 1rpx solid rgba(168, 137, 80, 0.22); }
+.history-type { color: var(--muted); font-size: 22rpx; }
+.history-title { margin-top: 8rpx; font-size: 30rpx; }
+.arrow { color: var(--gold); font-size: 48rpx; }
+.empty { margin-top: 20rpx; padding: 28rpx 0; color: var(--muted); font-size: 26rpx; line-height: 1.6; }
+.settings-link { margin-top: 48rpx; }

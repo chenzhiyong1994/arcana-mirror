@@ -1,0 +1,11 @@
+.ritual-page { text-align: center; }
+.title.small { font-size: 38rpx; }
+.card-shell { width: 430rpx; height: 645rpx; box-sizing: border-box; margin: 52rpx auto 36rpx; border: 2rpx solid var(--gold); background: #171511; box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.45); }
+.card-back, .card-face { display: flex; height: 100%; box-sizing: border-box; align-items: center; justify-content: center; flex-direction: column; border: 12rpx double rgba(168, 137, 80, 0.48); }
+.back-mark { color: var(--gold); font-size: 110rpx; }
+.back-text { margin-top: 38rpx; color: var(--muted); font-size: 24rpx; letter-spacing: 5rpx; }
+.roman { color: var(--gold); font-size: 28rpx; }
+.card-glyph { margin: 78rpx 0; color: var(--paper-dim); font-size: 150rpx; }
+.card-name { font-size: 52rpx; }
+.card-en { margin-top: 12rpx; color: var(--muted); font-size: 24rpx; letter-spacing: 2rpx; }
+.orientation { margin-top: 26rpx; color: var(--gold); font-size: 26rpx; }

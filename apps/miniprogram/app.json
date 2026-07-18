@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/question/index",
+    "pages/ritual/index",
+    "pages/result/index",
+    "pages/history/index",
+    "pages/settings/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#11100e",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "阿卡纳心镜",
+    "backgroundColor": "#11100e",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

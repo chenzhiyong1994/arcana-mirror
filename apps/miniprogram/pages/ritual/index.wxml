@@ -1,0 +1,29 @@
+<view class="page ritual-page">
+  <view wx:if="{{missing}}" class="panel">
+    <view class="title small">这次抽牌已结束</view>
+    <button class="primary" bindtap="returnHome">返回首页</button>
+  </view>
+
+  <block wx:else>
+    <view class="eyebrow">DRAW</view>
+    <view class="title">停一下，再翻牌</view>
+    <view class="subtitle">结果已经固定。翻牌动作只负责展示，不会改变抽到的牌。</view>
+
+    <view class="card-shell {{revealed ? 'revealed' : ''}}" bindtap="reveal">
+      <view wx:if="{{!revealed}}" class="card-back">
+        <view class="back-mark">✦</view>
+        <view class="back-text">轻触翻牌</view>
+      </view>
+      <view wx:else class="card-face">
+        <view class="roman">{{card.roman}}</view>
+        <view class="card-glyph">◐</view>
+        <view class="card-name">{{card.name}}</view>
+        <view class="card-en">{{card.englishName}}</view>
+        <view class="orientation">{{card.orientation}}</view>
+      </view>
+    </view>
+
+    <button wx:if="{{!revealed}}" class="secondary" bindtap="reveal">翻开这张牌</button>
+    <button wx:else class="primary" bindtap="continueToResult">查看解读</button>
+  </block>
+</view>

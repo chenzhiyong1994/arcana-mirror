@@ -1,0 +1,110 @@
+page {
+  --ink: #11100e;
+  --paper: #f1eadc;
+  --paper-dim: #d8cfbd;
+  --gold: #a88950;
+  --muted: #928979;
+  --danger: #a65248;
+  min-height: 100%;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: "Songti SC", "STSong", serif;
+}
+
+button {
+  margin: 0;
+  border-radius: 4rpx;
+}
+
+button::after {
+  border: 0;
+}
+
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 40rpx 32rpx 72rpx;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 22rpx;
+  letter-spacing: 6rpx;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 18rpx 0 12rpx;
+  font-size: 54rpx;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.subtitle,
+.muted {
+  color: var(--muted);
+  font-size: 28rpx;
+  line-height: 1.65;
+}
+
+.panel {
+  margin-top: 28rpx;
+  padding: 28rpx;
+  border: 1rpx solid rgba(168, 137, 80, 0.5);
+  background: rgba(241, 234, 220, 0.04);
+}
+
+.primary,
+.secondary,
+.danger-button {
+  min-height: 92rpx;
+  margin-top: 24rpx;
+  padding: 20rpx 28rpx;
+  font-size: 30rpx;
+  line-height: 52rpx;
+}
+
+.primary {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.secondary {
+  border: 1rpx solid var(--gold);
+  background: transparent;
+  color: var(--paper);
+}
+
+.danger-button {
+  border: 1rpx solid var(--danger);
+  background: transparent;
+  color: #d58a80;
+}
+
+.text-button {
+  padding: 16rpx 0;
+  background: transparent;
+  color: var(--gold);
+  font-size: 28rpx;
+  text-align: left;
+}
+
+.stack > view + view,
+.stack > button + button {
+  margin-top: 20rpx;
+}
+
+.divider {
+  height: 1rpx;
+  margin: 28rpx 0;
+  background: rgba(168, 137, 80, 0.3);
+}
+
+.tag {
+  display: inline-block;
+  margin: 8rpx 12rpx 0 0;
+  padding: 8rpx 14rpx;
+  border: 1rpx solid rgba(168, 137, 80, 0.45);
+  color: var(--paper-dim);
+  font-size: 22rpx;
+}

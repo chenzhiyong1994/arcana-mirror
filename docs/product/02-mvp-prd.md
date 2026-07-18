@@ -13,6 +13,8 @@
 | 变更时间 | 变更内容 | 变更理由 | 修改人 | 审核人 | 版本号 |
 | --- | --- | --- | --- | --- | --- |
 | 2026-07-19 | 建立 MVP 初稿 | 明确个人作品集项目边界 | Codex | 待审查 | v0.1 |
+| 2026-07-19 | 统一 P0/P1、身份与视觉执行口径 | 进入长程开发前消除会误导实现的冲突 | Codex | 项目作者待确认 | v0.2 |
+| 2026-07-19 | 本地优先并移除日记 | 先用本地存储和模拟 AI 跑通功能闭环 | Codex | 项目作者确认 | v0.3 |
 
 > 产品定型：**个人自研非商业化 × C 端工具型软件 × 0-1 完整 MVP**。商业分析章节按“同类产品参考与学习收益”调整；复杂 RBAC、交易、多租户和商业运营不适用。
 
@@ -90,7 +92,7 @@
 
 | 调研对象 | 核心能力 | 可借鉴点 | 本项目取舍 |
 | --- | --- | --- | --- |
-| Labyrinthos | 抽牌、学习、日记、趋势、AI | 完整的记录与回看体系 | MVP 不做课程，只保留牌库与日记 |
+| Labyrinthos | 抽牌、学习、日记、趋势、AI | 完整的记录与回看体系 | MVP 不做课程或日记，只保留可选的 Reading 历史 |
 | Mystic Mondays | 每日一牌、日历、牌组 IP | 日常仪式和视觉一致性 | 保留每日仪式，原创视觉后置迭代 |
 | 塔罗气泡/浮罗绘心 | 沉浸抽牌、主题牌阵、AI | 洗切抽翻的仪式感 | 只做两种牌阵，控制动画时长 |
 | Faladdin/Sanctuary | AI/真人对话、额度与付费 | 人格化反馈与持续对话 | 不做真人、付费和无限追问 |
@@ -133,11 +135,11 @@
 
 1. 可从首页完成每日一牌，并在历史日历中回看；
 2. 可输入合规问题，完成单牌抽取，获得结构化解读；
-3. 可保存心情、笔记和微行动，并完成回访；
+3. 每日牌可自动回看，主题解读可由用户选择保存到本地历史；
 4. 高风险输入不会进入普通生成链路；
 5. AI 超时、返回非法结构或内容校验失败时能够降级；
-6. 用户数据只能由本人访问，分享图默认不包含问题和笔记；
-7. 密钥只存在服务端环境变量，仓库和小程序包内均无密钥；
+6. 本地历史只在当前设备的小程序存储沙箱内可见，并支持单条删除和清空；
+7. 本地阶段不需要任何云端或模型密钥，仓库和小程序包内均无密钥；
 8. 核心领域逻辑、AI 解析和安全规则有自动化测试。
 
 ### 4.3 项目成功标准
@@ -155,7 +157,7 @@
 | 3 | 抽牌仪式 | 洗牌、选牌、翻牌、正逆位 | P0 |
 | 4 | AI 情境解读 | 结构化解读、依据、反思与行动 | P0 |
 | 5 | 本地降级解读 | AI 不可用时组合牌义与牌位模板 | P0 |
-| 6 | 日记与历史 | 保存心情、笔记、行动、回看和删除 | P0 |
+| 6 | 本地历史 | 用户选择保存主题解读，支持回看和删除；每日牌自动保存 | P0 |
 | 7 | 三牌解读 | 情况—阻碍—建议三牌牌阵 | P1 |
 | 8 | 回访反馈 | 3—7 天后的结果回顾 | P1 |
 | 9 | 牌库 | 22 张大阿尔卡那的基础牌义 | P1 |
@@ -164,14 +166,14 @@
 ### 5.2 方案概述
 
 - **产品方案**：以两条主路径“每日一牌”和“带着困扰解读”满足高频轻体验与中频深体验。
-- **技术方案**：微信小程序调用自有服务端；服务端完成随机抽牌、AI 调用、安全策略、数据访问和日志记录。
+- **当前技术方案**：先由微信小程序本地领域服务完成抽牌、安全策略、模拟解读和本地存储；后续以相同契约替换为 CloudBase 与真实 AI。
 - **验证方案**：功能测试、AI 离线评估集和小规模体验测试共同验证。
 
 ### 5.3 MVP 范围
 
-**包含：**22 张大阿尔卡那、正逆位、单牌、每日一牌、主题解读、结构化 AI 解读、本地降级、日记历史、安全分类，以及支持定位故障的最小日志。
+**包含：**22 张大阿尔卡那、正逆位、单牌、每日一牌、主题解读、结构化模拟解读、本地降级、可选本地历史、安全分类，以及支持定位故障的最小日志。
 
-**暂不包含：**三牌及更多牌阵、56 张小阿尔卡那、回访、完整埋点体系、自动化 E2E、真人服务、社区、支付、会员、广告、星盘/八字、复杂提醒、卡牌养成、运营后台。
+**暂不包含：**日记、CloudBase、真实 AI、账号系统、三牌及更多牌阵、56 张小阿尔卡那、回访、完整埋点体系、自动化 E2E、真人服务、社区、支付、会员、广告、星盘/八字、复杂提醒、卡牌养成、运营后台。
 
 **核心验证假设：**
 
@@ -196,9 +198,9 @@
 
 - **用户影响**：仅测试体验者；不面向未成年人主动推广；
 - **流程影响**：新建产品，无旧流程迁移；
-- **数据影响**：存储用户问题、抽牌结果和日记，均视为私密内容；
-- **外部影响**：依赖微信登录与大模型服务可用性；
-- **部署影响**：需要合法可访问的 HTTPS 域名或符合微信要求的云开发环境。
+- **数据影响**：每日牌自动保存在本地；主题问题、抽牌与解读仅在用户明确选择后进入本地历史，均视为私密内容；
+- **外部影响**：本地阶段不依赖微信登录、云服务或大模型；
+- **部署影响**：本地阶段只要求微信开发者工具可编译运行。
 
 ### 6.3 不在本期范围
 
@@ -225,7 +227,7 @@
 
 | 编号 | 约束 | 对设计的影响 |
 | --- | --- | --- |
-| C1 | 单人、业余时间开发（64—80 小时首版预算，80 小时硬上限） | 使用 CloudBase 单路径和模块化单体；超期触发范围熔断 |
+| C1 | 单人、业余时间开发（64—80 小时首版预算，80 小时硬上限） | 当前使用本地 Repository 与模拟 Provider；超期触发范围熔断 |
 | C2 | 非商业化 | 不做支付、广告、会员和商业运营 |
 | C3 | 私密问题数据 | 最小化采集、默认私密、支持删除 |
 | C4 | AI 输出不可完全预测 | 结构约束、后置校验、降级和评估必须进入 P0 |
@@ -272,163 +274,56 @@
 
 ```mermaid
 graph TB
-    subgraph 用户层
-        USER[成年体验用户]
-        DEV[个人开发者]
-    end
-
-    subgraph 接入层
-        MP[微信小程序<br/>页面与本地缓存]
-        AUTH[身份与会话<br/>微信静默主体标识]
-        API[HTTPS API<br/>鉴权与限流]
-    end
-
-    subgraph 业务服务层
-        subgraph 核心业务
-            DAILY[每日一牌]
-            READING[主题解读<br/>抽牌与牌阵]
-            INTERPRET[AI 解读编排]
-            JOURNAL[日记与回访]
-        end
-        subgraph 平台能力
-            SAFETY[安全策略]
-            FALLBACK[本地降级]
-            PROMPT[提示词版本]
-            OBS[日志与埋点]
-        end
-    end
-
-    subgraph 数据层
-        DB[(业务数据库)]
-        CACHE[(小程序本地缓存)]
-        ASSET[(静态资源/对象存储)]
-    end
-
-    subgraph 外部系统
-        WX[微信登录服务]
-        LLM[大模型 API]
-    end
-
-    USER --> MP --> AUTH --> API
-    DEV --> PROMPT
-    API --> DAILY & READING & JOURNAL
-    READING --> SAFETY --> INTERPRET
-    INTERPRET --> LLM
-    INTERPRET --> FALLBACK
-    DAILY & READING & JOURNAL --> DB
-    MP --> CACHE
-    MP --> ASSET
-    AUTH -.-> WX
-    OBS --> DB
+    USER[成年体验用户] --> MP[微信原生小程序]
+    MP --> PAGES[低保真页面与路由]
+    PAGES --> SERVICE[Reading Service]
+    SERVICE --> DOMAIN[抽牌、状态与安全规则]
+    SERVICE --> PROVIDER[Mock Interpretation Provider]
+    PROVIDER --> VALIDATOR[Schema 与事实校验]
+    VALIDATOR -.失败.-> FALLBACK[受控模板降级]
+    SERVICE --> REPO[Local Reading Repository]
+    REPO --> STORAGE[(微信本地存储)]
+    MP --> ASSET[(本地静态资源)]
 ```
 
 #### 10.1.2 数据模型图
 
 ```mermaid
 erDiagram
-    USER_PROFILE ||--o{ READING : creates
-    USER_PROFILE ||--o{ JOURNAL_ENTRY : writes
-    USER_PROFILE ||--o{ CHECK_IN : submits
     DECK ||--|{ CARD : contains
-    SPREAD ||--|{ SPREAD_POSITION : defines
     READING ||--|{ READING_CARD : draws
     CARD ||--o{ READING_CARD : appears_in
-    SPREAD_POSITION ||--o{ READING_CARD : occupies
     READING ||--o| INTERPRETATION : receives
-    READING ||--o| JOURNAL_ENTRY : has
-    READING ||--o| CHECK_IN : revisits
-    PROMPT_VERSION ||--o{ INTERPRETATION : generates
     READING ||--o{ SAFETY_DECISION : evaluated_by
 
-    USER_PROFILE {
-        string id PK
-        string wx_openid_hash
-        enum auth_mode
-        datetime created_at
-    }
-    DECK {
-        string id PK
-        string name
-        string version
-    }
     CARD {
         string id PK
-        string deck_id FK
         int sequence
         string name
         json meanings
     }
-    SPREAD {
-        string id PK
-        string code
-        string name
-        int card_count
-    }
-    SPREAD_POSITION {
-        string id PK
-        string spread_id FK
-        int sequence
-        string meaning
-    }
     READING {
         string id PK
-        string user_id FK
-        string spread_id FK
         enum type
         enum status
+        string business_date
         string topic
-        string question_stored
-        string prompt_version
-        int ai_retry_count
+        string question
+        boolean saved
         datetime created_at
-        datetime expire_at
-        datetime deleted_at
+        datetime updated_at
     }
     READING_CARD {
-        string id PK
-        string reading_id FK
         string card_id FK
-        string position_id FK
         boolean reversed
         int draw_order
     }
     INTERPRETATION {
-        string id PK
-        string reading_id FK
-        string prompt_version_id FK
         enum source
         json content
-        int latency_ms
         enum validation_status
     }
-    JOURNAL_ENTRY {
-        string id PK
-        string user_id FK
-        string reading_id FK
-        enum mood
-        string note_stored
-        string action_stored
-        datetime updated_at
-    }
-    CHECK_IN {
-        string id PK
-        string user_id FK
-        string reading_id FK
-        enum helpfulness
-        string reflection_stored
-        datetime created_at
-        datetime updated_at
-    }
-    PROMPT_VERSION {
-        string id PK
-        string version
-        string template_hash
-        enum status
-    }
     SAFETY_DECISION {
-        string id PK
-        string reading_id FK
-        enum stage
         enum category
         enum action
         string reason_code
@@ -439,8 +334,8 @@ erDiagram
 
 | 实体 | 规则 |
 | --- | --- |
-| Reading | 每次读取保存抽牌事实和生成版本，以便复现；用户删除后立即隐藏，并由定时清理函数执行物理删除 |
-| ReadingCard | 抽牌由服务端生成；同一次牌阵不重复；朝向独立随机 |
+| Reading | 每日牌自动保存；主题牌仅在用户确认后进入历史；删除后立即从本地存储移除 |
+| ReadingCard | 抽牌事实一经生成即不可变；同一次牌阵不重复；朝向独立随机 |
 | Interpretation | 保存结构化结果、来源（AI/降级）和验证状态，不保存模型内部思维过程 |
 | SafetyDecision | 只记录类别、动作和原因码；安全日志不复制完整私密问题 |
 | PromptVersion | 一次解读绑定固定版本，便于评估和回滚 |
@@ -452,13 +347,13 @@ flowchart TD
     START([进入小程序]) --> CHOOSE{选择入口}
     CHOOSE -->|每日一牌| DAILY{今日已抽取?}
     DAILY -->|是| HISTORY[展示今日记录]
-    DAILY -->|否| DAILYDRAW[服务端生成每日牌]
+    DAILY -->|否| DAILYDRAW[本地域服务生成每日牌]
     DAILYDRAW --> DAILYRESULT[展示静态牌义与预置反思问题]
     CHOOSE -->|我有困扰| INPUT[选择主题并输入问题]
     INPUT --> SAFE{安全分类}
     SAFE -->|高风险| BLOCK[阻断普通解读<br/>提供安全提示]
     SAFE -->|可改写| REWRITE[建议改为开放式问题]
-    SAFE -->|允许| DRAW[服务端生成单牌结果]
+    SAFE -->|允许| DRAW[本地域服务生成单牌结果]
     REWRITE --> DRAW
     DRAW --> RITUAL[洗牌/选牌/翻牌]
     RITUAL --> GENERATE[请求结构化解读]
@@ -468,10 +363,9 @@ flowchart TD
     RESULT --> SAVE{保存记录?}
     FALLBACK --> SAVE
     DAILYRESULT --> SAVE
-    SAVE -->|是| JOURNAL[记录心情与微行动]
+    SAVE -->|是| HISTORYSAVE[保存到本地历史]
     SAVE -->|否| END([结束且不保存私密内容])
-    JOURNAL --> CHECKIN[3—7 天后可回访]
-    CHECKIN --> END
+    HISTORYSAVE --> END
     BLOCK --> END
 
     style START fill:#E3F2FD
@@ -524,7 +418,7 @@ stateDiagram-v2
 
 状态字段与操作矩阵：
 
-| 状态 | 问题/主题 | 抽牌事实 | 解读 | 保存日记 | 重试 | 删除 |
+| 状态 | 问题/主题 | 抽牌事实 | 解读 | 保存历史 | 重试 | 删除 |
 | --- | --- | --- | --- | --- | --- | --- |
 | Draft | 可编辑 | 不可见 | 不可见 | 不可用 | 不可用 | 可退出 |
 | Blocked | 只读/可返回改写 | 不生成 | 展示安全提示 | 不可用 | 可改写后新建 | 可退出 |
@@ -539,12 +433,11 @@ stateDiagram-v2
 
 | 模块 | 页面/组件 | 小程序端 | MVP |
 | --- | --- | --- | --- |
-| 首页 | 今日入口、主题入口、最近记录、待回访 | ✓ | P0 |
+| 首页 | 今日入口、主题入口、最近记录；待回访入口为 P1 | ✓ | P0/P1 |
 | 提问 | 主题选择、问题输入、问题改写、安全提示 | ✓ | P0 |
 | 抽牌 | 静心提示、洗牌、选牌、翻牌 | ✓ | P0 |
 | 解读 | 总览、逐牌依据、反思问题、微行动 | ✓ | P0 |
-| 日记 | 心情、笔记、行动保存 | ✓ | P0 |
-| 历史 | 日历/列表、详情、删除、回访 | ✓ | P0/P1 |
+| 历史 | 保存选择、列表、详情和删除 | ✓ | P0 |
 | 牌库 | 22 张牌列表与详情 | ✓ | P1 |
 | 设置 | 隐私说明、AI 标识、数据删除、关于项目 | ✓ | P0 |
 
@@ -552,21 +445,21 @@ stateDiagram-v2
 
 #### 10.2.1 首页与每日一牌
 
-**页面要素：**今日卡入口、主题解读入口、待回访入口、最近三条记录、隐私/AI 标识入口。
+**页面要素：**今日卡入口、主题解读入口、最近三条记录、隐私/AI 标识入口。待回访入口为 P1。
 
 | 操作 | 触发条件 | 反馈 | 规则 |
 | --- | --- | --- | --- |
-| 点击每日一牌 | 今日未抽 | 进入短仪式 | 以服务端日期和 Asia/Shanghai 时区判定每日唯一 |
+| 点击每日一牌 | 今日未抽 | 进入短仪式 | 以本地 Asia/Shanghai 业务日期判定每日唯一 |
 | 点击每日一牌 | 今日已抽 | 打开今日详情 | 不允许通过刷新重复抽取 |
-| 点击主题入口 | 无 | 进入提问页 | 使用微信云环境提供的静默主体标识，不申请昵称、头像或手机号 |
-| 点击待回访 | 存在到期记录 | 进入回访页 | 首页最多展示一个最早到期入口 |
+| 点击主题入口 | 无 | 进入提问页 | 本地阶段不登录；主题结果由用户明确决定是否保存 |
+| 点击待回访（P1） | 存在到期记录 | 进入回访页 | 首页最多展示一个最早到期入口 |
 
 业务规则：
 
 | 编号 | 类型 | 规则 |
 | --- | --- | --- |
-| H-R1 | 约束 | 每个微信云主体自然日只生成一张每日牌 |
-| H-R2 | 推论 | 服务端以微信云环境中的稳定 OpenID 派生值校验归属；不获取公开个人资料 |
+| H-R1 | 约束 | 当前设备中的该小程序每个自然日只生成一张每日牌 |
+| H-R2 | 推论 | 本地阶段不获取 OpenID、昵称、头像或手机号 |
 | H-R3 | 触发 | 用户首次保存私密问题前展示隐私说明并取得必要确认 |
 
 #### 10.2.2 问题输入与安全分类
@@ -595,17 +488,17 @@ stateDiagram-v2
 
 | 规则 | 说明 |
 | --- | --- |
-| 随机来源 | 由服务端加密安全随机源生成，客户端动画不决定结果 |
+| 随机来源 | 本地阶段由领域服务生成；后续云端替换为服务端安全随机，客户端动画始终不决定结果 |
 | 唯一性 | 同一牌阵内同一张牌不能重复 |
 | 正逆位 | 每张牌独立生成朝向；MVP 默认约 50/50，可通过配置调整但不为用户动态操纵 |
-| 防篡改 | 解读请求只能引用服务端签发的 reading_id，客户端不能提交任意卡牌替换结果 |
+| 事实一致性 | 解读只引用 Reading 中已固化的卡牌事实，页面不能提交任意卡牌替换结果 |
 | 动画 | 支持减少动态效果；动画完成前结果已被服务端固化，退出重进仍保持一致 |
 
 #### 10.2.4 AI 情境解读
 
 > 💡 确定性-容错率分析：这是探索性、相对高容错但涉及情绪安全的任务，采用“CUI 能力嵌入固定 GUI 结果页”，不使用全对话替代界面。
 
-AI 仅用于主题问题解读；每日一牌使用静态牌义和预置反思问题，不调用 LLM。AI 输入仅包含：问题、主题、牌阵、卡牌、牌位、朝向、受控牌义摘要、语言和 Prompt 版本。默认不包含微信昵称、头像、手机号或历史日记。
+模拟 AI 仅用于主题问题解读；每日一牌使用静态牌义和预置反思问题。模拟输入只包含问题、主题、牌阵、卡牌、牌位、朝向和受控牌义摘要，不包含任何账号资料或历史记录。
 
 AI 必须返回以下结构：
 
@@ -619,7 +512,7 @@ AI 必须返回以下结构：
 
 生成后校验采用“确定性三子层 + 可选增强层”：确定性子层依次校验 JSON Schema、牌面语义一致性和明确安全规则（长度、空字段、禁用词/正则）；增强层可使用独立模型分类识别更隐晦的医疗、法律、金融、恐吓、操纵和自伤内容。任何校验失败都不直接展示原始输出，而是进入安全模板、阻断或降级。
 
-人机边界：AI 提供解释草稿，用户可以不认同、只保存自己的笔记或删除记录；产品不展示虚构置信度，不保存或展示模型思维链。
+人机边界：模拟 AI 提供解释草稿，用户可以不认同、不保存或删除记录；产品不展示虚构置信度，不保存或展示模型思维链。
 
 #### 10.2.5 解读结果与降级
 
@@ -635,29 +528,23 @@ AI 必须返回以下结构：
 
 降级内容组成：牌位说明 + 对应朝向的受控牌义 + 固定反思问题模板 + 主题相关的通用安全行动。降级结果不得伪装成 AI 个性化解读。
 
-#### 10.2.6 日记、历史与回访
-
-| 字段 | 类型 | 必填 | 规则 |
-| --- | --- | --- | --- |
-| 心情 | 枚举 | 否 | 平静/期待/困惑/焦虑/低落/其他 |
-| 笔记 | 文本 | 否 | 0—500 字；私密；分享不带出 |
-| 微行动 | 文本 | 否 | 默认带入 AI 建议，可由用户修改，0—200 字 |
-| 回访评价 | 枚举 | 否 | 有帮助/一般/没有帮助 |
-| 回访补充 | 文本 | 否 | 0—500 字 |
+#### 10.2.6 本地历史
 
 交互规则：
 
+- 每日牌自动保存，用于当天复用；
+- 主题解读默认不保存，用户点击“保存到历史”后才持久化；
 - 保存成功使用 Toast，并立即更新历史列表；
 - 删除使用模态确认，明确“删除后不可在小程序内恢复”；
 - 历史详情默认折叠原始问题，避免在公共场景直接暴露；
-- 未登录状态只保存在本机；登录后是否迁移本地历史为待决事项；
-- 回访只在用户主动进入小程序时提示，MVP 不申请订阅消息。
+- 本地历史只存在当前设备的微信小程序存储沙箱，不跨设备同步；
+- MVP 不设计显式登录、账号系统或本地历史自动迁移。
 
 #### 10.2.7 牌库与设置
 
 牌库支持按序号浏览 22 张大阿尔卡那，详情展示图像、关键词、正位含义、逆位含义和一个自我反思问题。MVP 不提供系统课程、考试或收藏成长体系。
 
-设置页包含：AI 内容说明、娱乐与自我探索声明、隐私说明、清除本地记录、删除云端记录、开关声音/震动/减少动态效果、项目版本和开源/素材说明。
+设置页包含：模拟 AI 说明、娱乐与自我探索声明、本地数据说明、清空本地历史、项目版本和素材说明。
 
 ### 10.3 异常情况处理
 
@@ -668,9 +555,9 @@ AI 必须返回以下结构：
 | 重复点击 | 连续点击生成 | 幂等键阻止重复任务，按钮进入 loading |
 | AI 超时 | 超过服务端超时阈值 | 仅重试一次；随后使用降级解读 |
 | AI 非法结构 | JSON 缺字段或牌面不一致 | 不展示原始输出；记录原因码并降级 |
-| AI 不安全输出 | 命中输出过滤 | 使用安全模板或阻断，不把内容写入日记 |
+| AI 不安全输出 | 命中输出过滤 | 使用安全模板或阻断，不保存原始输出 |
 | 服务端异常 | AI 和降级都失败 | 进入 Failed，保留抽牌事实，允许一次重试 |
-| 登录失败 | 用户拒绝登录 | 可继续临时体验，不能承诺跨设备保存 |
+| 本地存储不可用 | 写入或读取失败 | 当前结果仍可查看；明确提示未保存，不伪装成功 |
 | 数据冲突 | 同记录多端更新 | MVP 使用最后写入覆盖并记录 updated_at；后续可增加版本号 |
 | 数据删除 | 删除请求中途失败 | 用户侧先隐藏；CloudBase 定时触发函数扫描 `deleted_at/expire_at`，重试物理清理并记录失败次数 |
 | 极端输入 | 超长、特殊字符、提示词注入 | 长度限制、Unicode 规范化、输入作为数据字段隔离，不拼接为系统指令 |
@@ -693,7 +580,7 @@ AI 必须返回以下结构：
 | draw_complete | 抽牌完成 | spread_code, card_count, duration_ms | 抽牌完成率 |
 | interpretation_complete | 解读可展示 | source, latency_ms, validation_status | AI/降级表现 |
 | interpretation_exit | 结果前退出 | stage, elapsed_ms | 放弃位置 |
-| journal_save | 日记保存 | has_mood, has_note, has_action | 记录转化 |
+| history_save | 用户保存主题解读 | reading_type, source | 记录保存选择 |
 | checkin_complete | 完成回访 | helpfulness, days_after | 有用性反馈 |
 | reading_delete | 删除记录 | reading_type, age_days | 数据控制使用情况 |
 | error_shown | 错误展示 | error_code, stage, recoverable | 稳定性 |
@@ -704,7 +591,7 @@ AI 必须返回以下结构：
 | --- | --- |
 | 主流程完成率 | interpretation_complete / reading_start |
 | AI 降级率 | source=fallback / interpretation_complete |
-| 结果保存率 | journal_save / interpretation_complete |
+| 结果保存率 | history_save / interpretation_complete |
 | 回访完成率 | checkin_complete / 到期可回访记录 |
 | 有帮助率 | helpfulness=helpful / checkin_complete |
 | 安全阻断率 | action=block / safety_decision |
@@ -752,11 +639,11 @@ AI 必须返回以下结构：
 
 | 编号 | 待决事项 | 涉及章节 | 负责人 | 决策时间 | 状态 |
 | --- | --- | --- | --- | --- | --- |
-| TBD-1 | 正式产品名称与视觉关键词 | 5/10 | 项目作者 | 原型前 | 待讨论 |
+| TBD-1 | 正式产品名称与视觉关键词 | 5/10 | 项目作者 | 原型前 | 已确认：阿卡纳心镜；黑灰版画、纤维纸、旧金箔 |
 | TBD-2 | 确认 CloudBase 套餐、资源地域与预算 | 6/10 | 项目作者 | 工程搭建前 | 方案默认 CloudBase |
 | TBD-3 | 选择 1 主 1 备境内可达模型与预算上限 | 7/10 | 项目作者 | AI Spike 第 0 项 | 待确认；属于 go/no-go |
-| TBD-4 | 22 张牌使用何种原创/授权视觉资产 | 7/10 | 项目作者 | UI 开发前 | 待确认 |
-| TBD-5 | 未登录历史在登录后是否迁移到云端 | 10/12 | 项目作者 | 数据层开发前 | 待确认 |
+| TBD-4 | 22 张牌使用何种原创/授权视觉资产 | 7/10 | 项目作者 | UI 开发前 | 已定原创生成方向；V3 为基准，剩余牌逐张验收 |
+| TBD-5 | 本地历史是否迁移到云端 | 10/12 | 项目作者 | 云端阶段前 | 已决：默认不自动迁移 |
 | TBD-6 | 是否以真实小程序审核上线为里程碑 | 6/13 | 项目作者 | 内测前 | 待确认 |
 
 ---

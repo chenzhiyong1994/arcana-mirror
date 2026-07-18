@@ -1,0 +1,58 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="eyebrow">INTERPRETATION</view>
+    <view class="title">正在整理牌面</view>
+    <view class="subtitle">本地模拟 Provider 正在生成结构化结果。</view>
+  </view>
+
+  <view wx:elif="{{missing}}" class="panel">
+    <view class="title small">没有找到这次解读</view>
+    <view class="subtitle">它可能没有保存，或已经被删除。</view>
+    <button class="primary" bindtap="returnHome">返回首页</button>
+  </view>
+
+  <block wx:elif="{{view}}">
+    <view class="eyebrow">{{view.topic}} · {{view.date}}</view>
+    <view class="title">{{view.card.name}} · {{view.card.orientation}}</view>
+    <view class="source {{view.isFallback ? 'fallback' : ''}}">{{view.sourceLabel}}</view>
+    <view wx:if="{{view.isFallback}}" class="reason">原因：{{view.reasonCode}}</view>
+
+    <view class="mini-card">
+      <view class="mini-roman">{{view.card.roman}}</view>
+      <view class="mini-symbol">◐</view>
+      <view class="mini-name">{{view.card.englishName}}</view>
+    </view>
+
+    <view wx:if="{{view.question}}" class="panel question-panel">
+      <button class="text-button" bindtap="toggleQuestion">{{questionExpanded ? '收起原问题' : '查看原问题'}}</button>
+      <view wx:if="{{questionExpanded}}" class="question-text">{{view.question}}</view>
+    </view>
+
+    <view class="content-block">
+      <view class="content-label">观察摘要</view>
+      <view class="content-text">{{view.content.summary}}</view>
+    </view>
+
+    <view class="content-block">
+      <view class="content-label">牌义依据</view>
+      <view class="content-text">{{view.content.cards[0].basis}}</view>
+      <view class="content-text secondary-text">{{view.content.cards[0].contextualMeaning}}</view>
+    </view>
+
+    <view class="content-block emphasis">
+      <view class="content-label">留给你的问题</view>
+      <view class="reflection">{{view.content.reflectionQuestion}}</view>
+    </view>
+
+    <view class="content-block">
+      <view class="content-label">一个小行动</view>
+      <view class="content-text">{{view.content.microAction}}</view>
+      <button class="text-button" bindtap="copyAction">复制行动</button>
+    </view>
+
+    <view class="disclaimer">{{view.content.disclaimer}}</view>
+
+    <button wx:if="{{!view.isDaily && !view.saved}}" class="primary" bindtap="saveToHistory">保存到本地历史</button>
+    <button class="secondary" bindtap="finish">{{!view.isDaily && !view.saved ? '不保存并结束' : '完成'}}</button>
+  </block>
+</view>
