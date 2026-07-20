@@ -1,0 +1,256 @@
+{
+  "schemaVersion": 1,
+  "deck": "Arcana Mirror Major Arcana",
+  "style": "A - Ritual Archive",
+  "image": {
+    "width": 1024,
+    "height": 1536,
+    "format": "png",
+    "topSafeAreaPx": 138,
+    "bottomSafeAreaPx": 215
+  },
+  "cards": [
+    {
+      "id": "major-00",
+      "filename": "major-00-fool.png",
+      "sequence": 0,
+      "roman": "0",
+      "name": "愚者",
+      "englishName": "The Fool",
+      "keywords": ["开始", "自由", "信任"],
+      "requiredSymbols": ["年轻旅行者", "高崖边缘", "短杖小行囊", "小犬", "野花", "远方道路"],
+      "forbiddenFailures": ["已经坠落或受伤", "现代登山装备", "小犬攻击人物"]
+    },
+    {
+      "id": "major-01",
+      "filename": "major-01-magician.png",
+      "sequence": 1,
+      "roman": "I",
+      "name": "魔术师",
+      "englishName": "The Magician",
+      "keywords": ["行动", "资源", "专注"],
+      "requiredSymbols": ["上下对应手势", "工作台", "杖", "杯", "剑", "五角圆盘"],
+      "forbiddenFailures": ["舞台魔术道具", "四件工具缺失", "工具漂浮"]
+    },
+    {
+      "id": "major-02",
+      "filename": "major-02-high-priestess.png",
+      "sequence": 2,
+      "roman": "II",
+      "name": "女祭司",
+      "englishName": "The High Priestess",
+      "keywords": ["直觉", "沉静", "未知"],
+      "requiredSymbols": ["女性守门人", "成对明暗石柱", "半隐藏卷册", "月形石饰", "帘幕后静水"],
+      "forbiddenFailures": ["柱上可读字母", "水晶球占卜桌", "复制商业牌服装或帘纹"]
+    },
+    {
+      "id": "major-03",
+      "filename": "major-03-empress.png",
+      "sequence": 3,
+      "roman": "III",
+      "name": "皇后",
+      "englishName": "The Empress",
+      "keywords": ["滋养", "创造", "丰盛"],
+      "requiredSymbols": ["成熟女性统治者", "谷穗或成熟作物", "流动水源", "繁茂植物", "十二星点头饰", "孕育或丰收象征"],
+      "forbiddenFailures": ["婴儿成为主体", "被动柔弱姿态", "空旷荒地"]
+    },
+    {
+      "id": "major-04",
+      "filename": "major-04-emperor.png",
+      "sequence": 4,
+      "roman": "IV",
+      "name": "皇帝",
+      "englishName": "The Emperor",
+      "keywords": ["结构", "责任", "边界"],
+      "requiredSymbols": ["年长男性统治者", "石质王座", "权杖", "石球", "山地城防", "羊角几何刻纹"],
+      "forbiddenFailures": ["现代军装或枪械", "暴怒战争场面", "松散瘫坐"]
+    },
+    {
+      "id": "major-05",
+      "filename": "major-05-hierophant.png",
+      "sequence": 5,
+      "roman": "V",
+      "name": "教皇",
+      "englishName": "The Hierophant",
+      "keywords": ["传统", "学习", "价值"],
+      "requiredSymbols": ["年长导师", "教导手势", "三段式仪杖", "两位成年学习者", "交叉钥匙", "礼堂"],
+      "forbiddenFailures": ["复制参考图服饰手势或随从", "可读经文", "现代课堂"]
+    },
+    {
+      "id": "major-06",
+      "filename": "major-06-lovers.png",
+      "sequence": 6,
+      "roman": "VI",
+      "name": "恋人",
+      "englishName": "The Lovers",
+      "keywords": ["选择", "连接", "一致"],
+      "requiredSymbols": ["两位平等成人", "相互视线", "开花树与结果树", "汇合水流", "中央选择道路", "翼形光辉"],
+      "forbiddenFailures": ["未成年人", "强制或性化亲密", "只有浪漫拥抱而无选择主题"]
+    },
+    {
+      "id": "major-07",
+      "filename": "major-07-chariot.png",
+      "sequence": 7,
+      "roman": "VII",
+      "name": "战车",
+      "englishName": "The Chariot",
+      "keywords": ["意志", "推进", "方向"],
+      "requiredSymbols": ["披甲驾驭者", "战车", "两股相反牵引力量", "前进方向", "身后城市"],
+      "forbiddenFailures": ["现代车辆或坦克", "动物互相攻击", "失控翻车"]
+    },
+    {
+      "id": "major-08",
+      "filename": "major-08-strength.png",
+      "sequence": 8,
+      "roman": "VIII",
+      "name": "力量",
+      "englishName": "Strength",
+      "keywords": ["勇气", "温柔", "自持"],
+      "requiredSymbols": ["平静成年人物", "完整狮子", "温柔接触", "被安定的力量", "连续光环"],
+      "forbiddenFailures": ["猎杀或骑乘狮子", "武器或流血", "狮子变成小猫"]
+    },
+    {
+      "id": "major-09",
+      "filename": "major-09-hermit.png",
+      "sequence": 9,
+      "roman": "IX",
+      "name": "隐士",
+      "englishName": "The Hermit",
+      "keywords": ["独处", "辨认", "内在指引"],
+      "requiredSymbols": ["年长隐士", "独处高山", "手提灯笼", "灯内六芒星光", "另一手长杖"],
+      "forbiddenFailures": ["远方或漂浮灯笼", "第二人物", "杖与手分离"]
+    },
+    {
+      "id": "major-10",
+      "filename": "major-10-wheel-of-fortune.png",
+      "sequence": 10,
+      "roman": "X",
+      "name": "命运之轮",
+      "englishName": "Wheel of Fortune",
+      "keywords": ["变化", "周期", "契机"],
+      "requiredSymbols": ["完整八辐轮", "四段周期纹理", "上升生物", "下降生物", "顶部守望者", "中央轮轴"],
+      "forbiddenFailures": ["赌场转盘或时钟", "可读字母", "轮子被裁切"]
+    },
+    {
+      "id": "major-11",
+      "filename": "major-11-justice.png",
+      "sequence": 11,
+      "roman": "XI",
+      "name": "正义",
+      "englishName": "Justice",
+      "keywords": ["事实", "平衡", "后果"],
+      "requiredSymbols": ["中央裁决者", "竖直长剑", "平衡天平", "对称石柱", "稳固坐姿"],
+      "forbiddenFailures": ["现代法庭造型", "蒙眼", "挥剑或严重倾斜天平"]
+    },
+    {
+      "id": "major-12",
+      "filename": "major-12-hanged-man.png",
+      "sequence": 12,
+      "roman": "XII",
+      "name": "倒吊人",
+      "englishName": "The Hanged Man",
+      "keywords": ["暂停", "换位", "放下"],
+      "requiredSymbols": ["单脚悬挂", "倒置成年人物", "另一腿弯曲", "活树横架", "平静表情", "头部光环"],
+      "forbiddenFailures": ["颈部绳套", "死亡或伤口", "双脚都被绑住"]
+    },
+    {
+      "id": "major-13",
+      "filename": "major-13-death.png",
+      "sequence": 13,
+      "roman": "XIII",
+      "name": "死神",
+      "englishName": "Death",
+      "keywords": ["结束", "转化", "更新"],
+      "requiredSymbols": ["非血腥死亡使者", "浅色马", "五瓣花旗", "旧王冠或枯枝", "远方晨光", "新芽"],
+      "forbiddenFailures": ["血腥尸体或屠杀", "儿童受害", "字面死亡预告"]
+    },
+    {
+      "id": "major-14",
+      "filename": "major-14-temperance.png",
+      "sequence": 14,
+      "roman": "XIV",
+      "name": "节制",
+      "englishName": "Temperance",
+      "keywords": ["调和", "耐心", "适度"],
+      "requiredSymbols": ["翼形中性人物", "两只杯", "连续转移水流", "一脚在水一脚在地", "远方道路与光"],
+      "forbiddenFailures": ["醉酒宴会", "杯子漂浮或水流断裂", "战斗天使"]
+    },
+    {
+      "id": "major-15",
+      "filename": "major-15-devil.png",
+      "sequence": 15,
+      "roman": "XV",
+      "name": "恶魔",
+      "englishName": "The Devil",
+      "keywords": ["束缚", "欲望", "觉察"],
+      "requiredSymbols": ["带角阴影守卫", "两位成人", "可自行解开的松链", "共同束缚点", "觉察姿态"],
+      "forbiddenFailures": ["裸体性化或虐待", "未成年人", "锁链绝对无法逃脱"]
+    },
+    {
+      "id": "major-16",
+      "filename": "major-16-tower.png",
+      "sequence": 16,
+      "roman": "XVI",
+      "name": "高塔",
+      "englishName": "The Tower",
+      "keywords": ["冲击", "揭示", "重建"],
+      "requiredSymbols": ["孤立高塔", "强烈闪电", "裂开的冠形塔顶", "飞散石块或火光", "两名成人剪影", "开裂塔基"],
+      "forbiddenFailures": ["现实灾难或现代摩天楼", "尸体或血腥", "塔保持完整"]
+    },
+    {
+      "id": "major-17",
+      "filename": "major-17-star.png",
+      "sequence": 17,
+      "roman": "XVII",
+      "name": "星星",
+      "englishName": "The Star",
+      "keywords": ["希望", "修复", "真诚"],
+      "requiredSymbols": ["跪姿成年人物", "两只水壶", "流向水与土地的水流", "一大七小星", "远处鸟"],
+      "forbiddenFailures": ["过度裸体性化", "水壶或水流缺失", "霓虹宇宙"]
+    },
+    {
+      "id": "major-18",
+      "filename": "major-18-moon.png",
+      "sequence": 18,
+      "roman": "XVIII",
+      "name": "月亮",
+      "englishName": "The Moon",
+      "keywords": ["模糊", "情绪", "投射"],
+      "requiredSymbols": ["巨大月亮", "弯曲道路", "成对石塔", "犬与狼", "出水甲壳生物", "迷雾"],
+      "forbiddenFailures": ["狼人攻击", "现代城市", "清晰白昼或多个满月"]
+    },
+    {
+      "id": "major-19",
+      "filename": "major-19-sun.png",
+      "sequence": 19,
+      "roman": "XIX",
+      "name": "太阳",
+      "englishName": "The Sun",
+      "keywords": ["清晰", "活力", "坦诚"],
+      "requiredSymbols": ["无脸放射太阳", "快乐儿童", "浅色马", "无文字布幡", "四株高花", "低墙"],
+      "forbiddenFailures": ["危险骑姿", "笑脸太阳", "过曝到失去黑灰基底"]
+    },
+    {
+      "id": "major-20",
+      "filename": "major-20-judgement.png",
+      "sequence": 20,
+      "roman": "XX",
+      "name": "审判",
+      "englishName": "Judgement",
+      "keywords": ["回顾", "召唤", "决定"],
+      "requiredSymbols": ["翼形号手", "长号", "无文字旗", "苏醒起身的人群", "打开石室", "远方水域与山"],
+      "forbiddenFailures": ["僵尸或尸体", "现实宗教Logo", "号手没有吹奏关系"]
+    },
+    {
+      "id": "major-21",
+      "filename": "major-21-world.png",
+      "sequence": 21,
+      "roman": "XXI",
+      "name": "世界",
+      "englishName": "The World",
+      "keywords": ["完成", "整合", "展开"],
+      "requiredSymbols": ["中央中性舞者", "两根短杖", "闭合椭圆植物环", "人鹰狮牛四角守护", "平衡构图"],
+      "forbiddenFailures": ["现代地图或国旗", "椭圆环破损", "守护象征缺失或重复"]
+    }
+  ]
+}

@@ -11,14 +11,14 @@
 - 阶段：本地 MVP 功能闭环已完成，等待低保真交互验收
 - 工程：微信原生小程序 TypeScript + 本地 Repository + 模拟 AI Provider；CloudBase 与真实 AI 后置
 - MVP：22 张大阿卡纳、每日静态单牌、主题单牌模拟解读、安全阻断与降级、可选本地历史和删除
-- 视觉：当前只实现低保真功能界面，高保真视觉与精细交互独立推进
+- 视觉：功能界面保持低保真；22 张大阿尔卡那已选用 A“仪式典藏”方向并独立推进资产生成
 - 首版预算：64—80 小时，80 小时硬上限
 
-## 主视觉
+## 卡牌视觉
 
-![阿卡纳心镜隐士牌面基准](assets/tarot-card-style/style-hermit-v3.png)
+![A 仪式典藏正反面样稿](assets/tarot-card-style/concepts/style-concept-a-ritual-archive-v1.png)
 
-主视觉采用黑灰手工版画、纤维纸与不均匀旧金箔。牌面语义和视觉风格分层定义：每张牌先锁定主流人物、道具、姿态和象征，再应用统一材质与边框系统。
+本轮全套卡牌生成使用 A“仪式典藏”：黑灰手工版画、纤维纸与不均匀旧金箔。每张牌先锁定主流人物、道具、姿态和象征，再应用统一材质与边框系统；G“古典新艺术”仅保留为备选，不混入本批次。完整生成交接材料见 [A 风格全套卡牌生成包](deliverables/style-a-deck-generation-kit/README.md)。
 
 ## 文档
 
@@ -31,6 +31,7 @@
 7. [PRD 自检报告](docs/product/06-prd-review.md)
 8. [长程开发执行基线](docs/product/07-execution-baseline.md)
 9. [卡片风格基准](assets/tarot-card-style/README.md)
+10. [A 风格全套卡牌生成交接包](deliverables/style-a-deck-generation-kit/README.md)
 
 ## 仓库结构
 
