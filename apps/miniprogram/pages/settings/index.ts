@@ -1,5 +1,5 @@
 import type { MockMode } from "../../core/types";
-import { getMockMode, readingService, setMockMode } from "../../services/app-services";
+import { collectionService, getMockMode, readingService, setMockMode } from "../../services/app-services";
 
 const MODES: { value: MockMode; label: string; description: string }[] = [
   { value: "success", label: "模拟成功", description: "返回结构完整且与牌面一致的模拟解读。" },
@@ -9,10 +9,11 @@ const MODES: { value: MockMode; label: string; description: string }[] = [
 ];
 
 Page({
-  data: { modes: MODES, selectedMode: "success" as MockMode },
+  data: { modes: MODES, selectedMode: "success" as MockMode, collectionProgress: "0 / 22" },
 
   onShow() {
-    this.setData({ selectedMode: getMockMode() });
+    const progress = collectionService.getProgress();
+    this.setData({ selectedMode: getMockMode(), collectionProgress: `${progress.discovered} / ${progress.total}` });
   },
 
   selectMode(event: WechatMiniprogram.TouchEvent) {
@@ -34,6 +35,24 @@ Page({
           wx.showToast({ title: "本地历史已清空", icon: "success" });
         } catch {
           wx.showToast({ title: "清空失败", icon: "none" });
+        }
+      },
+    });
+  },
+
+  clearCollection() {
+    wx.showModal({
+      title: "重置卡牌图鉴？",
+      content: "已解锁卡牌和翻开次数都会清空；历史记录不会被删除。",
+      confirmColor: "#a65248",
+      success: (result) => {
+        if (!result.confirm) return;
+        try {
+          collectionService.clear();
+          this.setData({ collectionProgress: "0 / 22" });
+          wx.showToast({ title: "图鉴已重置", icon: "success" });
+        } catch {
+          wx.showToast({ title: "重置失败", icon: "none" });
         }
       },
     });

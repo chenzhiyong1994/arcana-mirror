@@ -1,6 +1,8 @@
 export type Topic = "relationship" | "interpersonal" | "career" | "self";
 export type Orientation = "upright" | "reversed";
 export type ReadingType = "daily" | "question";
+export type SpreadType = "single" | "three";
+export type SpreadPosition = "focus" | "situation" | "influence" | "action";
 export type ReadingStatus =
   | "drawn"
   | "generating"
@@ -33,13 +35,20 @@ export interface InterpretationCard {
   cardId: string;
   cardName: string;
   orientation: Orientation;
+  position: SpreadPosition;
+  positionLabel: string;
   basis: string;
   contextualMeaning: string;
+  loveInsight: string;
+  wealthInsight: string;
+  careerInsight: string;
+  selfGrowthInsight: string;
 }
 
 export interface InterpretationContent {
   summary: string;
   cards: InterpretationCard[];
+  synthesis: string;
   reflectionQuestion: string;
   microAction: string;
   disclaimer: string;
@@ -69,6 +78,8 @@ export interface SafetyDecision {
 export interface Reading {
   id: string;
   type: ReadingType;
+  /** Optional only for compatibility with local v0.1 records. */
+  spread?: SpreadType;
   status: ReadingStatus;
   businessDate: string;
   topic?: Topic;
@@ -93,5 +104,20 @@ export interface ReadingRepository {
 }
 
 export interface InterpretationProvider {
-  generate(reading: Reading, card: TarotCard, mode: MockMode): Promise<unknown>;
+  generate(reading: Reading, cards: TarotCard[], mode: MockMode): Promise<unknown>;
+}
+
+export interface CardDiscovery {
+  cardId: string;
+  firstRevealedAt: string;
+  lastRevealedAt: string;
+  revealCount: number;
+  uprightSeen: boolean;
+  reversedSeen: boolean;
+}
+
+export interface CardCollectionRepository {
+  list(): CardDiscovery[];
+  save(discovery: CardDiscovery): void;
+  clear(): void;
 }

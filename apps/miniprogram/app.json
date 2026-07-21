@@ -5,6 +5,7 @@
     "pages/ritual/index",
     "pages/result/index",
     "pages/history/index",
+    "pages/collection/index",
     "pages/settings/index"
   ],
   "window": {

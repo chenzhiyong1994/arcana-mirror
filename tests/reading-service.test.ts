@@ -36,6 +36,21 @@ describe("ReadingService", () => {
     expect(service.listHistory()).toHaveLength(1);
   });
 
+  it("draws three unique cards and returns position-aware rich interpretations", async () => {
+    const { service } = createService([0.1, 0.2, 0.1, 0.8, 0.6, 0.3, 0.4]);
+    const reading = service.startQuestion("relationship", "我该如何理解这段关系的变化？", "three");
+    expect(reading.cards).toHaveLength(3);
+    expect(new Set(reading.cards.map((card) => card.cardId)).size).toBe(3);
+    const interpreted = await service.interpretQuestion(reading.id, "success");
+    expect(interpreted.interpretation?.content.cards.map((card) => card.positionLabel)).toEqual([
+      "现状",
+      "关键影响",
+      "行动建议",
+    ]);
+    expect(interpreted.interpretation?.content.cards[0].loveInsight).toContain("爱情观察");
+    expect(interpreted.interpretation?.content.cards[0].wealthInsight).toContain("财运观察");
+  });
+
   it("rejects saving a question before an interpretation exists", () => {
     const { service } = createService();
     const reading = service.startQuestion("self", "我该如何理解最近的犹豫？");
@@ -57,6 +72,16 @@ describe("ReadingService", () => {
     const interpreted = await service.interpretQuestion(reading.id, mode);
     expect(interpreted.status).toBe("fallback_completed");
     expect(interpreted.interpretation?.source).toBe("fallback");
+  });
+
+  it("falls back with all three card facts preserved", async () => {
+    const { service } = createService([0.1, 0.2, 0.3, 0.8, 0.6, 0.3, 0.4]);
+    const reading = service.startQuestion("career", "我该如何看待现在工作的停滞？", "three");
+    const interpreted = await service.interpretQuestion(reading.id, "invalid");
+    expect(interpreted.interpretation?.content.cards).toHaveLength(3);
+    expect(interpreted.interpretation?.content.cards.map((card) => card.cardId)).toEqual(
+      reading.cards.map((card) => card.cardId),
+    );
   });
 
   it("can draw every card with injected random values", () => {

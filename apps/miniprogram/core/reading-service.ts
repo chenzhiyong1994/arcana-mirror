@@ -8,6 +8,7 @@ import type {
   Orientation,
   Reading,
   ReadingRepository,
+  SpreadType,
   Topic,
 } from "./types";
 
@@ -48,8 +49,8 @@ export class ReadingService {
     return reading;
   }
 
-  startQuestion(topic: Topic, question: string): Reading {
-    const reading = this.createBaseReading("question", topic, question.trim());
+  startQuestion(topic: Topic, question: string, spread: SpreadType = "single"): Reading {
+    const reading = this.createBaseReading("question", topic, question.trim(), spread);
     this.dependencies.repository.setWorking(reading);
     return reading;
   }
@@ -63,13 +64,13 @@ export class ReadingService {
     transitionReading(reading, "generating");
     reading.updatedAt = this.now().toISOString();
     this.persistWorkingOrSaved(reading);
-    const card = getCard(reading.cards[0].cardId);
+    const cards = reading.cards.map((drawn) => getCard(drawn.cardId));
 
     try {
-      const raw = await this.dependencies.provider.generate(reading, card, mode);
+      const raw = await this.dependencies.provider.generate(reading, cards, mode);
       const validation = validateInterpretation(raw, reading);
       if (!validation.valid) {
-        return this.completeWithFallback(reading, card.id, validation.reasonCode);
+        return this.completeWithFallback(reading, cards, validation.reasonCode);
       }
       transitionReading(reading, "completed");
       reading.interpretation = { source: "mock", validationStatus: "valid", content: validation.content };
@@ -78,7 +79,7 @@ export class ReadingService {
       return reading;
     } catch (error) {
       const reasonCode = error instanceof Error ? error.message : "MOCK_PROVIDER_ERROR";
-      return this.completeWithFallback(reading, card.id, reasonCode);
+      return this.completeWithFallback(reading, cards, reasonCode);
     }
   }
 
@@ -119,18 +120,24 @@ export class ReadingService {
     this.dependencies.repository.clearSaved();
   }
 
-  private createBaseReading(type: "daily" | "question", topic?: Topic, question?: string): Reading {
+  private createBaseReading(
+    type: "daily" | "question",
+    topic?: Topic,
+    question?: string,
+    spread: SpreadType = "single",
+  ): Reading {
     const now = this.now();
-    const cardIndex = Math.min(TAROT_CARDS.length - 1, Math.floor(this.normalizedRandom() * TAROT_CARDS.length));
-    const orientation: Orientation = this.normalizedRandom() < 0.5 ? "upright" : "reversed";
+    const resolvedSpread: SpreadType = type === "daily" ? "single" : spread;
+    const cards = this.drawCards(resolvedSpread === "three" ? 3 : 1);
     return {
       id: `${type}-${now.getTime()}-${Math.floor(this.normalizedRandom() * 1_000_000).toString(36)}`,
       type,
+      spread: resolvedSpread,
       status: "drawn",
       businessDate: toShanghaiBusinessDate(now),
       topic,
       question,
-      cards: [{ cardId: TAROT_CARDS[cardIndex].id, orientation, drawOrder: 1 }],
+      cards,
       saved: false,
       createdAt: now.toISOString(),
       updatedAt: now.toISOString(),
@@ -142,14 +149,26 @@ export class ReadingService {
     return Number.isFinite(value) && value >= 0 && value < 1 ? value : 0;
   }
 
-  private completeWithFallback(reading: Reading, cardId: string, reasonCode: string): Reading {
-    const card = getCard(cardId);
+  private drawCards(count: number): Reading["cards"] {
+    const used = new Set<number>();
+    const cards: Reading["cards"] = [];
+    for (let drawOrder = 1; drawOrder <= count; drawOrder += 1) {
+      let cardIndex = Math.min(TAROT_CARDS.length - 1, Math.floor(this.normalizedRandom() * TAROT_CARDS.length));
+      while (used.has(cardIndex)) cardIndex = (cardIndex + 1) % TAROT_CARDS.length;
+      used.add(cardIndex);
+      const orientation: Orientation = this.normalizedRandom() < 0.5 ? "upright" : "reversed";
+      cards.push({ cardId: TAROT_CARDS[cardIndex].id, orientation, drawOrder });
+    }
+    return cards;
+  }
+
+  private completeWithFallback(reading: Reading, cards: ReturnType<typeof getCard>[], reasonCode: string): Reading {
     transitionReading(reading, "fallback_completed");
     reading.interpretation = {
       source: "fallback",
       validationStatus: "fallback",
       reasonCode,
-      content: buildFallbackInterpretation(reading, card, reasonCode),
+      content: buildFallbackInterpretation(reading, cards, reasonCode),
     };
     reading.updatedAt = this.now().toISOString();
     this.persistWorkingOrSaved(reading);

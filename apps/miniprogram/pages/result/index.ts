@@ -1,6 +1,7 @@
-import { getCard } from "../../core/cards";
-import { orientationLabel } from "../../core/interpretation";
-import type { Reading, Topic } from "../../core/types";
+import { getCard, getCardImagePath } from "../../core/cards";
+import { buildDimensionInsights, orientationLabel } from "../../core/interpretation";
+import { getReadingPosition, getReadingSpread } from "../../core/spreads";
+import type { InterpretationCard, Reading, Topic } from "../../core/types";
 import { getMockMode, readingService } from "../../services/app-services";
 
 const TOPIC_LABELS: Record<Topic, string> = {
@@ -11,27 +12,55 @@ const TOPIC_LABELS: Record<Topic, string> = {
 };
 
 function toView(reading: Reading, fromHistory: boolean) {
-  const card = getCard(reading.cards[0].cardId);
   const interpretation = reading.interpretation;
-  return {
-    id: reading.id,
-    isDaily: reading.type === "daily",
-    saved: reading.saved,
-    date: reading.businessDate,
-    topic: reading.topic ? TOPIC_LABELS[reading.topic] : "每日一牌",
-    question: reading.question ?? "",
-    hideQuestion: fromHistory && Boolean(reading.question),
-    card: {
+  const isThree = getReadingSpread(reading) === "three";
+  const cards = reading.cards.map((drawn, index) => {
+    const card = getCard(drawn.cardId);
+    const output = interpretation?.content.cards[index] as Partial<InterpretationCard> | undefined;
+    const fallback = buildDimensionInsights(card, drawn.orientation);
+    const position = getReadingPosition(reading, index);
+    return {
+      cardId: card.id,
       roman: card.roman,
       name: card.name,
       englishName: card.englishName,
-      orientation: orientationLabel(reading.cards[0].orientation),
+      orientation: drawn.orientation,
+      orientationLabel: orientationLabel(drawn.orientation),
+      positionLabel: output?.positionLabel ?? position.label,
+      imagePath: getCardImagePath(card.id),
       keywords: card.keywords,
-    },
+      basis: output?.basis ?? fallback.basis,
+      contextualMeaning: output?.contextualMeaning ?? `${position.label}位置提醒你把牌义与现实事实对照。`,
+      loveInsight: output?.loveInsight ?? fallback.loveInsight,
+      wealthInsight: output?.wealthInsight ?? fallback.wealthInsight,
+      careerInsight: output?.careerInsight ?? fallback.careerInsight,
+      selfGrowthInsight: output?.selfGrowthInsight ?? fallback.selfGrowthInsight,
+    };
+  });
+  const content = interpretation?.content;
+  return {
+    id: reading.id,
+    isDaily: reading.type === "daily",
+    isThree,
+    saved: reading.saved,
+    date: reading.businessDate,
+    topic: reading.topic ? TOPIC_LABELS[reading.topic] : "每日一牌",
+    title: isThree ? "三牌综合解读" : `${cards[0].name} · ${cards[0].orientationLabel}`,
+    question: reading.question ?? "",
+    hideQuestion: fromHistory && Boolean(reading.question),
+    cards,
     sourceLabel: interpretation?.source === "fallback" ? "基础牌义降级" : interpretation?.source === "static" ? "静态牌义" : "本地模拟 AI",
     isFallback: interpretation?.source === "fallback",
     reasonCode: interpretation?.reasonCode ?? "",
-    content: interpretation?.content ?? null,
+    content: content ? {
+      summary: content.summary,
+      synthesis: content.synthesis || (isThree
+        ? `把${cards.map((card) => card.name).join("、")}按现状、关键影响和行动建议连起来观察。`
+        : `把${cards[0].name}放回现实处境，选择最值得验证的一个角度。`),
+      reflectionQuestion: content.reflectionQuestion,
+      microAction: content.microAction,
+      disclaimer: content.disclaimer,
+    } : null,
   };
 }
 

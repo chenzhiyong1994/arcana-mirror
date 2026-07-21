@@ -15,13 +15,15 @@
 
   <view class="panel data-panel">
     <view class="section-title">本地数据边界</view>
-    <view class="muted">本阶段不使用微信云身份、账号、CloudBase 或真实 AI。历史保存在当前设备的小程序存储沙箱，不自动迁移到未来云端。</view>
+    <view class="muted">本阶段不使用微信云身份、账号、CloudBase 或真实 AI。历史与图鉴保存在当前设备的小程序存储沙箱，不自动迁移到未来云端。</view>
     <button class="danger-button" bindtap="clearHistory">清空全部本地历史</button>
+    <view class="collection-state">图鉴进度：{{collectionProgress}}</view>
+    <button class="danger-button compact" bindtap="clearCollection">重置卡牌图鉴</button>
   </view>
 
   <view class="panel about-panel">
     <view class="section-title">关于这次体验</view>
     <view class="muted">阿卡纳心镜提供娱乐性自我探索，不预测确定未来，也不替代心理、医疗、法律或金融专业意见。</view>
-    <view class="version">Local MVP · 0.1.0</view>
+    <view class="version">Local MVP · 0.2.0</view>
   </view>
 </view>

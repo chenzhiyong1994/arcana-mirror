@@ -1,0 +1,46 @@
+<view class="page">
+  <view class="eyebrow">ARCANA COLLECTION</view>
+  <view class="title">我的图鉴</view>
+  <view class="subtitle">每次亲手翻开一张牌，它就会永久点亮在当前设备的图鉴中。</view>
+
+  <view class="progress-panel">
+    <view>
+      <view class="progress-number">{{progress}}</view>
+      <view class="muted">已解锁大阿尔卡那</view>
+    </view>
+    <view class="percent">{{percent}}%</view>
+  </view>
+
+  <view class="collection-grid">
+    <view wx:for="{{cards}}" wx:key="id" class="collection-card {{item.discovered ? 'discovered' : 'locked'}}" data-id="{{item.id}}" bindtap="openCard">
+      <view class="image-shell">
+        <image class="card-image" src="{{item.discovered ? item.imagePath : cardBack}}" mode="aspectFill" />
+        <view wx:if="{{!item.discovered}}" class="lock-mark">?</view>
+      </view>
+      <view class="card-index">{{item.roman}}</view>
+      <view class="card-name">{{item.discovered ? item.name : '尚未揭晓'}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{selected}}" class="detail-mask" bindtap="closeCard">
+    <view class="detail-panel" catchtap="stopPropagation">
+      <button class="close" bindtap="closeCard">×</button>
+      <image class="detail-image" src="{{selected.imagePath}}" mode="aspectFit" />
+      <view class="detail-title">{{selected.roman}} · {{selected.name}}</view>
+      <view class="detail-en">{{selected.englishName}}</view>
+      <view class="detail-meta">翻开 {{selected.revealCount}} 次 · {{selected.orientationProgress}}</view>
+      <view class="detail-section">
+        <view class="detail-label">正位</view>
+        <view class="detail-text">{{selected.upright}}</view>
+      </view>
+      <view class="detail-section">
+        <view class="detail-label">逆位</view>
+        <view class="detail-text">{{selected.reversed}}</view>
+      </view>
+      <view class="detail-section">
+        <view class="detail-label">自我提问</view>
+        <view class="detail-text">{{selected.reflection}}</view>
+      </view>
+    </view>
+  </view>
+</view>

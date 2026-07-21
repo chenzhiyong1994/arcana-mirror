@@ -8,3 +8,5 @@
 .data-panel, .about-panel { margin-top: 48rpx; }
 .data-panel .muted, .about-panel .muted { margin-top: 16rpx; }
 .version { margin-top: 28rpx; color: var(--gold); font-size: 22rpx; letter-spacing: 3rpx; }
+.collection-state { margin-top: 30rpx; color: var(--gold); font-size: 24rpx; }
+.danger-button.compact { margin-top: 14rpx; }

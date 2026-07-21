@@ -13,7 +13,18 @@
     <button class="primary" bindtap="startDaily">{{today ? '再次查看今日牌' : '抽取每日一牌'}}</button>
   </view>
 
-  <button class="secondary" bindtap="startQuestion">带着一个困扰开始</button>
+  <view class="reading-actions">
+    <button class="secondary" bindtap="startSingleQuestion">单牌解读</button>
+    <button class="secondary featured" bindtap="startThreeQuestion">三牌占卜</button>
+  </view>
+
+  <view class="collection-entry" bindtap="openCollection">
+    <view>
+      <view class="section-label">我的图鉴</view>
+      <view class="collection-copy">查看已经翻开的卡牌</view>
+    </view>
+    <view class="collection-progress">{{collectionProgress}} ›</view>
+  </view>
 
   <view class="section-head">
     <view class="section-label">最近历史</view>

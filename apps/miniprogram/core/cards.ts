@@ -25,8 +25,40 @@ export const TAROT_CARDS: TarotCard[] = [
   { id: "major-21", sequence: 21, roman: "XXI", name: "世界", englishName: "The World", keywords: ["完成", "整合", "展开"], upright: "一个阶段正在完成，经验得到整合，也为下一段旅程腾出空间。", reversed: "收尾尚有缺口，先完成关键闭环再急于开启下一阶段。", reflection: "为了真正结束这一阶段，还缺哪一个具体动作？" }
 ];
 
+const CARD_IMAGE_FILES = [
+  "major-00-fool",
+  "major-01-magician",
+  "major-02-high-priestess",
+  "major-03-empress",
+  "major-04-emperor",
+  "major-05-hierophant",
+  "major-06-lovers",
+  "major-07-chariot",
+  "major-08-strength",
+  "major-09-hermit",
+  "major-10-wheel-of-fortune",
+  "major-11-justice",
+  "major-12-hanged-man",
+  "major-13-death",
+  "major-14-temperance",
+  "major-15-devil",
+  "major-16-tower",
+  "major-17-star",
+  "major-18-moon",
+  "major-19-sun",
+  "major-20-judgement",
+  "major-21-world",
+] as const;
+
+export const CARD_BACK_IMAGE_PATH = "/assets/cards/card-back.jpg";
+
 export function getCard(cardId: string): TarotCard {
   const card = TAROT_CARDS.find((item) => item.id === cardId);
   if (!card) throw new Error(`Unknown tarot card: ${cardId}`);
   return card;
+}
+
+export function getCardImagePath(cardId: string): string {
+  const card = getCard(cardId);
+  return `/assets/cards/${CARD_IMAGE_FILES[card.sequence]}.jpg`;
 }

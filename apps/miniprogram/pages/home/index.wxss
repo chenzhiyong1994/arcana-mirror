@@ -1,4 +1,9 @@
 .daily-panel { margin-top: 56rpx; }
+.reading-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 18rpx; }
+.reading-actions .featured { background: rgba(168, 137, 80, 0.14); }
+.collection-entry { display: flex; align-items: center; justify-content: space-between; margin-top: 28rpx; padding: 26rpx 0; border-top: 1rpx solid rgba(168, 137, 80, 0.28); border-bottom: 1rpx solid rgba(168, 137, 80, 0.28); }
+.collection-copy { margin-top: 8rpx; color: var(--paper-dim); font-size: 28rpx; }
+.collection-progress { color: var(--gold); font-size: 28rpx; }
 .section-label { color: var(--gold); font-size: 24rpx; letter-spacing: 4rpx; }
 .daily-title { margin-top: 16rpx; font-size: 36rpx; line-height: 1.4; }
 .section-head { display: flex; align-items: center; justify-content: space-between; margin-top: 56rpx; }

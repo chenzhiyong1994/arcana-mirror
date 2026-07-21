@@ -1,17 +1,19 @@
 import { getCard } from "../../core/cards";
 import { orientationLabel } from "../../core/interpretation";
+import { getReadingSpread } from "../../core/spreads";
 import type { Reading, Topic } from "../../core/types";
 import { readingService } from "../../services/app-services";
 
 const TOPIC_LABELS: Record<Topic, string> = { relationship: "感情", interpersonal: "人际", career: "事业", self: "自我" };
 
 function toItem(reading: Reading) {
-  const card = getCard(reading.cards[0].cardId);
+  const cards = reading.cards.map((drawn) => getCard(drawn.cardId));
+  const isThree = getReadingSpread(reading) === "three";
   return {
     id: reading.id,
-    kind: reading.type === "daily" ? "每日一牌" : TOPIC_LABELS[reading.topic ?? "self"],
+    kind: reading.type === "daily" ? "每日一牌" : `${TOPIC_LABELS[reading.topic ?? "self"]} · ${isThree ? "三牌" : "单牌"}`,
     date: reading.businessDate,
-    card: `${card.name} · ${orientationLabel(reading.cards[0].orientation)}`,
+    card: cards.map((card, index) => `${card.name} · ${orientationLabel(reading.cards[index].orientation)}`).join(" / "),
     source: reading.interpretation?.source === "fallback" ? "降级" : reading.interpretation?.source === "mock" ? "模拟 AI" : "静态牌义",
   };
 }

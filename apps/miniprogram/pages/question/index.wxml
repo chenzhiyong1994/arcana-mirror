@@ -3,6 +3,14 @@
   <view class="title">先把问题说清楚</view>
   <view class="subtitle">关注你能观察和选择的部分，不要求牌面替你预测结果。</view>
 
+  <view class="field-label">牌阵</view>
+  <view class="spread-grid">
+    <view wx:for="{{spreads}}" wx:key="value" class="spread-option {{selectedSpread === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectSpread">
+      <view class="spread-name">{{item.label}}</view>
+      <view class="spread-desc">{{item.description}}</view>
+    </view>
+  </view>
+
   <view class="field-label">主题</view>
   <view class="topic-grid">
     <button wx:for="{{topics}}" wx:key="value" class="topic {{selectedTopic === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectTopic">{{item.label}}</button>
@@ -19,6 +27,6 @@
     <button wx:if="{{canAdoptRewrite}}" class="secondary" bindtap="adoptRewrite">采用改写并继续</button>
   </view>
 
-  <button wx:if="{{!isBlocked}}" class="primary" bindtap="submitQuestion">检查问题并继续</button>
+  <button wx:if="{{!isBlocked}}" class="primary" bindtap="submitQuestion">检查问题并开始{{selectedSpread === 'three' ? '三牌占卜' : '单牌解读'}}</button>
   <view class="privacy-note">主题结果默认不保存。只有你在结果页主动选择后，它才会进入本地历史。</view>
 </view>

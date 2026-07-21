@@ -5,25 +5,26 @@
   </view>
 
   <block wx:else>
-    <view class="eyebrow">DRAW</view>
+    <view class="eyebrow">{{isThree ? 'THREE-CARD SPREAD' : 'DRAW'}}</view>
     <view class="title">停一下，再翻牌</view>
-    <view class="subtitle">结果已经固定。翻牌动作只负责展示，不会改变抽到的牌。</view>
+    <view class="subtitle">牌面已经固定。{{isThree ? '依次翻开现状、关键影响与行动建议。' : '翻牌动作只负责展示，不会改变结果。'}}</view>
 
-    <view class="card-shell {{revealed ? 'revealed' : ''}}" bindtap="reveal">
-      <view wx:if="{{!revealed}}" class="card-back">
-        <view class="back-mark">✦</view>
-        <view class="back-text">轻触翻牌</view>
-      </view>
-      <view wx:else class="card-face">
-        <view class="roman">{{card.roman}}</view>
-        <view class="card-glyph">◐</view>
-        <view class="card-name">{{card.name}}</view>
-        <view class="card-en">{{card.englishName}}</view>
-        <view class="orientation">{{card.orientation}}</view>
+    <view class="card-spread {{isThree ? 'three' : 'single'}}">
+      <view wx:for="{{cards}}" wx:key="cardId" class="ritual-card" data-index="{{index}}" bindtap="revealCard">
+        <view wx:if="{{isThree}}" class="position-label">{{item.positionLabel}}</view>
+        <view class="image-shell {{item.revealed ? 'revealed' : ''}}">
+          <image class="card-image {{item.revealed && item.orientation === 'reversed' ? 'reversed' : ''}}" src="{{item.revealed ? item.imagePath : cardBack}}" mode="aspectFill" />
+          <view wx:if="{{!item.revealed}}" class="tap-hint">轻触翻牌</view>
+        </view>
+        <view wx:if="{{item.revealed}}" class="revealed-meta">
+          <view>{{item.name}}</view>
+          <view class="orientation">{{item.orientationLabel}}</view>
+        </view>
       </view>
     </view>
 
-    <button wx:if="{{!revealed}}" class="secondary" bindtap="reveal">翻开这张牌</button>
-    <button wx:else class="primary" bindtap="continueToResult">查看解读</button>
+    <view class="progress">已翻开 {{revealedCount}} / {{cards.length}}</view>
+    <button wx:if="{{!allRevealed}}" class="secondary" bindtap="revealNext">翻开{{revealedCount ? '下一张' : '第一张'}}</button>
+    <button wx:else class="primary" bindtap="continueToResult">查看完整解读</button>
   </block>
 </view>

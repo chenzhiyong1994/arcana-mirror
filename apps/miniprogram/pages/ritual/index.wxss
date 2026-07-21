@@ -1,11 +1,15 @@
 .ritual-page { text-align: center; }
 .title.small { font-size: 38rpx; }
-.card-shell { width: 430rpx; height: 645rpx; box-sizing: border-box; margin: 52rpx auto 36rpx; border: 2rpx solid var(--gold); background: #171511; box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.45); }
-.card-back, .card-face { display: flex; height: 100%; box-sizing: border-box; align-items: center; justify-content: center; flex-direction: column; border: 12rpx double rgba(168, 137, 80, 0.48); }
-.back-mark { color: var(--gold); font-size: 110rpx; }
-.back-text { margin-top: 38rpx; color: var(--muted); font-size: 24rpx; letter-spacing: 5rpx; }
-.roman { color: var(--gold); font-size: 28rpx; }
-.card-glyph { margin: 78rpx 0; color: var(--paper-dim); font-size: 150rpx; }
-.card-name { font-size: 52rpx; }
-.card-en { margin-top: 12rpx; color: var(--muted); font-size: 24rpx; letter-spacing: 2rpx; }
-.orientation { margin-top: 26rpx; color: var(--gold); font-size: 26rpx; }
+.card-spread { display: flex; align-items: flex-start; justify-content: center; margin: 46rpx auto 30rpx; }
+.card-spread.single .ritual-card { width: 430rpx; }
+.card-spread.three { gap: 14rpx; }
+.card-spread.three .ritual-card { width: 210rpx; }
+.position-label { min-height: 34rpx; margin-bottom: 14rpx; color: var(--gold); font-size: 22rpx; }
+.image-shell { position: relative; width: 100%; overflow: hidden; border: 2rpx solid rgba(168, 137, 80, 0.7); background: #171511; box-shadow: 0 16rpx 40rpx rgba(0, 0, 0, 0.38); aspect-ratio: 2 / 3; }
+.card-image { width: 100%; height: 100%; }
+.card-image.reversed { transform: rotate(180deg); }
+.tap-hint { position: absolute; right: 0; bottom: 24rpx; left: 0; color: var(--paper-dim); font-size: 20rpx; letter-spacing: 3rpx; text-shadow: 0 2rpx 8rpx #000; }
+.revealed-meta { margin-top: 14rpx; color: var(--paper); font-size: 24rpx; line-height: 1.35; }
+.card-spread.single .revealed-meta { font-size: 32rpx; }
+.orientation { margin-top: 6rpx; color: var(--gold); font-size: 21rpx; }
+.progress { color: var(--muted); font-size: 23rpx; }

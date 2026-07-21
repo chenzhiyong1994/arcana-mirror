@@ -1,5 +1,5 @@
 import { classifyQuestion } from "../../core/safety";
-import type { SafetyDecision, Topic } from "../../core/types";
+import type { SafetyDecision, SpreadType, Topic } from "../../core/types";
 import { readingService } from "../../services/app-services";
 
 const TOPICS: { value: Topic; label: string }[] = [
@@ -9,15 +9,30 @@ const TOPICS: { value: Topic; label: string }[] = [
   { value: "self", label: "自我" },
 ];
 
+const SPREADS: { value: SpreadType; label: string; description: string }[] = [
+  { value: "single", label: "单牌", description: "聚焦一个核心观察角度" },
+  { value: "three", label: "三牌", description: "现状 · 关键影响 · 行动建议" },
+];
+
 Page({
   data: {
     topics: TOPICS,
+    spreads: SPREADS,
+    selectedSpread: "single" as SpreadType,
     selectedTopic: "self" as Topic,
     question: "",
     count: 0,
     decision: null as SafetyDecision | null,
     canAdoptRewrite: false,
     isBlocked: false,
+  },
+
+  onLoad(options: Record<string, string>) {
+    this.setData({ selectedSpread: options.spread === "three" ? "three" : "single" });
+  },
+
+  selectSpread(event: WechatMiniprogram.TouchEvent) {
+    this.setData({ selectedSpread: event.currentTarget.dataset.value as SpreadType });
   },
 
   selectTopic(event: WechatMiniprogram.TouchEvent) {
@@ -51,7 +66,7 @@ Page({
 
   continueWithQuestion(question: string) {
     try {
-      const reading = readingService.startQuestion(this.data.selectedTopic, question);
+      const reading = readingService.startQuestion(this.data.selectedTopic, question, this.data.selectedSpread);
       wx.navigateTo({ url: `/pages/ritual/index?id=${reading.id}` });
     } catch {
       wx.showToast({ title: "无法开始解读", icon: "none" });

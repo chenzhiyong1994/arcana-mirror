@@ -13,14 +13,16 @@
 
   <block wx:elif="{{view}}">
     <view class="eyebrow">{{view.topic}} · {{view.date}}</view>
-    <view class="title">{{view.card.name}} · {{view.card.orientation}}</view>
+    <view class="title">{{view.title}}</view>
     <view class="source {{view.isFallback ? 'fallback' : ''}}">{{view.sourceLabel}}</view>
     <view wx:if="{{view.isFallback}}" class="reason">原因：{{view.reasonCode}}</view>
 
-    <view class="mini-card">
-      <view class="mini-roman">{{view.card.roman}}</view>
-      <view class="mini-symbol">◐</view>
-      <view class="mini-name">{{view.card.englishName}}</view>
+    <view class="result-spread {{view.isThree ? 'three' : 'single'}}">
+      <view wx:for="{{view.cards}}" wx:key="cardId" class="visual-card">
+        <view wx:if="{{view.isThree}}" class="position-label">{{item.positionLabel}}</view>
+        <image class="card-image {{item.orientation === 'reversed' ? 'reversed' : ''}}" src="{{item.imagePath}}" mode="aspectFill" />
+        <view class="visual-name">{{item.name}} · {{item.orientationLabel}}</view>
+      </view>
     </view>
 
     <view wx:if="{{view.question}}" class="panel question-panel">
@@ -29,14 +31,50 @@
     </view>
 
     <view class="content-block">
-      <view class="content-label">观察摘要</view>
+      <view class="content-label">整体观察</view>
       <view class="content-text">{{view.content.summary}}</view>
     </view>
 
-    <view class="content-block">
-      <view class="content-label">牌义依据</view>
-      <view class="content-text">{{view.content.cards[0].basis}}</view>
-      <view class="content-text secondary-text">{{view.content.cards[0].contextualMeaning}}</view>
+    <view class="content-block synthesis">
+      <view class="content-label">{{view.isThree ? '三牌联系' : '综合提示'}}</view>
+      <view class="content-text">{{view.content.synthesis}}</view>
+    </view>
+
+    <view wx:for="{{view.cards}}" wx:key="cardId" class="card-reading">
+      <view class="card-reading-head">
+        <view>
+          <view class="position-label">{{item.positionLabel}}</view>
+          <view class="card-reading-title">{{item.roman}} · {{item.name}} · {{item.orientationLabel}}</view>
+        </view>
+        <view class="keywords">
+          <text wx:for="{{item.keywords}}" wx:key="*this" class="tag">{{item}}</text>
+        </view>
+      </view>
+
+      <view class="content-block compact">
+        <view class="content-label">{{item.orientationLabel}}解读</view>
+        <view class="content-text">{{item.basis}}</view>
+        <view class="content-text secondary-text">{{item.contextualMeaning}}</view>
+      </view>
+
+      <view class="dimension-grid">
+        <view class="dimension-item">
+          <view class="dimension-title">爱情</view>
+          <view class="dimension-text">{{item.loveInsight}}</view>
+        </view>
+        <view class="dimension-item">
+          <view class="dimension-title">财运</view>
+          <view class="dimension-text">{{item.wealthInsight}}</view>
+        </view>
+        <view class="dimension-item">
+          <view class="dimension-title">事业</view>
+          <view class="dimension-text">{{item.careerInsight}}</view>
+        </view>
+        <view class="dimension-item">
+          <view class="dimension-title">自我成长</view>
+          <view class="dimension-text">{{item.selfGrowthInsight}}</view>
+        </view>
+      </view>
     </view>
 
     <view class="content-block emphasis">
