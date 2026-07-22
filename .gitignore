@@ -11,3 +11,4 @@ workspace/
 tmp/
 *.log
 project.private.config.json
+output.zip

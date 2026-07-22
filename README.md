@@ -21,7 +21,7 @@
 
 ![A 仪式典藏正反面样稿](assets/tarot-card-style/concepts/style-concept-a-ritual-archive-v1.png)
 
-本轮全套卡牌使用 A“仪式典藏”：黑灰手工版画、纤维纸与不均匀旧金箔。22 张牌与统一卡背已完成生成、语义及技术验收，并以 320×480 的移动端版本接入抽牌、结果和图鉴页面；逆位由前端旋转同一资产。完整生成合同见 [A 风格全套卡牌生成包](deliverables/style-a-deck-generation-kit/README.md)。
+本轮全套卡牌使用 A“仪式典藏”：黑灰手工版画、纤维纸与不均匀旧金箔。22 张牌与统一卡背已完成生成、语义及技术验收，并从 1024×1536 正式原图确定性生成 640×960 高清移动端版本，接入抽牌、结果、鉴赏大图和图鉴页面；逆位由前端旋转同一资产。完整生成合同见 [A 风格全套卡牌生成包](deliverables/style-a-deck-generation-kit/README.md)。
 
 ## 文档
 
