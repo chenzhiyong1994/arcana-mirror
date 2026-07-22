@@ -40,7 +40,7 @@
     <view class="about-copy">
       <view class="section-title">阿卡纳心镜</view>
       <view class="muted">娱乐性自我探索，不预测确定未来，也不替代心理、医疗、法律或金融专业意见。</view>
-      <view class="version">LOCAL PREVIEW · 0.3.2</view>
+      <view class="version">LOCAL PREVIEW · 0.3.3</view>
     </view>
   </view>
 </view>

@@ -10,6 +10,7 @@ Page({
     percent: 0,
     cardBack: CARD_BACK_IMAGE_PATH,
     selected: null as CatalogCard | null,
+    previewVisible: false,
   },
 
   onShow() {
@@ -37,7 +38,17 @@ Page({
   },
 
   closeCard() {
-    this.setData({ selected: null });
+    this.setData({ selected: null, previewVisible: false });
+  },
+
+  openCardPreview() {
+    if (!this.data.selected) return;
+    wx.vibrateShort({ type: "light" });
+    this.setData({ previewVisible: true });
+  },
+
+  closeCardPreview() {
+    this.setData({ previewVisible: false });
   },
 
   stopPropagation() {},

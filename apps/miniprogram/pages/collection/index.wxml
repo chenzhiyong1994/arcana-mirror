@@ -35,10 +35,13 @@
   <view wx:if="{{selected}}" class="detail-mask" bindtap="closeCard">
     <view class="detail-panel" catchtap="stopPropagation">
       <view class="sheet-handle"></view>
-      <button class="close" bindtap="closeCard">×</button>
+      <view class="close" bindtap="closeCard" aria-role="button" aria-label="关闭卡牌详情">×</view>
       <view class="detail-hero">
         <view class="detail-halo"></view>
-        <image class="detail-image" src="{{selected.imagePath}}" mode="aspectFit" />
+        <view class="detail-image-wrap" bindtap="openCardPreview" aria-role="button" aria-label="查看{{selected.name}}大图">
+          <image class="detail-image" src="{{selected.imagePath}}" mode="aspectFit" />
+          <view class="detail-zoom-cue"><text>⌕</text> 查看大图</view>
+        </view>
       </view>
       <view class="detail-index">{{selected.roman}}</view>
       <view class="detail-title">{{selected.name}}</view>
@@ -59,4 +62,6 @@
       </view>
     </view>
   </view>
+
+  <card-preview wx:if="{{selected}}" visible="{{previewVisible}}" image-path="{{selected.imagePath}}" roman="{{selected.roman}}" name="{{selected.name}}" english-name="{{selected.englishName}}" orientation="upright" orientation-label="正向牌面" bind:close="closeCardPreview" />
 </view>
