@@ -36,6 +36,7 @@
 .revealed-name { margin-top: 5rpx; font-size: 27rpx; }
 .card-spread.single .revealed-name { font-size: 34rpx; }
 .orientation { margin-top: 6rpx; color: var(--muted); font-size: 20rpx; }
+.preview-hint { margin-top: 8rpx; color: rgba(184,150,87,.58); font-size: 16rpx; letter-spacing: 1rpx; }
 .ritual-progress { margin-top: 8rpx; }
 .progress-pips { display: flex; justify-content: center; gap: 10rpx; }
 .progress-pip { width: 32rpx; height: 3rpx; background: rgba(184,150,87,0.2); transition: width 320ms ease, background 320ms ease; }

@@ -74,6 +74,8 @@ Page({
     activeCardIndex: 0,
     activeCard: null as ReturnType<typeof toView>["cards"][number] | null,
     detailsExpanded: false,
+    previewCard: null as ReturnType<typeof toView>["cards"][number] | null,
+    previewVisible: false,
     view: null as ReturnType<typeof toView> | null,
   },
 
@@ -106,12 +108,20 @@ Page({
     this.setData({ questionExpanded: !this.data.questionExpanded });
   },
 
-  selectCard(event: WechatMiniprogram.TouchEvent) {
+  handleCardTap(event: WechatMiniprogram.TouchEvent) {
     const activeCardIndex = Number(event.currentTarget.dataset.index);
     const activeCard = this.data.view?.cards[activeCardIndex];
     if (!activeCard) return;
     wx.vibrateShort({ type: "light" });
+    if (activeCardIndex === this.data.activeCardIndex) {
+      this.setData({ previewCard: activeCard, previewVisible: true });
+      return;
+    }
     this.setData({ activeCardIndex, activeCard, detailsExpanded: false });
+  },
+
+  closeCardPreview() {
+    this.setData({ previewVisible: false });
   },
 
   toggleDetails() {

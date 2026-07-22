@@ -19,9 +19,9 @@
     </view>
 
     <view class="card-spread {{isThree ? 'three' : 'single'}}">
-      <view wx:for="{{cards}}" wx:key="cardId" class="ritual-card enter-up delay-{{index + 1}}" data-index="{{index}}" bindtap="revealCard">
+      <view wx:for="{{cards}}" wx:key="cardId" class="ritual-card enter-up delay-{{index + 1}}">
         <view wx:if="{{isThree}}" class="position-label"><text>0{{index + 1}}</text>{{item.positionLabel}}</view>
-        <view class="image-shell {{item.revealed ? 'revealed' : ''}}">
+        <view class="image-shell {{item.revealed ? 'revealed' : ''}}" data-index="{{index}}" bindtap="handleCardTap" aria-role="button" aria-label="{{item.revealed ? '查看' + item.name + '大图' : '翻开第' + (index + 1) + '张牌'}}">
           <view class="card-flipper">
             <view class="card-face card-back-face">
               <image class="card-image" src="{{cardBack}}" mode="aspectFill" />
@@ -39,6 +39,7 @@
           <view class="roman">{{item.roman}}</view>
           <view class="revealed-name">{{item.name}}</view>
           <view class="orientation">{{item.orientationLabel}}</view>
+          <view class="preview-hint">{{item.revealed ? '轻触牌面 · 查看大图' : ''}}</view>
         </view>
       </view>
     </view>
@@ -54,4 +55,6 @@
     <button wx:else class="primary reveal-next ready" bindtap="continueToResult">进入解读 <text>→</text></button>
     <view class="ritual-foot">牌面用于自我反思，不代替现实证据与专业建议。</view>
   </block>
+
+  <card-preview wx:if="{{previewCard}}" visible="{{previewVisible}}" image-path="{{previewCard.imagePath}}" roman="{{previewCard.roman}}" name="{{previewCard.name}}" english-name="{{previewCard.englishName}}" orientation="{{previewCard.orientation}}" orientation-label="{{previewCard.orientationLabel}}" position-label="{{isThree ? previewCard.positionLabel : ''}}" bind:close="closeCardPreview" />
 </view>

@@ -1,0 +1,37 @@
+<view wx:if="{{visible}}" class="preview-layer" catchtap="closePreview" catchtouchmove="holdPreview" aria-role="dialog" aria-label="{{name}}卡牌大图">
+  <view class="preview-veil"></view>
+  <view class="preview-halo"></view>
+  <view class="preview-orbit orbit-outer"></view>
+  <view class="preview-orbit orbit-inner"></view>
+
+  <view class="preview-close" catchtap="closePreview" aria-role="button" aria-label="关闭卡牌大图">
+    <view class="close-line line-one"></view>
+    <view class="close-line line-two"></view>
+  </view>
+
+  <view class="preview-stage" catchtap="holdPreview">
+    <view class="preview-kicker">ARCANA IN FULL</view>
+    <view class="preview-frame">
+      <view class="frame-line frame-line-outer"></view>
+      <view class="frame-line frame-line-inner"></view>
+      <view class="frame-corner corner-tl">⌜</view>
+      <view class="frame-corner corner-tr">⌝</view>
+      <view class="frame-corner corner-bl">⌞</view>
+      <view class="frame-corner corner-br">⌟</view>
+      <image class="preview-image {{orientation === 'reversed' ? 'reversed' : ''}}" src="{{imagePath}}" mode="widthFix" />
+      <view class="preview-vignette"></view>
+      <view class="preview-sheen"></view>
+    </view>
+
+    <view class="preview-caption">
+      <view class="preview-roman">{{roman}}</view>
+      <view class="preview-name">{{name}}</view>
+      <view class="preview-english">{{englishName}}</view>
+      <view class="preview-meta">
+        <text wx:if="{{positionLabel}}" class="meta-position">{{positionLabel}}</text>
+        <text class="meta-orientation">{{orientationLabel}}</text>
+      </view>
+    </view>
+    <view class="preview-dismiss">轻触暗处返回</view>
+  </view>
+</view>

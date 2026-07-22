@@ -24,7 +24,7 @@
     </view>
 
     <view class="result-spread {{view.isThree ? 'three' : 'single'}} enter-up delay-1">
-      <view wx:for="{{view.cards}}" wx:key="cardId" class="visual-card {{activeCardIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="selectCard">
+      <view wx:for="{{view.cards}}" wx:key="cardId" class="visual-card {{activeCardIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="handleCardTap" aria-role="button" aria-label="{{activeCardIndex === index ? '查看' + item.name + '大图' : '切换到' + item.name + '解读'}}">
         <view wx:if="{{view.isThree}}" class="position-label"><text>0{{index + 1}}</text>{{item.positionLabel}}</view>
         <view class="visual-image-shell">
           <image class="card-image {{item.orientation === 'reversed' ? 'reversed' : ''}}" src="{{item.imagePath}}" mode="aspectFill" />
@@ -34,6 +34,7 @@
         <view class="visual-orientation">{{item.orientationLabel}}</view>
       </view>
     </view>
+    <view class="spread-preview-hint"><text>⌕</text> {{view.isThree ? '轻触当前牌查看大图 · 轻触其他牌切换解读' : '轻触牌面查看大图'}}</view>
 
     <view wx:if="{{view.question}}" class="question-line enter-up delay-2" bindtap="toggleQuestion">
       <view class="question-label">你的问题</view>
@@ -113,4 +114,6 @@
       <button class="secondary" bindtap="finish">{{!view.isDaily && !view.saved ? '不保存，回到首页' : '完成'}}</button>
     </view>
   </block>
+
+  <card-preview wx:if="{{previewCard}}" visible="{{previewVisible}}" image-path="{{previewCard.imagePath}}" roman="{{previewCard.roman}}" name="{{previewCard.name}}" english-name="{{previewCard.englishName}}" orientation="{{previewCard.orientation}}" orientation-label="{{previewCard.orientationLabel}}" position-label="{{view.isThree ? previewCard.positionLabel : ''}}" bind:close="closeCardPreview" />
 </view>

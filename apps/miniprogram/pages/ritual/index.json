@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "抽牌" }
+{
+  "navigationBarTitleText": "抽牌",
+  "usingComponents": {
+    "card-preview": "/components/card-preview/index"
+  }
+}

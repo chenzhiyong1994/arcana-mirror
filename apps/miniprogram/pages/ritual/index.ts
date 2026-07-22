@@ -25,6 +25,8 @@ Page({
     cardBack: CARD_BACK_IMAGE_PATH,
     revealedCount: 0,
     allRevealed: false,
+    previewCard: null as RitualCardView | null,
+    previewVisible: false,
   },
 
   onLoad(options: Record<string, string>) {
@@ -51,8 +53,16 @@ Page({
     this.setData({ id, cards, isThree: getReadingSpread(reading) === "three" });
   },
 
-  revealCard(event: WechatMiniprogram.TouchEvent) {
-    this.revealAt(Number(event.currentTarget.dataset.index));
+  handleCardTap(event: WechatMiniprogram.TouchEvent) {
+    const index = Number(event.currentTarget.dataset.index);
+    const card = this.data.cards[index];
+    if (!card) return;
+    if (!card.revealed) {
+      this.revealAt(index);
+      return;
+    }
+    wx.vibrateShort({ type: "light" });
+    this.setData({ previewCard: card, previewVisible: true });
   },
 
   revealNext() {
@@ -75,6 +85,10 @@ Page({
       wx.vibrateShort({ type: "light" });
       wx.redirectTo({ url: `/pages/result/index?id=${this.data.id}` });
     }
+  },
+
+  closeCardPreview() {
+    this.setData({ previewVisible: false });
   },
 
   returnHome() {
