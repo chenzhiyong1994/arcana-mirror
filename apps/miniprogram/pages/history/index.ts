@@ -1,4 +1,4 @@
-import { getCard } from "../../core/cards";
+import { getCard, getCardImagePath } from "../../core/cards";
 import { orientationLabel } from "../../core/interpretation";
 import { getReadingSpread } from "../../core/spreads";
 import type { Reading, Topic } from "../../core/types";
@@ -15,6 +15,8 @@ function toItem(reading: Reading) {
     date: reading.businessDate,
     card: cards.map((card, index) => `${card.name} · ${orientationLabel(reading.cards[index].orientation)}`).join(" / "),
     source: reading.interpretation?.source === "fallback" ? "降级" : reading.interpretation?.source === "mock" ? "模拟 AI" : "静态牌义",
+    imagePath: getCardImagePath(reading.cards[0].cardId),
+    reversed: reading.cards[0].orientation === "reversed",
   };
 }
 

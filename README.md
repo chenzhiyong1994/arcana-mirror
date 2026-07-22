@@ -8,10 +8,10 @@
 
 ## 当前状态
 
-- 阶段：v0.2 三牌、丰富解读、图鉴与正式卡面代码已完成，等待微信开发者工具交互验收
+- 阶段：v0.3 高保真本地体验已完成，七个页面已在微信开发者工具中完成真实渲染复验
 - 工程：微信原生小程序 TypeScript + 本地 Repository + 模拟 AI Provider；CloudBase 与真实 AI 后置
 - MVP：每日一牌、主题单牌与“现状—关键影响—行动建议”三牌模式、安全阻断与降级、可选本地历史
-- 解读：逐牌提供正逆位、爱情、财运、事业、自我成长和综合提示，不作确定性预测
+- 解读：按用户选择的主题提供聚焦解读；总览、逐牌切换、可展开牌义、综合提示、反思与行动按接收顺序渐进呈现
 - 图鉴：22 张大阿卡纳按实际翻牌解锁，记录正逆位与翻开次数，独立于历史管理
 - 视觉：A“仪式典藏”22 张正式卡牌与统一卡背已经接入小程序移动端资源；Logo 已选定 L5“繁饰日蚀心镜”
 - 首版预算：64—80 小时，80 小时硬上限
@@ -33,8 +33,9 @@
 7. [PRD 自检报告](docs/product/06-prd-review.md)
 8. [长程开发执行基线](docs/product/07-execution-baseline.md)
 9. [v0.2 三牌与图鉴扩展 PRD](docs/product/08-v0.2-three-card-and-collection.md)
-10. [卡片风格基准](assets/tarot-card-style/README.md)
-11. [A 风格全套卡牌生成交接包](deliverables/style-a-deck-generation-kit/README.md)
+10. [v0.3 高保真体验与解读减负](docs/product/09-v0.3-high-fidelity-experience.md)
+11. [卡片风格基准](assets/tarot-card-style/README.md)
+12. [A 风格全套卡牌生成交接包](deliverables/style-a-deck-generation-kit/README.md)
 
 ## 仓库结构
 

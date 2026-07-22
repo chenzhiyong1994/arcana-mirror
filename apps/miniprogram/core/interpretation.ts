@@ -6,6 +6,7 @@ import type {
   Orientation,
   Reading,
   TarotCard,
+  Topic,
 } from "./types";
 
 export const FIXED_DISCLAIMER = "本内容由本地模拟数据生成，仅供娱乐和自我反思；爱情、财运与事业内容不构成确定性预测或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
@@ -16,12 +17,10 @@ const cardInsightProperties = {
   orientation: { type: "string", enum: ["upright", "reversed"] },
   position: { type: "string", enum: ["focus", "situation", "influence", "action"] },
   positionLabel: { type: "string", minLength: 1, maxLength: 20 },
-  basis: { type: "string", minLength: 1, maxLength: 320 },
-  contextualMeaning: { type: "string", minLength: 1, maxLength: 420 },
-  loveInsight: { type: "string", minLength: 1, maxLength: 320 },
-  wealthInsight: { type: "string", minLength: 1, maxLength: 320 },
-  careerInsight: { type: "string", minLength: 1, maxLength: 320 },
-  selfGrowthInsight: { type: "string", minLength: 1, maxLength: 320 },
+  basis: { type: "string", minLength: 1, maxLength: 220 },
+  contextualMeaning: { type: "string", minLength: 1, maxLength: 280 },
+  topicLabel: { type: "string", minLength: 1, maxLength: 12 },
+  topicInsight: { type: "string", minLength: 1, maxLength: 240 },
 } as const;
 
 export const interpretationJsonSchema = {
@@ -29,7 +28,7 @@ export const interpretationJsonSchema = {
   required: ["summary", "cards", "synthesis", "reflectionQuestion", "microAction", "disclaimer"],
   additionalProperties: false,
   properties: {
-    summary: { type: "string", minLength: 20, maxLength: 480 },
+    summary: { type: "string", minLength: 20, maxLength: 260 },
     cards: {
       type: "array",
       minItems: 1,
@@ -44,18 +43,16 @@ export const interpretationJsonSchema = {
           "positionLabel",
           "basis",
           "contextualMeaning",
-          "loveInsight",
-          "wealthInsight",
-          "careerInsight",
-          "selfGrowthInsight",
+          "topicLabel",
+          "topicInsight",
         ],
         additionalProperties: false,
         properties: cardInsightProperties,
       },
     },
-    synthesis: { type: "string", minLength: 20, maxLength: 480 },
-    reflectionQuestion: { type: "string", minLength: 1, maxLength: 200 },
-    microAction: { type: "string", minLength: 1, maxLength: 200 },
+    synthesis: { type: "string", minLength: 20, maxLength: 320 },
+    reflectionQuestion: { type: "string", minLength: 1, maxLength: 120 },
+    microAction: { type: "string", minLength: 1, maxLength: 120 },
     disclaimer: { type: "string", const: FIXED_DISCLAIMER },
   },
 } as const;
@@ -67,12 +64,10 @@ function isStringInRange(value: unknown, min: number, max: number): value is str
 function isValidCardContent(card: InterpretationCard): boolean {
   return isStringInRange(card.cardName, 1, 40)
     && isStringInRange(card.positionLabel, 1, 20)
-    && isStringInRange(card.basis, 1, 320)
-    && isStringInRange(card.contextualMeaning, 1, 420)
-    && isStringInRange(card.loveInsight, 1, 320)
-    && isStringInRange(card.wealthInsight, 1, 320)
-    && isStringInRange(card.careerInsight, 1, 320)
-    && isStringInRange(card.selfGrowthInsight, 1, 320);
+    && isStringInRange(card.basis, 1, 220)
+    && isStringInRange(card.contextualMeaning, 1, 280)
+    && isStringInRange(card.topicLabel, 1, 12)
+    && isStringInRange(card.topicInsight, 1, 240);
 }
 
 export function validateInterpretation(
@@ -81,7 +76,7 @@ export function validateInterpretation(
 ): { valid: true; content: InterpretationContent } | { valid: false; reasonCode: string } {
   if (!value || typeof value !== "object") return { valid: false, reasonCode: "INVALID_OBJECT" };
   const candidate = value as Partial<InterpretationContent>;
-  if (!isStringInRange(candidate.summary, 20, 480)) return { valid: false, reasonCode: "INVALID_SUMMARY" };
+  if (!isStringInRange(candidate.summary, 20, 260)) return { valid: false, reasonCode: "INVALID_SUMMARY" };
   if (!Array.isArray(candidate.cards) || candidate.cards.length !== reading.cards.length) {
     return { valid: false, reasonCode: "CARD_COUNT_MISMATCH" };
   }
@@ -99,10 +94,13 @@ export function validateInterpretation(
       return { valid: false, reasonCode: "CARD_FACT_MISMATCH" };
     }
     if (!isValidCardContent(outputCard)) return { valid: false, reasonCode: "INVALID_CARD_CONTENT" };
+    if (outputCard.topicLabel !== topicLabels[reading.topic ?? "self"]) {
+      return { valid: false, reasonCode: "TOPIC_MISMATCH" };
+    }
   }
-  if (!isStringInRange(candidate.synthesis, 20, 480)) return { valid: false, reasonCode: "INVALID_SYNTHESIS" };
-  if (!isStringInRange(candidate.reflectionQuestion, 1, 200)) return { valid: false, reasonCode: "INVALID_REFLECTION" };
-  if (!isStringInRange(candidate.microAction, 1, 200)) return { valid: false, reasonCode: "INVALID_ACTION" };
+  if (!isStringInRange(candidate.synthesis, 20, 320)) return { valid: false, reasonCode: "INVALID_SYNTHESIS" };
+  if (!isStringInRange(candidate.reflectionQuestion, 1, 120)) return { valid: false, reasonCode: "INVALID_REFLECTION" };
+  if (!isStringInRange(candidate.microAction, 1, 120)) return { valid: false, reasonCode: "INVALID_ACTION" };
   if (candidate.disclaimer !== FIXED_DISCLAIMER) return { valid: false, reasonCode: "INVALID_DISCLAIMER" };
   const serialized = JSON.stringify(candidate);
   if (/(百分百|命中注定|必须分手|一定会复合|停止治疗|稳赚|保证盈利|必定发财)/u.test(serialized)) {
@@ -111,16 +109,26 @@ export function validateInterpretation(
   return { valid: true, content: candidate as InterpretationContent };
 }
 
-export function buildDimensionInsights(card: TarotCard, orientation: Orientation) {
-  const orientationWord = orientationLabel(orientation);
-  const basis = orientation === "upright" ? card.upright : card.reversed;
+const topicLabels: Record<Topic, string> = {
+  relationship: "感情",
+  interpersonal: "人际",
+  career: "事业",
+  self: "自我",
+};
+
+export function buildTopicInsight(card: TarotCard, orientation: Orientation, topic: Topic = "self") {
   const domain = getCardDomainInsights(card.id);
+  const topicInsight = topic === "relationship"
+    ? domain.love
+    : topic === "career"
+      ? domain.career
+      : topic === "interpersonal"
+        ? `${domain.love}把重点放在沟通、边界和可核实的互动，而不是替对方下结论。`
+        : domain.selfGrowth;
   return {
-    basis,
-    loveInsight: `爱情观察：${domain.love}${orientationWord}进一步提醒：${basis}`,
-    wealthInsight: `财运观察：${domain.wealth}这不是涨跌或收益预测；${orientationWord}进一步提醒：${basis}`,
-    careerInsight: `事业观察：${domain.career}${orientationWord}进一步提醒：${basis}`,
-    selfGrowthInsight: `自我成长：${domain.selfGrowth}${orientationWord}进一步提醒：${basis}`,
+    topicLabel: topicLabels[topic],
+    topicInsight,
+    basis: orientation === "upright" ? card.upright : card.reversed,
   };
 }
 
@@ -132,7 +140,7 @@ export function buildInterpretationCard(
 ): InterpretationCard {
   const drawn = reading.cards[index];
   const position = getReadingPosition(reading, index);
-  const insights = buildDimensionInsights(card, drawn.orientation);
+  const insights = buildTopicInsight(card, drawn.orientation, reading.topic ?? "self");
   return {
     cardId: card.id,
     cardName: card.name,
@@ -141,18 +149,16 @@ export function buildInterpretationCard(
     positionLabel: position.label,
     basis: insights.basis,
     contextualMeaning: contextualMeaning ?? `${position.label}位置的${card.name}提醒你：先从${position.description}入手，把牌义与已经发生的事实对照，而不是急着把它变成结论。`,
-    loveInsight: insights.loveInsight,
-    wealthInsight: insights.wealthInsight,
-    careerInsight: insights.careerInsight,
-    selfGrowthInsight: insights.selfGrowthInsight,
+    topicLabel: insights.topicLabel,
+    topicInsight: insights.topicInsight,
   };
 }
 
 export function buildSynthesis(reading: Reading, cards: TarotCard[]): string {
   if (getReadingSpread(reading) === "three") {
-    return `把三张牌连起来看：${cards[0].name}描述现状，${cards[1].name}提示关键影响，${cards[2].name}把注意力带回可执行的行动。三者共同强调先核对事实，再调整节奏，最后选择一个你能够承担的小步骤。`;
+    return `${cards[0].name}呈现眼前局面，${cards[1].name}指出真正牵动它的力量，${cards[2].name}把答案落到下一步。先看清，再选择，不必一次解决全部。`;
   }
-  return `${cards[0].name}提供的是一个观察角度：把牌义放回真实处境，分别检查感情、财务、事业与内在需要，再决定哪一项最值得先行动。`;
+  return `${cards[0].name}提供的是一个观察角度。把它放回真实处境，留下最贴近事实的一句，再决定下一步。`;
 }
 
 export function buildFallbackInterpretation(reading: Reading, cards: TarotCard[], _reasonCode: string): InterpretationContent {
@@ -169,7 +175,7 @@ export function buildFallbackInterpretation(reading: Reading, cards: TarotCard[]
     reflectionQuestion: getReadingSpread(reading) === "three"
       ? "现状、关键影响和行动建议之间，哪一处最贴近你已经确认的事实？"
       : cards[0].reflection,
-    microAction: "在 24 小时内写下一个已知事实、一个仍需确认的信息，以及一个不依赖他人配合的小动作。",
+    microAction: "写下一条已知事实，再完成一个不依赖他人配合的小动作。",
     disclaimer: FIXED_DISCLAIMER,
   };
 }
@@ -185,9 +191,9 @@ export function buildStaticDailyInterpretation(reading: Reading, card: TarotCard
       0,
       "把它当作今天值得留意的一个角度，而不是对未来的判断。观察它和当下事实在哪里相遇。",
     )],
-    synthesis: `${card.name}今天更像一面镜子。你可以从感情、财务、事业和自我照顾四个方向中，只选择最贴近现实的一项来观察。`,
+    synthesis: `${card.name}今天更像一面镜子。只留下最贴近现实的一句，不必把所有含义都带走。`,
     reflectionQuestion: card.reflection,
-    microAction: "今天找一个安静的三分钟，记录你对这张牌的第一反应，再写下一条可以核实的事实。",
+    microAction: "留出三分钟，写下第一反应和一条可以核实的事实。",
     disclaimer: FIXED_DISCLAIMER,
   };
 }

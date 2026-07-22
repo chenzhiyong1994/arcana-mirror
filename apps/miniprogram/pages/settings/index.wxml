@@ -1,29 +1,46 @@
-<view class="page">
-  <view class="eyebrow">DEVELOPMENT SETTINGS</view>
-  <view class="title">本地测试设置</view>
-  <view class="subtitle">这些选项只用于验证成功和失败链路，不会调用真实模型。</view>
+<view class="page settings-page">
+  <view class="enter-up">
+    <view class="eyebrow">LOCAL LAB</view>
+    <view class="title">体验设置</view>
+    <view class="subtitle">切换模拟状态，检查正常解读和安全降级；这里不会调用真实模型。</view>
+  </view>
 
-  <view class="mode-list">
-    <view wx:for="{{modes}}" wx:key="value" class="mode {{selectedMode === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectMode">
-      <view class="mode-head">
-        <view>{{item.label}}</view>
-        <view class="indicator">{{selectedMode === item.value ? '●' : '○'}}</view>
+  <view class="settings-section enter-up delay-1">
+    <view class="section-kicker">SIMULATION MODE</view>
+    <view class="section-title">解读响应</view>
+    <view class="mode-list">
+      <view wx:for="{{modes}}" wx:key="value" class="mode {{selectedMode === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectMode">
+        <view class="mode-index">0{{index + 1}}</view>
+        <view class="mode-copy">
+          <view class="mode-name">{{item.label}}</view>
+          <view class="mode-desc">{{item.description}}</view>
+        </view>
+        <view class="indicator"><view></view></view>
       </view>
-      <view class="mode-desc">{{item.description}}</view>
     </view>
   </view>
 
-  <view class="panel data-panel">
+  <view class="data-panel enter-up delay-2">
+    <view class="panel-icon">◇</view>
+    <view class="section-kicker">PRIVATE BY DEFAULT</view>
     <view class="section-title">本地数据边界</view>
-    <view class="muted">本阶段不使用微信云身份、账号、CloudBase 或真实 AI。历史与图鉴保存在当前设备的小程序存储沙箱，不自动迁移到未来云端。</view>
-    <button class="danger-button" bindtap="clearHistory">清空全部本地历史</button>
-    <view class="collection-state">图鉴进度：{{collectionProgress}}</view>
-    <button class="danger-button compact" bindtap="clearCollection">重置卡牌图鉴</button>
+    <view class="muted">本阶段不使用微信云身份、账号、CloudBase 或真实 AI。历史与图鉴仅保存在当前设备的小程序存储沙箱。</view>
+    <view class="data-row">
+      <view><view class="data-name">解读历史</view><view class="data-note">每日牌与主动保存内容</view></view>
+      <button class="danger-link" bindtap="clearHistory">全部清空</button>
+    </view>
+    <view class="data-row">
+      <view><view class="data-name">卡牌图鉴</view><view class="data-note">当前进度 {{collectionProgress}}</view></view>
+      <button class="danger-link" bindtap="clearCollection">重置图鉴</button>
+    </view>
   </view>
 
-  <view class="panel about-panel">
-    <view class="section-title">关于这次体验</view>
-    <view class="muted">阿卡纳心镜提供娱乐性自我探索，不预测确定未来，也不替代心理、医疗、法律或金融专业意见。</view>
-    <view class="version">Local MVP · 0.2.0</view>
+  <view class="about-panel enter-up delay-3">
+    <image class="about-logo" src="/assets/branding/arcana-mirror-logo.jpg" mode="aspectFill" />
+    <view class="about-copy">
+      <view class="section-title">阿卡纳心镜</view>
+      <view class="muted">娱乐性自我探索，不预测确定未来，也不替代心理、医疗、法律或金融专业意见。</view>
+      <view class="version">LOCAL PREVIEW · 0.3.0</view>
+    </view>
   </view>
 </view>

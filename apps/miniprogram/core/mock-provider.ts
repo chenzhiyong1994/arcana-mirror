@@ -33,14 +33,14 @@ export class MockInterpretationProvider implements InterpretationProvider {
     const cardNames = cards.map((card) => card.name).join("、");
     const output = {
       summary: getReadingSpread(reading) === "three"
-        ? `围绕“${context}”，${cardNames}形成一组从现状、关键影响到行动建议的观察路径。它们不替你预测结果，而是帮助你把复杂问题拆成三个可核对的层次。`
-        : `围绕“${context}”，${cardNames}提示你先区分已经发生的事实、自己的感受，以及仍未得到确认的判断。`,
+        ? `围绕“${context}”，${cardNames}把问题拆成现状、关键影响和下一步。先看清真正的张力，再把注意力带回你能选择的部分。`
+        : `围绕“${context}”，${cardNames}邀请你区分事实、感受和仍待确认的判断。`,
       cards: interpretedCards,
       synthesis: buildSynthesis(reading, cards),
       reflectionQuestion: getReadingSpread(reading) === "three"
         ? "如果只能先改变一个可控因素，哪张牌对应的提示最值得在今天验证？"
         : cards[0].reflection,
-      microAction: "在未来 24 小时内，写下一条确定事实、一项需要确认的信息，并完成一个不依赖他人配合的小动作。",
+      microAction: "写下一条确定事实，并完成一个不依赖他人配合的小动作。",
       disclaimer: FIXED_DISCLAIMER,
     };
 

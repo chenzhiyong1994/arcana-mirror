@@ -1,4 +1,4 @@
-import { getCard } from "../../core/cards";
+import { CARD_BACK_IMAGE_PATH, getCard, getCardImagePath } from "../../core/cards";
 import { orientationLabel } from "../../core/interpretation";
 import { getReadingSpread } from "../../core/spreads";
 import type { Reading } from "../../core/types";
@@ -15,6 +15,8 @@ function toListItem(reading: Reading) {
       : isThree ? cards.map((card) => card.name).join(" · ") : cards[0].name,
     date: reading.businessDate,
     source: reading.interpretation?.source ?? "—",
+    imagePath: getCardImagePath(reading.cards[0].cardId),
+    reversed: reading.cards[0].orientation === "reversed",
   };
 }
 
@@ -23,6 +25,8 @@ Page({
     today: null as ReturnType<typeof toListItem> | null,
     recent: [] as ReturnType<typeof toListItem>[],
     collectionProgress: "0 / 22",
+    logoPath: "/assets/branding/arcana-mirror-logo.jpg",
+    cardBack: CARD_BACK_IMAGE_PATH,
   },
 
   onShow() {

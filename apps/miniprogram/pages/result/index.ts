@@ -1,5 +1,5 @@
 import { getCard, getCardImagePath } from "../../core/cards";
-import { buildDimensionInsights, orientationLabel } from "../../core/interpretation";
+import { buildTopicInsight, orientationLabel } from "../../core/interpretation";
 import { getReadingPosition, getReadingSpread } from "../../core/spreads";
 import type { InterpretationCard, Reading, Topic } from "../../core/types";
 import { getMockMode, readingService } from "../../services/app-services";
@@ -17,7 +17,7 @@ function toView(reading: Reading, fromHistory: boolean) {
   const cards = reading.cards.map((drawn, index) => {
     const card = getCard(drawn.cardId);
     const output = interpretation?.content.cards[index] as Partial<InterpretationCard> | undefined;
-    const fallback = buildDimensionInsights(card, drawn.orientation);
+    const fallback = buildTopicInsight(card, drawn.orientation, reading.topic ?? "self");
     const position = getReadingPosition(reading, index);
     return {
       cardId: card.id,
@@ -31,10 +31,10 @@ function toView(reading: Reading, fromHistory: boolean) {
       keywords: card.keywords,
       basis: output?.basis ?? fallback.basis,
       contextualMeaning: output?.contextualMeaning ?? `${position.label}位置提醒你把牌义与现实事实对照。`,
-      loveInsight: output?.loveInsight ?? fallback.loveInsight,
-      wealthInsight: output?.wealthInsight ?? fallback.wealthInsight,
-      careerInsight: output?.careerInsight ?? fallback.careerInsight,
-      selfGrowthInsight: output?.selfGrowthInsight ?? fallback.selfGrowthInsight,
+      topicLabel: output?.topicLabel ?? fallback.topicLabel,
+      topicInsight: output?.topicInsight
+        ?? (reading.topic === "relationship" ? output?.loveInsight : reading.topic === "career" ? output?.careerInsight : output?.selfGrowthInsight)
+        ?? fallback.topicInsight,
     };
   });
   const content = interpretation?.content;
@@ -71,6 +71,9 @@ Page({
     missing: false,
     fromHistory: false,
     questionExpanded: false,
+    activeCardIndex: 0,
+    activeCard: null as ReturnType<typeof toView>["cards"][number] | null,
+    detailsExpanded: false,
     view: null as ReturnType<typeof toView> | null,
   },
 
@@ -91,7 +94,8 @@ Page({
         return;
       }
     }
-    this.setData({ loading: false, view: toView(reading, fromHistory) });
+    const view = toView(reading, fromHistory);
+    this.setData({ loading: false, view, activeCard: view.cards[0] });
   },
 
   onUnload() {
@@ -102,10 +106,23 @@ Page({
     this.setData({ questionExpanded: !this.data.questionExpanded });
   },
 
+  selectCard(event: WechatMiniprogram.TouchEvent) {
+    const activeCardIndex = Number(event.currentTarget.dataset.index);
+    const activeCard = this.data.view?.cards[activeCardIndex];
+    if (!activeCard) return;
+    wx.vibrateShort({ type: "light" });
+    this.setData({ activeCardIndex, activeCard, detailsExpanded: false });
+  },
+
+  toggleDetails() {
+    this.setData({ detailsExpanded: !this.data.detailsExpanded });
+  },
+
   saveToHistory() {
     try {
       const reading = readingService.saveQuestionToHistory(this.data.id);
-      this.setData({ view: toView(reading, false) });
+      const view = toView(reading, false);
+      this.setData({ view, activeCard: view.cards[this.data.activeCardIndex] ?? view.cards[0] });
       wx.showToast({ title: "已保存到本地历史", icon: "success" });
     } catch {
       wx.showToast({ title: "保存失败", icon: "none" });
@@ -114,7 +131,10 @@ Page({
 
   copyAction() {
     const action = this.data.view?.content?.microAction;
-    if (action) wx.setClipboardData({ data: action });
+    if (action) {
+      wx.vibrateShort({ type: "light" });
+      wx.setClipboardData({ data: action });
+    }
   },
 
   finish() {

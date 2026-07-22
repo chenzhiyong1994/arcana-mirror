@@ -36,7 +36,7 @@ describe("ReadingService", () => {
     expect(service.listHistory()).toHaveLength(1);
   });
 
-  it("draws three unique cards and returns position-aware rich interpretations", async () => {
+  it("draws three unique cards and returns position-aware focused interpretations", async () => {
     const { service } = createService([0.1, 0.2, 0.1, 0.8, 0.6, 0.3, 0.4]);
     const reading = service.startQuestion("relationship", "我该如何理解这段关系的变化？", "three");
     expect(reading.cards).toHaveLength(3);
@@ -47,8 +47,9 @@ describe("ReadingService", () => {
       "关键影响",
       "行动建议",
     ]);
-    expect(interpreted.interpretation?.content.cards[0].loveInsight).toContain("爱情观察");
-    expect(interpreted.interpretation?.content.cards[0].wealthInsight).toContain("财运观察");
+    expect(interpreted.interpretation?.content.cards[0].topicLabel).toBe("感情");
+    expect(interpreted.interpretation?.content.cards[0].topicInsight).toBeTruthy();
+    expect(interpreted.interpretation?.content.cards[0].wealthInsight).toBeUndefined();
   });
 
   it("rejects saving a question before an interpretation exists", () => {

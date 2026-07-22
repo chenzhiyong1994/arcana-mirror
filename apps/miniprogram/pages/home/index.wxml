@@ -1,46 +1,90 @@
-<view class="page">
-  <view class="eyebrow">ARCANA MIRROR · LOCAL MVP</view>
-  <view class="title">
-    <view>翻开牌面，</view>
-    <view>也照见自己。</view>
-  </view>
-  <view class="subtitle">本地模拟数据，仅供娱乐与自我反思。</view>
-
-  <view class="panel daily-panel">
-    <view class="section-label">今日</view>
-    <view wx:if="{{today}}" class="daily-title">{{today.title}}</view>
-    <view wx:else class="daily-title">今天还没有抽牌</view>
-    <button class="primary" bindtap="startDaily">{{today ? '再次查看今日牌' : '抽取每日一牌'}}</button>
+<view class="page home-page">
+  <view class="brand enter-up">
+    <image class="brand-seal" src="{{logoPath}}" mode="aspectFill" />
+    <view class="brand-copy">
+      <view class="brand-cn">阿卡纳心镜</view>
+      <view class="brand-en">ARCANA MIRROR</view>
+    </view>
+    <view class="brand-mark">✦</view>
   </view>
 
-  <view class="reading-actions">
-    <button class="secondary" bindtap="startSingleQuestion">单牌解读</button>
-    <button class="secondary featured" bindtap="startThreeQuestion">三牌占卜</button>
+  <view class="hero enter-up delay-1">
+    <view class="eyebrow">A QUIET RITUAL FOR CLARITY</view>
+    <view class="title"><text class="title-light">翻开牌面，</text><text>也照见自己。</text></view>
+    <view class="subtitle">不急着预言答案。用一场短暂仪式，让混乱慢慢显出轮廓。</view>
+  </view>
+
+  <view class="daily-stage enter-up delay-2">
+    <view class="stage-halo"></view>
+    <view class="mini-card">
+      <image class="mini-card-image {{today && today.reversed ? 'reversed' : ''}}" src="{{today ? today.imagePath : cardBack}}" mode="aspectFill" />
+      <view class="mini-card-shine"></view>
+    </view>
+    <view class="daily-copy">
+      <view class="section-kicker">TODAY'S MIRROR</view>
+      <view class="daily-title">{{today ? today.title : '今日牌仍在沉睡'}}</view>
+      <view class="daily-note">{{today ? '牌面已固定，随时回来重读。' : '一次抽取，留下一句今天值得记住的话。'}}</view>
+      <button class="primary daily-action" bindtap="startDaily">{{today ? '重新进入今日解读' : '抽取每日一牌'}}</button>
+    </view>
+  </view>
+
+  <view class="choice-head enter-up delay-3">
+    <view>
+      <view class="section-kicker">CHOOSE A READING</view>
+      <view class="section-title">此刻，你想看清什么？</view>
+    </view>
+  </view>
+
+  <view class="reading-actions enter-up delay-3">
+    <view class="reading-card single" bindtap="startSingleQuestion">
+      <view class="reading-glyph"><view class="glyph-card"></view></view>
+      <view class="reading-index">01</view>
+      <view class="reading-name">一张牌</view>
+      <view class="reading-desc">聚焦一个核心提示<br/>适合快速整理思绪</view>
+      <view class="reading-enter">开始解读 <text>→</text></view>
+    </view>
+    <view class="reading-card three" bindtap="startThreeQuestion">
+      <view class="reading-glyph triple"><view class="glyph-card"></view><view class="glyph-card"></view><view class="glyph-card"></view></view>
+      <view class="reading-index">03</view>
+      <view class="reading-name">三张牌</view>
+      <view class="reading-desc">现状 · 关键影响 · 行动<br/>适合拆解复杂困扰</view>
+      <view class="reading-enter">进入牌阵 <text>→</text></view>
+    </view>
   </view>
 
   <view class="collection-entry" bindtap="openCollection">
-    <view>
-      <view class="section-label">我的图鉴</view>
-      <view class="collection-copy">查看已经翻开的卡牌</view>
+    <view class="collection-orbit"><text>{{collectionProgress}}</text></view>
+    <view class="collection-info">
+      <view class="section-kicker">ARCANA COLLECTION</view>
+      <view class="collection-copy">我的大阿尔卡那图鉴</view>
+      <view class="collection-note">每一次亲手翻牌，都让牌库亮起一格。</view>
     </view>
-    <view class="collection-progress">{{collectionProgress}} ›</view>
+    <view class="arrow">›</view>
   </view>
 
   <view class="section-head">
-    <view class="section-label">最近历史</view>
-    <button class="text-button" bindtap="openHistory">查看全部</button>
+    <view>
+      <view class="section-kicker">RECENT MIRRORS</view>
+      <view class="section-title small">最近照见</view>
+    </view>
+    <button class="text-button" bindtap="openHistory">全部记录</button>
   </view>
 
   <view wx:if="{{recent.length}}" class="history-list">
     <view wx:for="{{recent}}" wx:key="id" class="history-row" data-id="{{item.id}}" bindtap="openReading">
-      <view>
+      <image class="history-thumb {{item.reversed ? 'reversed' : ''}}" src="{{item.imagePath}}" mode="aspectFill" />
+      <view class="history-copy">
         <view class="history-type">{{item.typeLabel}} · {{item.date}}</view>
         <view class="history-title">{{item.title}}</view>
       </view>
       <view class="arrow">›</view>
     </view>
   </view>
-  <view wx:else class="empty">尚无记录。主题解读只有在你明确保存后才会出现在这里。</view>
+  <view wx:else class="empty">
+    <view class="empty-star">✦</view>
+    <view>尚无记录</view>
+    <view class="empty-copy">完成一次解读后，你可以选择把它留在这台设备里。</view>
+  </view>
 
   <button class="text-button settings-link" bindtap="openSettings">本地测试设置与数据说明</button>
 </view>

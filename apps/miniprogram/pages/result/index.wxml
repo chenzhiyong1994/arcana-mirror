@@ -1,96 +1,116 @@
-<view class="page">
+<view class="page result-page">
   <view wx:if="{{loading}}" class="loading-state">
-    <view class="eyebrow">INTERPRETATION</view>
+    <image class="loading-seal" src="/assets/branding/arcana-mirror-logo.jpg" mode="aspectFill" />
+    <view class="loading-orbit"></view>
+    <view class="eyebrow">READING THE MIRROR</view>
     <view class="title">正在整理牌面</view>
-    <view class="subtitle">本地模拟 Provider 正在生成结构化结果。</view>
+    <view class="loading-dots"><text></text><text></text><text></text></view>
+    <view class="subtitle">让三张牌先彼此说话，再把线索交给你。</view>
   </view>
 
-  <view wx:elif="{{missing}}" class="panel">
+  <view wx:elif="{{missing}}" class="panel missing-panel">
+    <view class="eyebrow">MIRROR CLOSED</view>
     <view class="title small">没有找到这次解读</view>
     <view class="subtitle">它可能没有保存，或已经被删除。</view>
     <button class="primary" bindtap="returnHome">返回首页</button>
   </view>
 
   <block wx:elif="{{view}}">
-    <view class="eyebrow">{{view.topic}} · {{view.date}}</view>
-    <view class="title">{{view.title}}</view>
-    <view class="source {{view.isFallback ? 'fallback' : ''}}">{{view.sourceLabel}}</view>
-    <view wx:if="{{view.isFallback}}" class="reason">原因：{{view.reasonCode}}</view>
+    <view class="result-head enter-up">
+      <view class="step-mark">03 / 03 · INTERPRETATION</view>
+      <view class="eyebrow">{{view.topic}} · {{view.date}}</view>
+      <view class="title">{{view.title}}</view>
+      <view class="source-line"><text class="source-dot"></text>{{view.sourceLabel}}{{view.isFallback ? ' · 已切换为基础牌义' : ''}}</view>
+    </view>
 
-    <view class="result-spread {{view.isThree ? 'three' : 'single'}}">
-      <view wx:for="{{view.cards}}" wx:key="cardId" class="visual-card">
-        <view wx:if="{{view.isThree}}" class="position-label">{{item.positionLabel}}</view>
-        <image class="card-image {{item.orientation === 'reversed' ? 'reversed' : ''}}" src="{{item.imagePath}}" mode="aspectFill" />
-        <view class="visual-name">{{item.name}} · {{item.orientationLabel}}</view>
+    <view class="result-spread {{view.isThree ? 'three' : 'single'}} enter-up delay-1">
+      <view wx:for="{{view.cards}}" wx:key="cardId" class="visual-card {{activeCardIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="selectCard">
+        <view wx:if="{{view.isThree}}" class="position-label"><text>0{{index + 1}}</text>{{item.positionLabel}}</view>
+        <view class="visual-image-shell">
+          <image class="card-image {{item.orientation === 'reversed' ? 'reversed' : ''}}" src="{{item.imagePath}}" mode="aspectFill" />
+          <view class="card-select-glow"></view>
+        </view>
+        <view class="visual-name">{{item.name}}</view>
+        <view class="visual-orientation">{{item.orientationLabel}}</view>
       </view>
     </view>
 
-    <view wx:if="{{view.question}}" class="panel question-panel">
-      <button class="text-button" bindtap="toggleQuestion">{{questionExpanded ? '收起原问题' : '查看原问题'}}</button>
-      <view wx:if="{{questionExpanded}}" class="question-text">{{view.question}}</view>
+    <view wx:if="{{view.question}}" class="question-line enter-up delay-2" bindtap="toggleQuestion">
+      <view class="question-label">你的问题</view>
+      <view class="question-toggle">{{questionExpanded ? '收起' : '回看'}} <text>{{questionExpanded ? '−' : '+'}}</text></view>
+      <view wx:if="{{questionExpanded}}" class="question-text">“{{view.question}}”</view>
     </view>
 
-    <view class="content-block">
-      <view class="content-label">整体观察</view>
-      <view class="content-text">{{view.content.summary}}</view>
+    <view class="lead-reading enter-up delay-2">
+      <view class="lead-symbol">✦</view>
+      <view class="content-label">第一眼线索</view>
+      <view class="lead-text">{{view.content.summary}}</view>
     </view>
 
-    <view class="content-block synthesis">
-      <view class="content-label">{{view.isThree ? '三牌联系' : '综合提示'}}</view>
-      <view class="content-text">{{view.content.synthesis}}</view>
-    </view>
-
-    <view wx:for="{{view.cards}}" wx:key="cardId" class="card-reading">
-      <view class="card-reading-head">
+    <view class="reading-section">
+      <view class="section-heading">
         <view>
-          <view class="position-label">{{item.positionLabel}}</view>
-          <view class="card-reading-title">{{item.roman}} · {{item.name}} · {{item.orientationLabel}}</view>
+          <view class="section-kicker">READ THE CARD</view>
+          <view class="section-title">逐张看清</view>
         </view>
-        <view class="keywords">
-          <text wx:for="{{item.keywords}}" wx:key="*this" class="tag">{{item}}</text>
-        </view>
+        <view wx:if="{{view.isThree}}" class="swipe-hint">轻触牌面切换</view>
       </view>
 
-      <view class="content-block compact">
-        <view class="content-label">{{item.orientationLabel}}解读</view>
-        <view class="content-text">{{item.basis}}</view>
-        <view class="content-text secondary-text">{{item.contextualMeaning}}</view>
-      </view>
+      <view wx:if="{{activeCard}}" class="active-reading">
+        <view class="active-head">
+          <view class="active-number">{{activeCard.roman}}</view>
+          <view class="active-title-wrap">
+            <view class="active-position">{{activeCard.positionLabel}} · {{activeCard.orientationLabel}}</view>
+            <view class="active-title">{{activeCard.name}}</view>
+            <view class="active-en">{{activeCard.englishName}}</view>
+          </view>
+        </view>
 
-      <view class="dimension-grid">
-        <view class="dimension-item">
-          <view class="dimension-title">爱情</view>
-          <view class="dimension-text">{{item.loveInsight}}</view>
+        <view class="reading-primary">
+          <view class="content-label">这张牌正在说</view>
+          <view class="reading-primary-text">{{activeCard.contextualMeaning}}</view>
         </view>
-        <view class="dimension-item">
-          <view class="dimension-title">财运</view>
-          <view class="dimension-text">{{item.wealthInsight}}</view>
+
+        <view class="topic-insight">
+          <view class="topic-insight-label">关于{{activeCard.topicLabel}}</view>
+          <view class="topic-insight-text">{{activeCard.topicInsight}}</view>
         </view>
-        <view class="dimension-item">
-          <view class="dimension-title">事业</view>
-          <view class="dimension-text">{{item.careerInsight}}</view>
+
+        <view class="meaning-toggle" bindtap="toggleDetails">
+          <text>{{detailsExpanded ? '收起牌义依据' : '查看牌义依据'}}</text>
+          <text class="toggle-mark">{{detailsExpanded ? '−' : '+'}}</text>
         </view>
-        <view class="dimension-item">
-          <view class="dimension-title">自我成长</view>
-          <view class="dimension-text">{{item.selfGrowthInsight}}</view>
+        <view wx:if="{{detailsExpanded}}" class="meaning-detail">
+          <view class="keywords"><text wx:for="{{activeCard.keywords}}" wx:key="*this" class="tag">{{item}}</text></view>
+          <view class="meaning-text">{{activeCard.basis}}</view>
         </view>
       </view>
     </view>
 
-    <view class="content-block emphasis">
-      <view class="content-label">留给你的问题</view>
+    <view wx:if="{{view.isThree}}" class="synthesis-block">
+      <view class="synthesis-number">∞</view>
+      <view class="synthesis-copy">
+        <view class="content-label">把三张牌连起来</view>
+        <view class="synthesis-text">{{view.content.synthesis}}</view>
+      </view>
+    </view>
+
+    <view class="closing-section">
+      <view class="closing-orbit"></view>
+      <view class="section-kicker">TAKE IT WITH YOU</view>
+      <view class="closing-label">留给你的问题</view>
       <view class="reflection">{{view.content.reflectionQuestion}}</view>
-    </view>
-
-    <view class="content-block">
-      <view class="content-label">一个小行动</view>
-      <view class="content-text">{{view.content.microAction}}</view>
-      <button class="text-button" bindtap="copyAction">复制行动</button>
+      <view class="closing-divider">✦</view>
+      <view class="action-label">今天只做这一件小事</view>
+      <view class="action-text">{{view.content.microAction}}</view>
+      <button class="secondary copy-action" bindtap="copyAction">复制这一步</button>
     </view>
 
     <view class="disclaimer">{{view.content.disclaimer}}</view>
 
-    <button wx:if="{{!view.isDaily && !view.saved}}" class="primary" bindtap="saveToHistory">保存到本地历史</button>
-    <button class="secondary" bindtap="finish">{{!view.isDaily && !view.saved ? '不保存并结束' : '完成'}}</button>
+    <view class="result-actions">
+      <button wx:if="{{!view.isDaily && !view.saved}}" class="primary" bindtap="saveToHistory">保存这次照见</button>
+      <button class="secondary" bindtap="finish">{{!view.isDaily && !view.saved ? '不保存，回到首页' : '完成'}}</button>
+    </view>
   </block>
 </view>

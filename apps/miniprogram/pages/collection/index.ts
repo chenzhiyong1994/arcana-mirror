@@ -32,6 +32,7 @@ Page({
       wx.showToast({ title: "翻到这张牌后才能查看", icon: "none" });
       return;
     }
+    wx.vibrateShort({ type: "light" });
     this.setData({ selected: card });
   },
 

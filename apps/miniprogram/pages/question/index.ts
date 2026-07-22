@@ -32,15 +32,17 @@ Page({
   },
 
   selectSpread(event: WechatMiniprogram.TouchEvent) {
+    wx.vibrateShort({ type: "light" });
     this.setData({ selectedSpread: event.currentTarget.dataset.value as SpreadType });
   },
 
   selectTopic(event: WechatMiniprogram.TouchEvent) {
+    wx.vibrateShort({ type: "light" });
     this.setData({ selectedTopic: event.currentTarget.dataset.value as Topic });
   },
 
   updateQuestion(event: WechatMiniprogram.Input) {
-    const question = event.detail.value;
+    const question = event.detail.value.slice(0, 200);
     this.setData({ question, count: question.length, decision: null, isBlocked: false });
   },
 

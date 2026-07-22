@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getCardImagePath, TAROT_CARDS } from "../apps/miniprogram/core/cards";
-import { buildDimensionInsights, FIXED_DISCLAIMER, validateInterpretation } from "../apps/miniprogram/core/interpretation";
+import { buildTopicInsight, FIXED_DISCLAIMER, validateInterpretation } from "../apps/miniprogram/core/interpretation";
 import type { InterpretationContent, Reading } from "../apps/miniprogram/core/types";
 
 const reading: Reading = {
@@ -27,10 +27,8 @@ const validOutput: InterpretationContent = {
     positionLabel: "核心牌",
     basis: "通过独处辨认真正重要的事。",
     contextualMeaning: "把安静观察作为整理犹豫的方法，而不是逃避行动。",
-    loveInsight: "爱情观察先关注真实表达与关系边界，不把牌面当作结果保证。",
-    wealthInsight: "财运观察先检查现金流、风险承受力和可核实的信息。",
-    careerInsight: "事业观察先整理可用资源，再选择一个能够推进的小动作。",
-    selfGrowthInsight: "自我成长从减少噪音开始，辨认真正需要和外界期待。",
+    topicLabel: "自我",
+    topicInsight: "从减少噪音开始，辨认真正需要和外界期待。",
   }],
   synthesis: "隐士提供的是一个观察角度，把牌义放回真实处境，再决定最值得验证的一项。",
   reflectionQuestion: "减少一种外界声音后，你自己的判断是什么？",
@@ -39,14 +37,16 @@ const validOutput: InterpretationContent = {
 };
 
 describe("validateInterpretation", () => {
-  it("provides distinct rich dimensions and image mappings for all 22 cards", () => {
+  it("provides focused topic insights and image mappings for all 22 cards", () => {
     const paths = new Set<string>();
     for (const card of TAROT_CARDS) {
-      const upright = buildDimensionInsights(card, "upright");
-      const reversed = buildDimensionInsights(card, "reversed");
-      expect(upright.loveInsight).toContain("爱情观察");
-      expect(upright.wealthInsight).toContain("财运观察");
-      expect(upright.careerInsight).not.toBe(reversed.careerInsight);
+      const relationship = buildTopicInsight(card, "upright", "relationship");
+      const career = buildTopicInsight(card, "reversed", "career");
+      expect(relationship.topicLabel).toBe("感情");
+      expect(career.topicLabel).toBe("事业");
+      expect(relationship.topicInsight).not.toBe(career.topicInsight);
+      expect(relationship.basis).toBe(card.upright);
+      expect(career.basis).toBe(card.reversed);
       paths.add(getCardImagePath(card.id));
     }
     expect(paths.size).toBe(22);
@@ -64,6 +64,17 @@ describe("validateInterpretation", () => {
   it("rejects a mismatched spread position", () => {
     const invalid = { ...validOutput, cards: [{ ...validOutput.cards[0], position: "situation" as const }] };
     expect(validateInterpretation(invalid, reading)).toEqual({ valid: false, reasonCode: "CARD_FACT_MISMATCH" });
+  });
+
+  it("rejects an insight labeled for a different topic", () => {
+    const invalid = { ...validOutput, cards: [{ ...validOutput.cards[0], topicLabel: "事业" }] };
+    expect(validateInterpretation(invalid, reading)).toEqual({ valid: false, reasonCode: "TOPIC_MISMATCH" });
+  });
+
+  it("rejects the old all-dimensions payload when focused topic insight is missing", () => {
+    const { topicLabel: _topicLabel, topicInsight: _topicInsight, ...legacyCard } = validOutput.cards[0];
+    const invalid = { ...validOutput, cards: [{ ...legacyCard, loveInsight: "旧版爱情字段" }] };
+    expect(validateInterpretation(invalid, reading)).toEqual({ valid: false, reasonCode: "INVALID_CARD_CONTENT" });
   });
 
   it("rejects unsafe deterministic language", () => {

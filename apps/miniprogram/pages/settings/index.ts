@@ -19,6 +19,7 @@ Page({
   selectMode(event: WechatMiniprogram.TouchEvent) {
     const mode = event.currentTarget.dataset.value as MockMode;
     setMockMode(mode);
+    wx.vibrateShort({ type: "light" });
     this.setData({ selectedMode: mode });
     wx.showToast({ title: "模拟模式已更新", icon: "none" });
   },

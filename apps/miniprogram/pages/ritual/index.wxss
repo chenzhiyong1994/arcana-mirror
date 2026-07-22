@@ -1,15 +1,50 @@
-.ritual-page { text-align: center; }
+.ritual-page { min-height: 100vh; padding-top: 32rpx; text-align: center; }
+.ritual-page::before { border-radius: 360rpx 360rpx 0 0; }
+.ritual-orbit { position: absolute; z-index: 0; top: 360rpx; left: 50%; border: 1rpx solid rgba(184,150,87,0.1); border-radius: 50%; transform: translateX(-50%); pointer-events: none; }
+.orbit-one { width: 680rpx; height: 680rpx; box-shadow: inset 0 0 100rpx rgba(184,150,87,0.035); }
+.orbit-two { top: 420rpx; width: 520rpx; height: 520rpx; border-style: dashed; animation: orbit-turn 36s linear infinite; }
+.ritual-star { position: absolute; z-index: 0; color: rgba(224,191,121,0.55); animation: soft-pulse 3.4s ease-in-out infinite; }
+.star-a { top: 320rpx; right: 90rpx; font-size: 18rpx; }
+.star-b { top: 710rpx; left: 74rpx; font-size: 35rpx; animation-delay: 1.3s; }
+.flow-step { margin-bottom: 14rpx; color: rgba(184,150,87,0.55); font-family: Georgia, serif; font-size: 18rpx; letter-spacing: 4rpx; }
+.ritual-head .title { margin-top: 20rpx; font-size: 56rpx; }
+.ritual-head .subtitle { max-width: 620rpx; margin: 0 auto; }
 .title.small { font-size: 38rpx; }
-.card-spread { display: flex; align-items: flex-start; justify-content: center; margin: 46rpx auto 30rpx; }
-.card-spread.single .ritual-card { width: 430rpx; }
-.card-spread.three { gap: 14rpx; }
-.card-spread.three .ritual-card { width: 210rpx; }
-.position-label { min-height: 34rpx; margin-bottom: 14rpx; color: var(--gold); font-size: 22rpx; }
-.image-shell { position: relative; width: 100%; overflow: hidden; border: 2rpx solid rgba(168, 137, 80, 0.7); background: #171511; box-shadow: 0 16rpx 40rpx rgba(0, 0, 0, 0.38); aspect-ratio: 2 / 3; }
+.missing-panel { margin-top: 150rpx; }
+.card-spread { position: relative; z-index: 2; display: flex; align-items: flex-start; justify-content: center; margin: 52rpx auto 28rpx; perspective: 1400rpx; }
+.card-spread.single .ritual-card { width: 414rpx; }
+.card-spread.three { gap: 13rpx; margin-top: 62rpx; }
+.card-spread.three .ritual-card { width: 208rpx; }
+.position-label { min-height: 38rpx; margin-bottom: 15rpx; color: var(--paper-dim); font-size: 20rpx; letter-spacing: 1rpx; }
+.position-label text { margin-right: 7rpx; color: var(--gold); font-family: Georgia, serif; font-size: 16rpx; }
+.image-shell { position: relative; width: 100%; aspect-ratio: 2 / 3; perspective: 1200rpx; }
+.card-flipper { position: absolute; width: 100%; height: 100%; transition: transform 920ms cubic-bezier(0.16, 0.84, 0.28, 1); transform-style: preserve-3d; }
+.image-shell.revealed .card-flipper { transform: rotateY(180deg); }
+.card-face { position: absolute; width: 100%; height: 100%; overflow: hidden; border: 2rpx solid rgba(224,191,121,0.7); border-radius: 7rpx; background: #11100d; box-shadow: 0 24rpx 62rpx rgba(0,0,0,0.62), 0 0 28rpx rgba(184,150,87,0.08); backface-visibility: hidden; }
+.card-front-face { transform: rotateY(180deg); }
 .card-image { width: 100%; height: 100%; }
 .card-image.reversed { transform: rotate(180deg); }
-.tap-hint { position: absolute; right: 0; bottom: 24rpx; left: 0; color: var(--paper-dim); font-size: 20rpx; letter-spacing: 3rpx; text-shadow: 0 2rpx 8rpx #000; }
-.revealed-meta { margin-top: 14rpx; color: var(--paper); font-size: 24rpx; line-height: 1.35; }
-.card-spread.single .revealed-meta { font-size: 32rpx; }
-.orientation { margin-top: 6rpx; color: var(--gold); font-size: 21rpx; }
-.progress { color: var(--muted); font-size: 23rpx; }
+.card-breathe { position: absolute; top: 50%; left: 50%; width: 38%; height: 25%; border: 1rpx solid rgba(224,191,121,0.32); border-radius: 50%; transform: translate(-50%, -50%); animation: card-breathe 2.7s ease-in-out infinite; box-shadow: 0 0 30rpx rgba(224,191,121,0.14); }
+.tap-hint { position: absolute; right: 0; bottom: 25rpx; left: 0; color: var(--paper-dim); font-size: 18rpx; letter-spacing: 3rpx; text-shadow: 0 2rpx 10rpx #000; }
+.tap-hint text { display: block; margin-bottom: 8rpx; color: var(--gold-bright); font-size: 16rpx; }
+.front-vignette { position: absolute; inset: 0; box-shadow: inset 0 0 30rpx rgba(0,0,0,0.34); pointer-events: none; }
+.reveal-flare { position: absolute; z-index: 5; top: 50%; left: 50%; width: 20rpx; height: 20rpx; border: 1rpx solid transparent; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); }
+.image-shell.revealed .reveal-flare { animation: reveal-flare 1.05s ease-out both; }
+.revealed-meta { min-height: 100rpx; margin-top: 17rpx; opacity: 0; transform: translateY(10rpx); transition: opacity 430ms ease 650ms, transform 430ms ease 650ms; }
+.revealed-meta.visible { opacity: 1; transform: translateY(0); }
+.roman { color: var(--gold); font-family: Georgia, serif; font-size: 17rpx; letter-spacing: 3rpx; }
+.revealed-name { margin-top: 5rpx; font-size: 27rpx; }
+.card-spread.single .revealed-name { font-size: 34rpx; }
+.orientation { margin-top: 6rpx; color: var(--muted); font-size: 20rpx; }
+.ritual-progress { margin-top: 8rpx; }
+.progress-pips { display: flex; justify-content: center; gap: 10rpx; }
+.progress-pip { width: 32rpx; height: 3rpx; background: rgba(184,150,87,0.2); transition: width 320ms ease, background 320ms ease; }
+.progress-pip.active { width: 50rpx; background: var(--gold-bright); box-shadow: 0 0 12rpx rgba(224,191,121,0.35); }
+.progress-copy { margin-top: 13rpx; color: var(--muted); font-size: 21rpx; }
+.reveal-next { max-width: 540rpx; margin: 26rpx auto 0; }
+.reveal-next text { float: right; color: var(--gold-bright); }
+.reveal-next.ready text { color: #15100a; font-size: 34rpx; }
+.ritual-foot { margin-top: 24rpx; color: #685f53; font-size: 19rpx; }
+@keyframes card-breathe { 0%,100% { opacity: .35; transform: translate(-50%,-50%) scale(.88); } 50% { opacity: .9; transform: translate(-50%,-50%) scale(1.15); } }
+@keyframes reveal-flare { 0% { opacity: .95; border-color: var(--gold-bright); box-shadow: 0 0 18rpx var(--gold-bright); } 100% { width: 420rpx; height: 420rpx; opacity: 0; border-color: rgba(224,191,121,0); box-shadow: 0 0 80rpx rgba(224,191,121,0); } }
+@keyframes orbit-turn { from { transform: translateX(-50%) rotate(0); } to { transform: translateX(-50%) rotate(360deg); } }

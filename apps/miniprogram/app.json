@@ -9,11 +9,11 @@
     "pages/settings/index"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#11100e",
+    "navigationBarBackgroundColor": "#090907",
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "阿卡纳心镜",
-    "backgroundColor": "#11100e",
-    "backgroundTextStyle": "dark"
+    "backgroundColor": "#090907",
+    "backgroundTextStyle": "light"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

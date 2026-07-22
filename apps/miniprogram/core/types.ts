@@ -39,10 +39,13 @@ export interface InterpretationCard {
   positionLabel: string;
   basis: string;
   contextualMeaning: string;
-  loveInsight: string;
-  wealthInsight: string;
-  careerInsight: string;
-  selfGrowthInsight: string;
+  topicLabel: string;
+  topicInsight: string;
+  /** Legacy v0.2 fields are optional so saved local records remain readable. */
+  loveInsight?: string;
+  wealthInsight?: string;
+  careerInsight?: string;
+  selfGrowthInsight?: string;
 }
 
 export interface InterpretationContent {

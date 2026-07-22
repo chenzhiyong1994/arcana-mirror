@@ -1,30 +1,57 @@
 <view class="page ritual-page">
-  <view wx:if="{{missing}}" class="panel">
+  <view class="ritual-orbit orbit-one"></view>
+  <view class="ritual-orbit orbit-two"></view>
+  <view class="ritual-star star-a">✦</view>
+  <view class="ritual-star star-b">·</view>
+
+  <view wx:if="{{missing}}" class="panel missing-panel">
+    <view class="eyebrow">RITUAL CLOSED</view>
     <view class="title small">这次抽牌已结束</view>
     <button class="primary" bindtap="returnHome">返回首页</button>
   </view>
 
   <block wx:else>
-    <view class="eyebrow">{{isThree ? 'THREE-CARD SPREAD' : 'DRAW'}}</view>
-    <view class="title">停一下，再翻牌</view>
-    <view class="subtitle">牌面已经固定。{{isThree ? '依次翻开现状、关键影响与行动建议。' : '翻牌动作只负责展示，不会改变结果。'}}</view>
+    <view class="ritual-head enter-up">
+      <view class="flow-step">02 / 03</view>
+      <view class="eyebrow">{{isThree ? 'THREE MIRRORS' : 'ONE MIRROR'}}</view>
+      <view class="title">让直觉先于答案。</view>
+      <view class="subtitle">{{isThree ? '依次触碰牌背，让现状、影响与行动逐一显现。' : '轻触牌背。牌面早已固定，动作只是让它来到你面前。'}}</view>
+    </view>
 
     <view class="card-spread {{isThree ? 'three' : 'single'}}">
-      <view wx:for="{{cards}}" wx:key="cardId" class="ritual-card" data-index="{{index}}" bindtap="revealCard">
-        <view wx:if="{{isThree}}" class="position-label">{{item.positionLabel}}</view>
+      <view wx:for="{{cards}}" wx:key="cardId" class="ritual-card enter-up delay-{{index + 1}}" data-index="{{index}}" bindtap="revealCard">
+        <view wx:if="{{isThree}}" class="position-label"><text>0{{index + 1}}</text>{{item.positionLabel}}</view>
         <view class="image-shell {{item.revealed ? 'revealed' : ''}}">
-          <image class="card-image {{item.revealed && item.orientation === 'reversed' ? 'reversed' : ''}}" src="{{item.revealed ? item.imagePath : cardBack}}" mode="aspectFill" />
-          <view wx:if="{{!item.revealed}}" class="tap-hint">轻触翻牌</view>
+          <view class="card-flipper">
+            <view class="card-face card-back-face">
+              <image class="card-image" src="{{cardBack}}" mode="aspectFill" />
+              <view class="card-breathe"></view>
+              <view class="tap-hint"><text>✦</text><view>{{isThree ? '翻开' : '轻触翻牌'}}</view></view>
+            </view>
+            <view class="card-face card-front-face">
+              <image class="card-image {{item.orientation === 'reversed' ? 'reversed' : ''}}" src="{{item.imagePath}}" mode="aspectFill" />
+              <view class="front-vignette"></view>
+            </view>
+          </view>
+          <view class="reveal-flare"></view>
         </view>
-        <view wx:if="{{item.revealed}}" class="revealed-meta">
-          <view>{{item.name}}</view>
+        <view class="revealed-meta {{item.revealed ? 'visible' : ''}}">
+          <view class="roman">{{item.roman}}</view>
+          <view class="revealed-name">{{item.name}}</view>
           <view class="orientation">{{item.orientationLabel}}</view>
         </view>
       </view>
     </view>
 
-    <view class="progress">已翻开 {{revealedCount}} / {{cards.length}}</view>
-    <button wx:if="{{!allRevealed}}" class="secondary" bindtap="revealNext">翻开{{revealedCount ? '下一张' : '第一张'}}</button>
-    <button wx:else class="primary" bindtap="continueToResult">查看完整解读</button>
+    <view class="ritual-progress">
+      <view class="progress-pips">
+        <view wx:for="{{cards}}" wx:key="cardId" class="progress-pip {{item.revealed ? 'active' : ''}}"></view>
+      </view>
+      <view class="progress-copy">{{allRevealed ? '牌阵已经完整' : '已翻开 ' + revealedCount + ' / ' + cards.length}}</view>
+    </view>
+
+    <button wx:if="{{!allRevealed}}" class="secondary reveal-next" bindtap="revealNext">{{revealedCount ? '翻开下一张' : '开始翻牌'}} <text>✦</text></button>
+    <button wx:else class="primary reveal-next ready" bindtap="continueToResult">进入解读 <text>→</text></button>
+    <view class="ritual-foot">牌面用于自我反思，不代替现实证据与专业建议。</view>
   </block>
 </view>

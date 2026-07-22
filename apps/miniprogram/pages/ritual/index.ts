@@ -63,6 +63,7 @@ Page({
   revealAt(index: number) {
     const current = this.data.cards[index];
     if (!current || current.revealed) return;
+    wx.vibrateShort({ type: "medium" });
     const cards = this.data.cards.map((card, cardIndex) => cardIndex === index ? { ...card, revealed: true } : card);
     collectionService.recordReveal(current.cardId, current.orientation);
     const revealedCount = cards.filter((card) => card.revealed).length;
@@ -70,7 +71,10 @@ Page({
   },
 
   continueToResult() {
-    if (this.data.id && this.data.allRevealed) wx.redirectTo({ url: `/pages/result/index?id=${this.data.id}` });
+    if (this.data.id && this.data.allRevealed) {
+      wx.vibrateShort({ type: "light" });
+      wx.redirectTo({ url: `/pages/result/index?id=${this.data.id}` });
+    }
   },
 
   returnHome() {
