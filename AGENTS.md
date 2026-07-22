@@ -10,6 +10,7 @@
 - `assets/tarot-card-style/style-hermit-v3.png` 只作为隐士牌义、人物关系和构图锚点；黑金 A 方向已归档为备选。
 - 本轮 22 张大阿尔卡那完整生成已选用黑金仪式典藏 A；古典新艺术 G 继续作为备选，不混入 A 批次。
 - A 风格生成交接合同位于 `deliverables/style-a-deck-generation-kit/`，生成结果必须通过其中的逐牌语义与整套一致性门禁。
+- 小程序 Logo 已选定 L5“繁饰日蚀心镜”，正式源文件为 `assets/branding/logo-concepts/logo-l5-ornate-eclipse-mirror-v1.png`；后续适配不得将其简化为扁平卡通或丢失手绘卷草、旧金边框与古镜质感。
 - 卡片生成必须先定义牌义层，再应用视觉层；核心人物、道具、姿态或象征缺失即不通过。
 - 卡牌标题和编号由前端叠加，不写死在生成图片中。
 
