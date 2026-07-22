@@ -10,8 +10,8 @@
 
   <view class="hero enter-up delay-1">
     <view class="eyebrow">A QUIET RITUAL FOR CLARITY</view>
-    <view class="title"><text class="title-light">翻开牌面，</text><text>也照见自己。</text></view>
-    <view class="subtitle">不急着预言答案。用一场短暂仪式，让混乱慢慢显出轮廓。</view>
+    <view class="title"><text class="title-light">翻开牌面，</text><text>照见自己。</text></view>
+    <view class="subtitle">用一场短暂仪式，让混乱慢慢显出轮廓。</view>
   </view>
 
   <view class="daily-stage enter-up delay-2">
