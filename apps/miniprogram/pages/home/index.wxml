@@ -86,5 +86,5 @@
     <view class="empty-copy">完成一次解读后，你可以选择把它留在这台设备里。</view>
   </view>
 
-  <button class="text-button settings-link" bindtap="openSettings">本地测试设置与数据说明</button>
+  <button class="text-button settings-link" bindtap="openSettings">设置、AI 与数据说明</button>
 </view>

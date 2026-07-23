@@ -18,6 +18,13 @@ describe("classifyQuestion", () => {
     expect(decision.suggestedQuestion).toBeUndefined();
   });
 
+  it.each(["我最近总是想死怎么办？", "我有轻生的念头该怎么办？", "我觉得活着没意思了。"])(
+    "blocks common crisis phrasing: %s",
+    (question) => {
+      expect(classifyQuestion(question).action).toBe("crisis_block");
+    },
+  );
+
   it("applies a professional boundary", () => {
     expect(classifyQuestion("这只股票什么时候会涨停？").action).toBe("professional_boundary");
   });

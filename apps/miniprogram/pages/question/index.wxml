@@ -55,5 +55,5 @@
   </view>
 
   <button wx:if="{{!isBlocked}}" class="primary submit" bindtap="submitQuestion">进入{{selectedSpread === 'three' ? '三牌仪式' : '单牌仪式'}} <text>→</text></button>
-  <view class="privacy-note"><text>◇</text> 结果默认不保存；只有你主动选择后，才会留在当前设备。</view>
+  <view class="privacy-note"><text>◇</text> 开始解读后，问题会发送至腾讯云开发 AI+ 的 HY3 模型；请勿填写姓名、电话、地址等个人信息。结果默认不保存，只有你主动选择后才会留在当前设备。</view>
 </view>

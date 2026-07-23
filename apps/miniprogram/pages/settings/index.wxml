@@ -1,30 +1,22 @@
 <view class="page settings-page">
   <view class="enter-up">
-    <view class="eyebrow">LOCAL LAB</view>
-    <view class="title">体验设置</view>
-    <view class="subtitle">切换模拟状态，检查正常解读和安全降级；这里不会调用真实模型。</view>
+    <view class="eyebrow">MIRROR SETTINGS</view>
+    <view class="title">设置与说明</view>
+    <view class="subtitle">了解 AI 解读与本地数据边界，也可以随时清理留在设备上的记录。</view>
   </view>
 
-  <view class="settings-section enter-up delay-1">
-    <view class="section-kicker">SIMULATION MODE</view>
-    <view class="section-title">解读响应</view>
-    <view class="mode-list">
-      <view wx:for="{{modes}}" wx:key="value" class="mode {{selectedMode === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectMode">
-        <view class="mode-index">0{{index + 1}}</view>
-        <view class="mode-copy">
-          <view class="mode-name">{{item.label}}</view>
-          <view class="mode-desc">{{item.description}}</view>
-        </view>
-        <view class="indicator"><view></view></view>
-      </view>
-    </view>
+  <view class="ai-panel enter-up delay-1">
+    <view class="panel-icon">✦</view>
+    <view class="section-kicker">CLOUDBASE AI · HY3</view>
+    <view class="section-title">个性化解读</view>
+    <view class="muted">主题问题会在你开始解读后发送至腾讯云开发 AI+，由 HY3 结合问题、牌面、正逆位与牌位生成建议。输出仍会经过牌面事实、结构和安全校验；服务异常时自动切换为本地基础牌义。</view>
   </view>
 
   <view class="data-panel enter-up delay-2">
     <view class="panel-icon">◇</view>
     <view class="section-kicker">PRIVATE BY DEFAULT</view>
     <view class="section-title">本地数据边界</view>
-    <view class="muted">本阶段不使用微信云身份、账号、CloudBase 或真实 AI。历史与图鉴仅保存在当前设备的小程序存储沙箱。</view>
+    <view class="muted">本应用不建立账号或云端历史。你主动保存的历史与图鉴仅保存在当前设备；AI 请求由云开发处理，可能出现在开发者可见的调用记录中。请勿填写姓名、电话、地址等可识别个人信息。</view>
     <view class="data-row">
       <view><view class="data-name">解读历史</view><view class="data-note">每日牌与主动保存内容</view></view>
       <button class="danger-link" bindtap="clearHistory">全部清空</button>
@@ -40,7 +32,7 @@
     <view class="about-copy">
       <view class="section-title">阿卡纳心镜</view>
       <view class="muted">娱乐性自我探索，不预测确定未来，也不替代心理、医疗、法律或金融专业意见。</view>
-      <view class="version">LOCAL PREVIEW · 0.3.3</view>
+      <view class="version">RELEASE · 1.0.0</view>
     </view>
   </view>
 </view>

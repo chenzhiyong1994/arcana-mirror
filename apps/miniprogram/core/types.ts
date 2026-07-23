@@ -10,7 +10,7 @@ export type ReadingStatus =
   | "fallback_completed"
   | "blocked"
   | "failed";
-export type InterpretationSource = "static" | "mock" | "fallback";
+export type InterpretationSource = "static" | "ai" | "mock" | "fallback";
 export type MockMode = "success" | "timeout" | "invalid" | "unsafe";
 
 export interface TarotCard {
@@ -107,7 +107,8 @@ export interface ReadingRepository {
 }
 
 export interface InterpretationProvider {
-  generate(reading: Reading, cards: TarotCard[], mode: MockMode): Promise<unknown>;
+  readonly source: "ai" | "mock";
+  generate(reading: Reading, cards: TarotCard[]): Promise<unknown>;
 }
 
 export interface CardDiscovery {

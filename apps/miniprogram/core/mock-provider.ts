@@ -16,7 +16,12 @@ const topicPrompts = {
 } as const;
 
 export class MockInterpretationProvider implements InterpretationProvider {
-  async generate(reading: Reading, cards: TarotCard[], mode: MockMode): Promise<unknown> {
+  readonly source = "mock" as const;
+
+  constructor(private readonly mode: MockMode = "success") {}
+
+  async generate(reading: Reading, cards: TarotCard[]): Promise<unknown> {
+    const mode = this.mode;
     if (mode === "timeout") throw new MockProviderError("MOCK_TIMEOUT");
     if (mode === "invalid") return { summary: "字段不完整的模拟响应" };
 

@@ -3,13 +3,14 @@ import { TAROT_CARDS } from "../apps/miniprogram/core/cards";
 import { MemoryReadingRepository } from "../apps/miniprogram/core/memory-repository";
 import { MockInterpretationProvider } from "../apps/miniprogram/core/mock-provider";
 import { ReadingService } from "../apps/miniprogram/core/reading-service";
+import type { MockMode } from "../apps/miniprogram/core/types";
 
-function createService(randomValues = [0.4, 0.4, 0.4]) {
+function createService(randomValues = [0.4, 0.4, 0.4], mode: MockMode = "success") {
   const repository = new MemoryReadingRepository();
   let index = 0;
   const service = new ReadingService({
     repository,
-    provider: new MockInterpretationProvider(),
+    provider: new MockInterpretationProvider(mode),
     now: () => new Date("2026-07-19T03:00:00.000Z"),
     random: () => randomValues[index++] ?? 0.4,
   });
@@ -29,7 +30,7 @@ describe("ReadingService", () => {
   it("does not add a question reading to history before explicit save", async () => {
     const { service } = createService();
     const reading = service.startQuestion("self", "我该如何理解最近的犹豫？");
-    const interpreted = await service.interpretQuestion(reading.id, "success");
+    const interpreted = await service.interpretQuestion(reading.id);
     expect(interpreted.interpretation?.source).toBe("mock");
     expect(service.listHistory()).toHaveLength(0);
     service.saveQuestionToHistory(reading.id);
@@ -41,7 +42,7 @@ describe("ReadingService", () => {
     const reading = service.startQuestion("relationship", "我该如何理解这段关系的变化？", "three");
     expect(reading.cards).toHaveLength(3);
     expect(new Set(reading.cards.map((card) => card.cardId)).size).toBe(3);
-    const interpreted = await service.interpretQuestion(reading.id, "success");
+    const interpreted = await service.interpretQuestion(reading.id);
     expect(interpreted.interpretation?.content.cards.map((card) => card.positionLabel)).toEqual([
       "现状",
       "关键影响",
@@ -61,24 +62,24 @@ describe("ReadingService", () => {
   it("discards an unsaved question when the flow ends", async () => {
     const { service, repository } = createService();
     const reading = service.startQuestion("self", "我该如何理解最近的犹豫？");
-    await service.interpretQuestion(reading.id, "success");
+    await service.interpretQuestion(reading.id);
     service.discardQuestion(reading.id);
     expect(repository.getWorking()).toBeUndefined();
     expect(service.listHistory()).toHaveLength(0);
   });
 
   it.each(["timeout", "invalid", "unsafe"] as const)("falls back for mock mode %s", async (mode) => {
-    const { service } = createService();
+    const { service } = createService([0.4, 0.4, 0.4], mode);
     const reading = service.startQuestion("career", "我该如何看待现在工作的停滞？");
-    const interpreted = await service.interpretQuestion(reading.id, mode);
+    const interpreted = await service.interpretQuestion(reading.id);
     expect(interpreted.status).toBe("fallback_completed");
     expect(interpreted.interpretation?.source).toBe("fallback");
   });
 
   it("falls back with all three card facts preserved", async () => {
-    const { service } = createService([0.1, 0.2, 0.3, 0.8, 0.6, 0.3, 0.4]);
+    const { service } = createService([0.1, 0.2, 0.3, 0.8, 0.6, 0.3, 0.4], "invalid");
     const reading = service.startQuestion("career", "我该如何看待现在工作的停滞？", "three");
-    const interpreted = await service.interpretQuestion(reading.id, "invalid");
+    const interpreted = await service.interpretQuestion(reading.id);
     expect(interpreted.interpretation?.content.cards).toHaveLength(3);
     expect(interpreted.interpretation?.content.cards.map((card) => card.cardId)).toEqual(
       reading.cards.map((card) => card.cardId),
@@ -98,7 +99,7 @@ describe("ReadingService", () => {
   it("deletes saved local history", async () => {
     const { service } = createService();
     const reading = service.startQuestion("relationship", "我该如何理解这段关系的变化？");
-    await service.interpretQuestion(reading.id, "success");
+    await service.interpretQuestion(reading.id);
     service.saveQuestionToHistory(reading.id);
     service.deleteHistory(reading.id);
     expect(service.listHistory()).toHaveLength(0);
@@ -108,7 +109,7 @@ describe("ReadingService", () => {
     const { service } = createService();
     service.startDaily();
     const reading = service.startQuestion("relationship", "我该如何理解这段关系的变化？");
-    await service.interpretQuestion(reading.id, "success");
+    await service.interpretQuestion(reading.id);
     service.saveQuestionToHistory(reading.id);
     expect(service.listHistory()).toHaveLength(2);
     service.clearHistory();

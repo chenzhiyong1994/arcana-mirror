@@ -4,7 +4,6 @@ import { buildFallbackInterpretation, buildStaticDailyInterpretation, validateIn
 import { transitionReading } from "./reading-state";
 import type {
   InterpretationProvider,
-  MockMode,
   Orientation,
   Reading,
   ReadingRepository,
@@ -55,7 +54,7 @@ export class ReadingService {
     return reading;
   }
 
-  async interpretQuestion(id: string, mode: MockMode): Promise<Reading> {
+  async interpretQuestion(id: string): Promise<Reading> {
     const reading = this.getById(id);
     if (!reading) throw new Error("READING_NOT_FOUND");
     if (reading.type !== "question") return reading;
@@ -67,18 +66,22 @@ export class ReadingService {
     const cards = reading.cards.map((drawn) => getCard(drawn.cardId));
 
     try {
-      const raw = await this.dependencies.provider.generate(reading, cards, mode);
+      const raw = await this.dependencies.provider.generate(reading, cards);
       const validation = validateInterpretation(raw, reading);
       if (!validation.valid) {
         return this.completeWithFallback(reading, cards, validation.reasonCode);
       }
       transitionReading(reading, "completed");
-      reading.interpretation = { source: "mock", validationStatus: "valid", content: validation.content };
+      reading.interpretation = {
+        source: this.dependencies.provider.source,
+        validationStatus: "valid",
+        content: validation.content,
+      };
       reading.updatedAt = this.now().toISOString();
       this.persistWorkingOrSaved(reading);
       return reading;
     } catch (error) {
-      const reasonCode = error instanceof Error ? error.message : "MOCK_PROVIDER_ERROR";
+      const reasonCode = error instanceof Error ? error.message : "AI_PROVIDER_ERROR";
       return this.completeWithFallback(reading, cards, reasonCode);
     }
   }

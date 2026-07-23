@@ -14,7 +14,13 @@ function toItem(reading: Reading) {
     kind: reading.type === "daily" ? "每日一牌" : `${TOPIC_LABELS[reading.topic ?? "self"]} · ${isThree ? "三牌" : "单牌"}`,
     date: reading.businessDate,
     card: cards.map((card, index) => `${card.name} · ${orientationLabel(reading.cards[index].orientation)}`).join(" / "),
-    source: reading.interpretation?.source === "fallback" ? "降级" : reading.interpretation?.source === "mock" ? "模拟 AI" : "静态牌义",
+    source: reading.interpretation?.source === "fallback"
+      ? "基础牌义"
+      : reading.interpretation?.source === "ai"
+        ? "HY3 AI"
+        : reading.interpretation?.source === "mock"
+          ? "兼容解读"
+          : "静态牌义",
     imagePath: getCardImagePath(reading.cards[0].cardId),
     reversed: reading.cards[0].orientation === "reversed",
   };

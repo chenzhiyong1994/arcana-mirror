@@ -1,6 +1,6 @@
 import type { SafetyDecision } from "./types";
 
-const CRISIS_PATTERN = /(自杀|不想活|结束生命|伤害自己|自残|杀了他|杀了她|伤害他人)/u;
+const CRISIS_PATTERN = /(自杀|想死|寻死|轻生|不想活|活着没意思|结束(?:自己|我的)?生命|伤害自己|伤害我自己|自残|割腕|跳楼|杀了他|杀了她|杀人|伤人|伤害他人)/u;
 const ABUSE_PATTERN = /(赌博|下注|操控(?:他|她|别人)|控制(?:他|她|别人)|报复|违法|骗取)/u;
 const PROFESSIONAL_PATTERN = /(怀孕|疾病|癌症|诊断|吃什么药|停药|法律责任|判刑|起诉|股票|基金|投资|涨停|彩票)/u;
 const PREDICTION_PATTERN = /(一定会|会不会|能不能复合|什么时候(?:结婚|复合|发财)|爱不爱我|结果一定|命中注定)/u;

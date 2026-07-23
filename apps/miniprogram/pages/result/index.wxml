@@ -2,10 +2,10 @@
   <view wx:if="{{loading}}" class="loading-state">
     <image class="loading-seal" src="/assets/branding/arcana-mirror-logo.jpg" mode="aspectFill" />
     <view class="loading-orbit"></view>
-    <view class="eyebrow">READING THE MIRROR</view>
-    <view class="title">正在整理牌面</view>
+    <view class="eyebrow">HY3 · READING THE MIRROR</view>
+    <view class="title">AI 正在整理牌面</view>
     <view class="loading-dots"><text></text><text></text><text></text></view>
-    <view class="subtitle">让三张牌先彼此说话，再把线索交给你。</view>
+    <view class="subtitle">它会结合你的问题与牌面生成个性化解读，请稍候。</view>
   </view>
 
   <view wx:elif="{{missing}}" class="panel missing-panel">

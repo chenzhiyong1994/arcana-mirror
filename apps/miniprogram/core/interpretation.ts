@@ -1,4 +1,5 @@
 import { getCardDomainInsights } from "./card-domain-insights";
+import { getCard } from "./cards";
 import { getReadingPosition, getReadingSpread } from "./spreads";
 import type {
   InterpretationCard,
@@ -9,7 +10,8 @@ import type {
   Topic,
 } from "./types";
 
-export const FIXED_DISCLAIMER = "本内容由本地模拟数据生成，仅供娱乐和自我反思；爱情、财运与事业内容不构成确定性预测或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
+export const FIXED_DISCLAIMER = "本内容由 AI 结合牌面生成，仅供娱乐和自我反思；感情、事业与个人成长内容不构成确定性预测或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
+export const LOCAL_DISCLAIMER = "本内容依据本地牌义生成，仅供娱乐和自我反思；感情、事业与个人成长内容不构成确定性预测或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
 
 const cardInsightProperties = {
   cardId: { type: "string" },
@@ -83,13 +85,17 @@ export function validateInterpretation(
   for (let index = 0; index < candidate.cards.length; index += 1) {
     const outputCard = candidate.cards[index];
     const fact = reading.cards[index];
+    const card = getCard(fact.cardId);
     const position = getReadingPosition(reading, index);
+    const controlledMeaning = fact.orientation === "upright" ? card.upright : card.reversed;
     if (
       !outputCard
       || outputCard.cardId !== fact.cardId
+      || outputCard.cardName !== card.name
       || outputCard.orientation !== fact.orientation
       || outputCard.position !== position.key
       || outputCard.positionLabel !== position.label
+      || outputCard.basis !== controlledMeaning
     ) {
       return { valid: false, reasonCode: "CARD_FACT_MISMATCH" };
     }
@@ -103,7 +109,7 @@ export function validateInterpretation(
   if (!isStringInRange(candidate.microAction, 1, 120)) return { valid: false, reasonCode: "INVALID_ACTION" };
   if (candidate.disclaimer !== FIXED_DISCLAIMER) return { valid: false, reasonCode: "INVALID_DISCLAIMER" };
   const serialized = JSON.stringify(candidate);
-  if (/(百分百|命中注定|必须分手|一定会复合|停止治疗|稳赚|保证盈利|必定发财)/u.test(serialized)) {
+  if (/(百分百|命中注定|必须分手|一定会复合|停止治疗|不用就医|稳赚|保证盈利|必定发财|转运消灾|替你决定)/u.test(serialized)) {
     return { valid: false, reasonCode: "UNSAFE_OUTPUT" };
   }
   return { valid: true, content: candidate as InterpretationContent };
@@ -166,17 +172,17 @@ export function buildFallbackInterpretation(reading: Reading, cards: TarotCard[]
     reading,
     card,
     index,
-    "个性化模拟解读暂时不可用。这份基础解读不推断你的具体处境，请只把它作为整理问题的一个观察角度。",
+    "AI 个性化解读暂时不可用。这份基础解读不推断你的具体处境，请只把它作为整理问题的一个观察角度。",
   ));
   return {
-    summary: `个性化模拟解读暂时不可用。先回到${cards.map((card) => card.name).join("、")}的受控牌义，逐张核对已经发生的事实与自己的感受。`,
+    summary: `AI 个性化解读暂时不可用。先回到${cards.map((card) => card.name).join("、")}的受控牌义，逐张核对已经发生的事实与自己的感受。`,
     cards: interpretedCards,
     synthesis: buildSynthesis(reading, cards),
     reflectionQuestion: getReadingSpread(reading) === "three"
       ? "现状、关键影响和行动建议之间，哪一处最贴近你已经确认的事实？"
       : cards[0].reflection,
     microAction: "写下一条已知事实，再完成一个不依赖他人配合的小动作。",
-    disclaimer: FIXED_DISCLAIMER,
+    disclaimer: LOCAL_DISCLAIMER,
   };
 }
 
@@ -194,7 +200,7 @@ export function buildStaticDailyInterpretation(reading: Reading, card: TarotCard
     synthesis: `${card.name}今天更像一面镜子。只留下最贴近现实的一句，不必把所有含义都带走。`,
     reflectionQuestion: card.reflection,
     microAction: "留出三分钟，写下第一反应和一条可以核实的事实。",
-    disclaimer: FIXED_DISCLAIMER,
+    disclaimer: LOCAL_DISCLAIMER,
   };
 }
 

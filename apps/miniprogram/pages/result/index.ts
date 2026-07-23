@@ -2,7 +2,7 @@ import { getCard, getCardImagePath } from "../../core/cards";
 import { buildTopicInsight, orientationLabel } from "../../core/interpretation";
 import { getReadingPosition, getReadingSpread } from "../../core/spreads";
 import type { InterpretationCard, Reading, Topic } from "../../core/types";
-import { getMockMode, readingService } from "../../services/app-services";
+import { readingService } from "../../services/app-services";
 
 const TOPIC_LABELS: Record<Topic, string> = {
   relationship: "感情",
@@ -49,7 +49,13 @@ function toView(reading: Reading, fromHistory: boolean) {
     question: reading.question ?? "",
     hideQuestion: fromHistory && Boolean(reading.question),
     cards,
-    sourceLabel: interpretation?.source === "fallback" ? "基础牌义降级" : interpretation?.source === "static" ? "静态牌义" : "本地模拟 AI",
+    sourceLabel: interpretation?.source === "fallback"
+      ? "基础牌义降级"
+      : interpretation?.source === "static"
+        ? "静态牌义"
+        : interpretation?.source === "ai"
+          ? "HY3 个性化解读"
+          : "本地兼容解读",
     isFallback: interpretation?.source === "fallback",
     reasonCode: interpretation?.reasonCode ?? "",
     content: content ? {
@@ -90,7 +96,7 @@ Page({
     }
     if (reading.type === "question" && !reading.interpretation) {
       try {
-        reading = await readingService.interpretQuestion(id, getMockMode());
+        reading = await readingService.interpretQuestion(id);
       } catch {
         this.setData({ loading: false, missing: true });
         return;
