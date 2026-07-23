@@ -29,7 +29,7 @@ describe("ReadingService", () => {
 
   it("does not add a question reading to history before explicit save", async () => {
     const { service } = createService();
-    const reading = service.startQuestion("self", "我该如何理解最近的犹豫？");
+    const reading = service.startQuestion("我该如何理解最近的犹豫？");
     const interpreted = await service.interpretQuestion(reading.id);
     expect(interpreted.interpretation?.source).toBe("mock");
     expect(service.listHistory()).toHaveLength(0);
@@ -39,7 +39,7 @@ describe("ReadingService", () => {
 
   it("draws three unique cards and returns position-aware focused interpretations", async () => {
     const { service } = createService([0.1, 0.2, 0.1, 0.8, 0.6, 0.3, 0.4]);
-    const reading = service.startQuestion("relationship", "我该如何理解这段关系的变化？", "three");
+    const reading = service.startQuestion("我该如何理解这段关系的变化？", "three");
     expect(reading.cards).toHaveLength(3);
     expect(new Set(reading.cards.map((card) => card.cardId)).size).toBe(3);
     const interpreted = await service.interpretQuestion(reading.id);
@@ -48,20 +48,20 @@ describe("ReadingService", () => {
       "关键影响",
       "行动建议",
     ]);
-    expect(interpreted.interpretation?.content.cards[0].topicLabel).toBe("感情");
+    expect(interpreted.interpretation?.content.cards[0].topicLabel).toBe("你的问题");
     expect(interpreted.interpretation?.content.cards[0].topicInsight).toBeTruthy();
     expect(interpreted.interpretation?.content.cards[0].wealthInsight).toBeUndefined();
   });
 
   it("rejects saving a question before an interpretation exists", () => {
     const { service } = createService();
-    const reading = service.startQuestion("self", "我该如何理解最近的犹豫？");
+    const reading = service.startQuestion("我该如何理解最近的犹豫？");
     expect(() => service.saveQuestionToHistory(reading.id)).toThrow("READING_NOT_SAVABLE");
   });
 
   it("discards an unsaved question when the flow ends", async () => {
     const { service, repository } = createService();
-    const reading = service.startQuestion("self", "我该如何理解最近的犹豫？");
+    const reading = service.startQuestion("我该如何理解最近的犹豫？");
     await service.interpretQuestion(reading.id);
     service.discardQuestion(reading.id);
     expect(repository.getWorking()).toBeUndefined();
@@ -70,7 +70,7 @@ describe("ReadingService", () => {
 
   it.each(["timeout", "invalid", "unsafe"] as const)("falls back for mock mode %s", async (mode) => {
     const { service } = createService([0.4, 0.4, 0.4], mode);
-    const reading = service.startQuestion("career", "我该如何看待现在工作的停滞？");
+    const reading = service.startQuestion("我该如何看待现在工作的停滞？");
     const interpreted = await service.interpretQuestion(reading.id);
     expect(interpreted.status).toBe("fallback_completed");
     expect(interpreted.interpretation?.source).toBe("fallback");
@@ -78,7 +78,7 @@ describe("ReadingService", () => {
 
   it("falls back with all three card facts preserved", async () => {
     const { service } = createService([0.1, 0.2, 0.3, 0.8, 0.6, 0.3, 0.4], "invalid");
-    const reading = service.startQuestion("career", "我该如何看待现在工作的停滞？", "three");
+    const reading = service.startQuestion("我该如何看待现在工作的停滞？", "three");
     const interpreted = await service.interpretQuestion(reading.id);
     expect(interpreted.interpretation?.content.cards).toHaveLength(3);
     expect(interpreted.interpretation?.content.cards.map((card) => card.cardId)).toEqual(
@@ -91,14 +91,14 @@ describe("ReadingService", () => {
     for (let index = 0; index < TAROT_CARDS.length; index += 1) {
       const cardRandom = (index + 0.1) / TAROT_CARDS.length;
       const { service } = createService([cardRandom, 0.25, 0.25]);
-      seen.add(service.startQuestion("self", "我该如何理解当下的选择？").cards[0].cardId);
+      seen.add(service.startQuestion("我该如何理解当下的选择？").cards[0].cardId);
     }
     expect(seen.size).toBe(TAROT_CARDS.length);
   });
 
   it("deletes saved local history", async () => {
     const { service } = createService();
-    const reading = service.startQuestion("relationship", "我该如何理解这段关系的变化？");
+    const reading = service.startQuestion("我该如何理解这段关系的变化？");
     await service.interpretQuestion(reading.id);
     service.saveQuestionToHistory(reading.id);
     service.deleteHistory(reading.id);
@@ -108,7 +108,7 @@ describe("ReadingService", () => {
   it("clears all saved local history", async () => {
     const { service } = createService();
     service.startDaily();
-    const reading = service.startQuestion("relationship", "我该如何理解这段关系的变化？");
+    const reading = service.startQuestion("我该如何理解这段关系的变化？");
     await service.interpretQuestion(reading.id);
     service.saveQuestionToHistory(reading.id);
     expect(service.listHistory()).toHaveLength(2);

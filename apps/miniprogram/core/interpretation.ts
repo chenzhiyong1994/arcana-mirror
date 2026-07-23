@@ -12,6 +12,7 @@ import type {
 
 export const FIXED_DISCLAIMER = "本内容由 AI 结合牌面生成，仅供娱乐和自我反思；感情、事业与个人成长内容不构成确定性预测或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
 export const LOCAL_DISCLAIMER = "本内容依据本地牌义生成，仅供娱乐和自我反思；感情、事业与个人成长内容不构成确定性预测或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
+export const QUESTION_FOCUS_LABEL = "你的问题";
 
 const cardInsightProperties = {
   cardId: { type: "string" },
@@ -30,7 +31,12 @@ export const interpretationJsonSchema = {
   required: ["summary", "cards", "synthesis", "reflectionQuestion", "microAction", "disclaimer"],
   additionalProperties: false,
   properties: {
-    summary: { type: "string", minLength: 20, maxLength: 260 },
+    summary: {
+      type: "string",
+      minLength: 20,
+      maxLength: 260,
+      description: "直接指出核心张力或观察，不复述、引用、补全用户问题，也不用“关于你提到的”等套话开头。",
+    },
     cards: {
       type: "array",
       minItems: 1,
@@ -72,6 +78,14 @@ function isValidCardContent(card: InterpretationCard): boolean {
     && isStringInRange(card.topicInsight, 1, 240);
 }
 
+function normalizeForComparison(value: string): string {
+  return value.normalize("NFKC").replace(/[\p{P}\p{S}\s]/gu, "").toLowerCase();
+}
+
+export function getExpectedTopicLabel(reading: Reading): string {
+  return reading.topic ? topicLabels[reading.topic] : QUESTION_FOCUS_LABEL;
+}
+
 export function validateInterpretation(
   value: unknown,
   reading: Reading,
@@ -79,6 +93,14 @@ export function validateInterpretation(
   if (!value || typeof value !== "object") return { valid: false, reasonCode: "INVALID_OBJECT" };
   const candidate = value as Partial<InterpretationContent>;
   if (!isStringInRange(candidate.summary, 20, 260)) return { valid: false, reasonCode: "INVALID_SUMMARY" };
+  const normalizedQuestion = normalizeForComparison(reading.question ?? "");
+  const normalizedSummary = normalizeForComparison(candidate.summary);
+  if (
+    /(关于你提到的|你提到的(?:问题|困扰)|你的问题(?:是|在于)|围绕(?:你的|这个)(?:问题|困扰)|对于你提出的)/u.test(candidate.summary)
+    || (normalizedQuestion.length >= 8 && normalizedSummary.includes(normalizedQuestion))
+  ) {
+    return { valid: false, reasonCode: "SUMMARY_REPEATS_QUESTION" };
+  }
   if (!Array.isArray(candidate.cards) || candidate.cards.length !== reading.cards.length) {
     return { valid: false, reasonCode: "CARD_COUNT_MISMATCH" };
   }
@@ -100,7 +122,7 @@ export function validateInterpretation(
       return { valid: false, reasonCode: "CARD_FACT_MISMATCH" };
     }
     if (!isValidCardContent(outputCard)) return { valid: false, reasonCode: "INVALID_CARD_CONTENT" };
-    if (outputCard.topicLabel !== topicLabels[reading.topic ?? "self"]) {
+    if (outputCard.topicLabel !== getExpectedTopicLabel(reading)) {
       return { valid: false, reasonCode: "TOPIC_MISMATCH" };
     }
   }
@@ -122,9 +144,12 @@ const topicLabels: Record<Topic, string> = {
   self: "自我",
 };
 
-export function buildTopicInsight(card: TarotCard, orientation: Orientation, topic: Topic = "self") {
+export function buildTopicInsight(card: TarotCard, orientation: Orientation, topic?: Topic) {
   const domain = getCardDomainInsights(card.id);
-  const topicInsight = topic === "relationship"
+  const basis = orientation === "upright" ? card.upright : card.reversed;
+  const topicInsight = !topic
+    ? `把“${basis}”与已经发生的事实对照，留意其中哪些属于你的感受、判断、边界与下一步选择。`
+    : topic === "relationship"
     ? domain.love
     : topic === "career"
       ? domain.career
@@ -132,9 +157,9 @@ export function buildTopicInsight(card: TarotCard, orientation: Orientation, top
         ? `${domain.love}把重点放在沟通、边界和可核实的互动，而不是替对方下结论。`
         : domain.selfGrowth;
   return {
-    topicLabel: topicLabels[topic],
+    topicLabel: topic ? topicLabels[topic] : QUESTION_FOCUS_LABEL,
     topicInsight,
-    basis: orientation === "upright" ? card.upright : card.reversed,
+    basis,
   };
 }
 
@@ -146,7 +171,7 @@ export function buildInterpretationCard(
 ): InterpretationCard {
   const drawn = reading.cards[index];
   const position = getReadingPosition(reading, index);
-  const insights = buildTopicInsight(card, drawn.orientation, reading.topic ?? "self");
+  const insights = buildTopicInsight(card, drawn.orientation, reading.topic);
   return {
     cardId: card.id,
     cardName: card.name,

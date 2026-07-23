@@ -11,13 +11,13 @@ const TOPIC_LABELS: Record<Topic, string> = {
   self: "自我",
 };
 
-function toView(reading: Reading, fromHistory: boolean) {
+function toView(reading: Reading) {
   const interpretation = reading.interpretation;
   const isThree = getReadingSpread(reading) === "three";
   const cards = reading.cards.map((drawn, index) => {
     const card = getCard(drawn.cardId);
     const output = interpretation?.content.cards[index] as Partial<InterpretationCard> | undefined;
-    const fallback = buildTopicInsight(card, drawn.orientation, reading.topic ?? "self");
+    const fallback = buildTopicInsight(card, drawn.orientation, reading.topic);
     const position = getReadingPosition(reading, index);
     return {
       cardId: card.id,
@@ -44,10 +44,9 @@ function toView(reading: Reading, fromHistory: boolean) {
     isThree,
     saved: reading.saved,
     date: reading.businessDate,
-    topic: reading.topic ? TOPIC_LABELS[reading.topic] : "每日一牌",
+    topic: reading.type === "daily" ? "每日一牌" : reading.topic ? TOPIC_LABELS[reading.topic] : "主题解读",
     title: isThree ? "三牌综合解读" : `${cards[0].name} · ${cards[0].orientationLabel}`,
     question: reading.question ?? "",
-    hideQuestion: fromHistory && Boolean(reading.question),
     cards,
     sourceLabel: interpretation?.source === "fallback"
       ? "基础牌义降级"
@@ -102,7 +101,7 @@ Page({
         return;
       }
     }
-    const view = toView(reading, fromHistory);
+    const view = toView(reading);
     this.setData({ loading: false, view, activeCard: view.cards[0] });
   },
 
@@ -137,7 +136,7 @@ Page({
   saveToHistory() {
     try {
       const reading = readingService.saveQuestionToHistory(this.data.id);
-      const view = toView(reading, false);
+      const view = toView(reading);
       this.setData({ view, activeCard: view.cards[this.data.activeCardIndex] ?? view.cards[0] });
       wx.showToast({ title: "已保存到本地历史", icon: "success" });
     } catch {

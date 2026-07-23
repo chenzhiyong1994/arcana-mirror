@@ -32,11 +32,12 @@
 .visual-orientation { margin-top: 4rpx; color: var(--muted); font-size: 18rpx; text-align: center; }
 .spread-preview-hint { margin: -17rpx 0 35rpx; color: rgba(184,150,87,.56); font-size: 17rpx; letter-spacing: 1rpx; text-align: center; }
 .spread-preview-hint text { margin-right: 6rpx; color: var(--gold); font-size: 24rpx; }
-.question-line { display: flex; flex-wrap: wrap; align-items: center; margin: 20rpx 0 0; padding: 20rpx 0; border-top: 1rpx solid rgba(184,150,87,.18); border-bottom: 1rpx solid rgba(184,150,87,.18); }
+.question-context { position: relative; display: flex; flex-wrap: wrap; align-items: center; margin: 28rpx 0 0; padding: 26rpx 28rpx 26rpx 34rpx; overflow: hidden; border: 1rpx solid rgba(184,150,87,.28); border-left: 4rpx solid rgba(224,191,121,.72); background: linear-gradient(100deg, rgba(184,150,87,.09), rgba(244,234,215,.018)); }
+.question-mark { position: absolute; top: -14rpx; right: 22rpx; color: rgba(184,150,87,.14); font-family: Georgia, serif; font-size: 112rpx; line-height: 1; }
 .question-label { color: var(--gold); font-size: 21rpx; letter-spacing: 2rpx; }
 .question-toggle { margin-left: auto; color: var(--muted); font-size: 21rpx; }
 .question-toggle text { margin-left: 7rpx; color: var(--gold); }
-.question-text { width: 100%; padding: 18rpx 4rpx 4rpx; color: var(--paper-dim); font-size: 28rpx; line-height: 1.68; }
+.question-text { position: relative; z-index: 1; width: 100%; padding: 18rpx 0 0; color: var(--paper-dim); font-size: 28rpx; line-height: 1.68; }
 .lead-reading { position: relative; margin-top: 48rpx; padding: 40rpx 34rpx 38rpx; overflow: hidden; border: 1rpx solid rgba(184,150,87,.36); background: linear-gradient(140deg, rgba(184,150,87,.13), rgba(244,234,215,.025) 52%, rgba(12,10,8,.6)); }
 .lead-reading::after { position: absolute; right: -62rpx; bottom: -82rpx; width: 220rpx; height: 220rpx; border: 1rpx solid rgba(184,150,87,.12); border-radius: 50%; content: ""; }
 .lead-symbol { position: absolute; top: 28rpx; right: 30rpx; color: rgba(224,191,121,.58); font-size: 22rpx; }

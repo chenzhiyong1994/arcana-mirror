@@ -268,7 +268,7 @@ sequenceDiagram
 
 推荐使用运行时 Schema 库统一定义 DTO、模型结构化输出和服务端验证。验证采用“确定性三子层 + 可选增强层”：
 
-v0.3 当前卡片输出字段为 `cardId`、`cardName`、`orientation`、`position`、`positionLabel`、`basis`、`contextualMeaning`、`topicLabel`、`topicInsight`。`topicInsight` 必须对应 Reading 已固化的 `topic`；v0.2 的 `loveInsight`、`wealthInsight`、`careerInsight`、`selfGrowthInsight` 仅保留为客户端读取旧本地记录的可选字段，不再允许出现在新 Provider 输出中。整份输出另外包含 `summary`、`synthesis`、`reflectionQuestion`、`microAction` 和固定 `disclaimer`。
+当前卡片输出字段为 `cardId`、`cardName`、`orientation`、`position`、`positionLabel`、`basis`、`contextualMeaning`、`topicLabel`、`topicInsight`。新 Reading 不再固化手动主题，`topicLabel` 必须为“你的问题”，`topicInsight` 直接围绕问题识别出的重点；旧 Reading 若带有 `topic`，继续校验原主题标签。v0.2 的 `loveInsight`、`wealthInsight`、`careerInsight`、`selfGrowthInsight` 仅保留为客户端读取旧本地记录的可选字段，不再允许出现在新 Provider 输出中。整份输出另外包含 `summary`、`synthesis`、`reflectionQuestion`、`microAction` 和固定 `disclaimer`；`summary` 必须提供新的核心观察，不得复述、引用或套话改写用户问题。
 
 1. **语法层**：合法 JSON、字段类型、长度、枚举；
 2. **语义层**：牌数、牌名、牌位、朝向必须与 Reading 事实一致；

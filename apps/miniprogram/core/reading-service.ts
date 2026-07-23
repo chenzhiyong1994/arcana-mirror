@@ -48,8 +48,8 @@ export class ReadingService {
     return reading;
   }
 
-  startQuestion(topic: Topic, question: string, spread: SpreadType = "single"): Reading {
-    const reading = this.createBaseReading("question", topic, question.trim(), spread);
+  startQuestion(question: string, spread: SpreadType = "single"): Reading {
+    const reading = this.createBaseReading("question", undefined, question.trim(), spread);
     this.dependencies.repository.setWorking(reading);
     return reading;
   }

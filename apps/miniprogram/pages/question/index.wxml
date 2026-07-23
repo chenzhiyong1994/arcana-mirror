@@ -27,15 +27,8 @@
     </view>
   </view>
 
-  <view class="form-section enter-up delay-2">
-    <view class="field-head"><text>这件事关于</text><text class="field-index">II</text></view>
-    <view class="topic-grid">
-      <button wx:for="{{topics}}" wx:key="value" class="topic {{selectedTopic === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectTopic"><text class="topic-dot">✦</text>{{item.label}}</button>
-    </view>
-  </view>
-
   <view class="form-section enter-up delay-3">
-    <view class="field-head"><text>写下你的困扰</text><text class="field-index">III</text></view>
+    <view class="field-head"><text>写下你的困扰</text><text class="field-index">II</text></view>
     <view class="question-shell">
       <view class="quote-mark">“</view>
       <textarea class="question-input" value="{{question}}" maxlength="200" placeholder="例如：我该如何理解最近和朋友之间的疏远？" placeholder-class="placeholder" bindinput="updateQuestion" />

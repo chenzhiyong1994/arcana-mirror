@@ -36,10 +36,11 @@
     </view>
     <view class="spread-preview-hint"><text>⌕</text> {{view.isThree ? '轻触当前牌查看大图 · 轻触其他牌切换解读' : '轻触牌面查看大图'}}</view>
 
-    <view wx:if="{{view.question}}" class="question-line enter-up delay-2" bindtap="toggleQuestion">
-      <view class="question-label">你的问题</view>
+    <view wx:if="{{view.question}}" class="question-context enter-up delay-2" bindtap="toggleQuestion">
+      <view class="question-mark">“</view>
+      <view class="question-label">你带来的困扰</view>
       <view class="question-toggle">{{questionExpanded ? '收起' : '回看'}} <text>{{questionExpanded ? '−' : '+'}}</text></view>
-      <view wx:if="{{questionExpanded}}" class="question-text">“{{view.question}}”</view>
+      <view wx:if="{{questionExpanded}}" class="question-text">{{view.question}}</view>
     </view>
 
     <view class="lead-reading enter-up delay-2">
@@ -73,7 +74,7 @@
         </view>
 
         <view class="topic-insight">
-          <view class="topic-insight-label">关于{{activeCard.topicLabel}}</view>
+          <view class="topic-insight-label">围绕{{activeCard.topicLabel}}</view>
           <view class="topic-insight-text">{{activeCard.topicInsight}}</view>
         </view>
 
