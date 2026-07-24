@@ -4,11 +4,13 @@
 
 推荐采用：
 
-> **v1.0 当前实现：微信原生小程序（TypeScript）+ 微信本地存储 Repository + CloudBase AI `hy3` Interpretation Provider。云函数、云数据库历史和跨设备账号继续后置。**
+> **v1.1 当前实现：微信原生小程序（TypeScript）+ 78 张本地完整牌库 + 微信本地存储 Repository + CloudBase AI `hy3` Interpretation Provider。云函数、云数据库历史和跨设备账号继续后置。**
 
 页面依赖 `ReadingRepository` 与 `InterpretationProvider` 契约：Reading、历史与图鉴使用微信本地存储，主题解读的 Provider 已替换为小程序端 CloudBase AI 调用。应用初始化固定 CloudBase 环境 `<your-cloudbase-env-id>`，Provider 为 `cloudbase`，模型为 `hy3`，硬超时为 25 秒。每日一牌和 AI 失败路径继续使用受控本地牌义。
 
 v0.2 在该边界内增加 `SpreadType`、最多三张牌的结构化解读，以及独立的 `CardCollectionRepository`。图鉴只记录卡牌 ID、首次/最近翻开时间、次数和已见正逆位，不复制 Reading 或用户问题；删除历史不会删除图鉴。旧 v0.1 Reading 没有 `spread` 字段时按单牌兼容读取。
+
+v1.1 将 Card 只读数据扩展为 22 张大阿尔卡那与 56 张小阿尔卡那。旧 `major-*` ID 不变，旧 Reading 无需迁移。78 张展示牌面和仪式/结果/历史/图鉴页面位于普通分包 `packages/deck`；主包只保留首页所需的轻量缩略图与卡背。`getCardImagePath` 与 `getCardThumbnailPath` 显式区分两种资源路径，主包和分包各自保持低于 2 MiB。
 
 首版不采用微服务、消息队列、Redis、向量数据库、Kubernetes 或复杂工作流引擎。这些能力对当前访问规模没有必要，反而会稀释项目重点。
 
@@ -139,6 +141,30 @@ docs/
 ```
 
 MVP 使用 CloudBase 时仍保留上述逻辑边界；不要把所有代码堆进一个云函数文件。
+
+### 5.1 v1.1 牌库与资源布局
+
+```text
+apps/miniprogram/
+  core/cards.ts                    # 22+56 合并、查找与资源路径
+  core/minor-cards.ts              # 56 张受控牌义
+  assets/card-thumbs/              # 主包 78 张 192×288 缩略图
+  assets/cards/card-back.jpg       # 主包卡背
+  packages/deck/
+    pages/                         # 仪式、结果、历史、图鉴
+    assets/cards/                  # 78 张 384×576 展示图 + 卡背
+assets/tarot-card-style/
+  minor-arcana/faces/              # 56 张 1024×1536 正式源图
+```
+
+约束：
+
+- `TAROT_CARDS` 必须包含连续序号 0—77，ID 和图片路径唯一；
+- 小阿尔卡那四花色各 14 张，牌阶固定为 A、II—X、PAGE、KNIGHT、QUEEN、KING；
+- 主页不得引用 `packages/deck` 内图片，使用 `getCardThumbnailPath`；
+- `deck` 分包页面使用 `getCardImagePath` 和分包卡背；
+- 正式源图不直接进入小程序包，发布图和缩略图由源图确定性生成；
+- `npm run validate:assets` 检查数量、文件名、尺寸、对应关系和包体预算。
 
 ## 6. 后续云函数目标契约（v1.0 未实现）
 

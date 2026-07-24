@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "心镜解读",
+  "usingComponents": {
+    "card-preview": "/components/card-preview/index"
+  }
+}

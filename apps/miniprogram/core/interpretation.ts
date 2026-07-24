@@ -145,17 +145,18 @@ const topicLabels: Record<Topic, string> = {
 };
 
 export function buildTopicInsight(card: TarotCard, orientation: Orientation, topic?: Topic) {
-  const domain = getCardDomainInsights(card.id);
   const basis = orientation === "upright" ? card.upright : card.reversed;
-  const topicInsight = !topic
-    ? `把“${basis}”与已经发生的事实对照，留意其中哪些属于你的感受、判断、边界与下一步选择。`
-    : topic === "relationship"
-    ? domain.love
-    : topic === "career"
-      ? domain.career
-      : topic === "interpersonal"
-        ? `${domain.love}把重点放在沟通、边界和可核实的互动，而不是替对方下结论。`
-        : domain.selfGrowth;
+  let topicInsight = `把“${basis}”与已经发生的事实对照，留意其中哪些属于你的感受、判断、边界与下一步选择。`;
+  if (topic) {
+    const domain = getCardDomainInsights(card.id, card);
+    topicInsight = topic === "relationship"
+      ? domain.love
+      : topic === "career"
+        ? domain.career
+        : topic === "interpersonal"
+          ? `${domain.love}把重点放在沟通、边界和可核实的互动，而不是替对方下结论。`
+          : domain.selfGrowth;
+  }
   return {
     topicLabel: topic ? topicLabels[topic] : QUESTION_FOCUS_LABEL,
     topicInsight,

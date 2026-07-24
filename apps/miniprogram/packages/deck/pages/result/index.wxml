@@ -1,0 +1,121 @@
+<!-- Card experience subpackage page. -->
+<view class="page result-page">
+  <view wx:if="{{loading}}" class="loading-state">
+    <image class="loading-seal" src="/assets/branding/arcana-mirror-logo.jpg" mode="aspectFill" />
+    <view class="loading-orbit"></view>
+    <view class="eyebrow">HY3 · READING THE MIRROR</view>
+    <view class="title">AI 正在整理牌面</view>
+    <view class="loading-dots"><text></text><text></text><text></text></view>
+    <view class="subtitle">它会结合你的问题与牌面生成个性化解读，请稍候。</view>
+  </view>
+
+  <view wx:elif="{{missing}}" class="panel missing-panel">
+    <view class="eyebrow">MIRROR CLOSED</view>
+    <view class="title small">没有找到这次解读</view>
+    <view class="subtitle">它可能没有保存，或已经被删除。</view>
+    <button class="primary" bindtap="returnHome">返回首页</button>
+  </view>
+
+  <block wx:elif="{{view}}">
+    <view class="result-head enter-up">
+      <view class="step-mark">03 / 03 · INTERPRETATION</view>
+      <view class="eyebrow">{{view.topic}} · {{view.date}}</view>
+      <view class="title">{{view.title}}</view>
+      <view class="source-line"><text class="source-dot"></text>{{view.sourceLabel}}{{view.isFallback ? ' · 已切换为基础牌义' : ''}}</view>
+    </view>
+
+    <view class="result-spread {{view.isThree ? 'three' : 'single'}} enter-up delay-1">
+      <view wx:for="{{view.cards}}" wx:key="cardId" class="visual-card {{activeCardIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="handleCardTap" aria-role="button" aria-label="{{activeCardIndex === index ? '查看' + item.name + '大图' : '切换到' + item.name + '解读'}}">
+        <view wx:if="{{view.isThree}}" class="position-label"><text>0{{index + 1}}</text>{{item.positionLabel}}</view>
+        <view class="visual-image-shell">
+          <image class="card-image {{item.orientation === 'reversed' ? 'reversed' : ''}}" src="{{item.imagePath}}" mode="aspectFill" />
+          <view class="card-select-glow"></view>
+        </view>
+        <view class="visual-name">{{item.name}}</view>
+        <view class="visual-orientation">{{item.orientationLabel}}</view>
+      </view>
+    </view>
+    <view class="spread-preview-hint"><text>⌕</text> {{view.isThree ? '轻触当前牌查看大图 · 轻触其他牌切换解读' : '轻触牌面查看大图'}}</view>
+
+    <view wx:if="{{view.question}}" class="question-context enter-up delay-2" bindtap="toggleQuestion">
+      <view class="question-mark">“</view>
+      <view class="question-label">你带来的困扰</view>
+      <view class="question-toggle">{{questionExpanded ? '收起' : '回看'}} <text>{{questionExpanded ? '−' : '+'}}</text></view>
+      <view wx:if="{{questionExpanded}}" class="question-text">{{view.question}}</view>
+    </view>
+
+    <view class="lead-reading enter-up delay-2">
+      <view class="lead-symbol">✦</view>
+      <view class="content-label">第一眼线索</view>
+      <view class="lead-text">{{view.content.summary}}</view>
+    </view>
+
+    <view class="reading-section">
+      <view class="section-heading">
+        <view>
+          <view class="section-kicker">READ THE CARD</view>
+          <view class="section-title">逐张看清</view>
+        </view>
+        <view wx:if="{{view.isThree}}" class="swipe-hint">轻触牌面切换</view>
+      </view>
+
+      <view wx:if="{{activeCard}}" class="active-reading">
+        <view class="active-head">
+          <view class="active-number">{{activeCard.roman}}</view>
+          <view class="active-title-wrap">
+            <view class="active-position">{{activeCard.positionLabel}} · {{activeCard.orientationLabel}}</view>
+            <view class="active-title">{{activeCard.name}}</view>
+            <view class="active-en">{{activeCard.englishName}}</view>
+          </view>
+        </view>
+
+        <view class="reading-primary">
+          <view class="content-label">这张牌正在说</view>
+          <view class="reading-primary-text">{{activeCard.contextualMeaning}}</view>
+        </view>
+
+        <view class="topic-insight">
+          <view class="topic-insight-label">围绕{{activeCard.topicLabel}}</view>
+          <view class="topic-insight-text">{{activeCard.topicInsight}}</view>
+        </view>
+
+        <view class="meaning-toggle" bindtap="toggleDetails">
+          <text>{{detailsExpanded ? '收起牌义依据' : '查看牌义依据'}}</text>
+          <text class="toggle-mark">{{detailsExpanded ? '−' : '+'}}</text>
+        </view>
+        <view wx:if="{{detailsExpanded}}" class="meaning-detail">
+          <view class="keywords"><text wx:for="{{activeCard.keywords}}" wx:key="*this" class="tag">{{item}}</text></view>
+          <view class="meaning-text">{{activeCard.basis}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{view.isThree}}" class="synthesis-block">
+      <view class="synthesis-number">∞</view>
+      <view class="synthesis-copy">
+        <view class="content-label">把三张牌连起来</view>
+        <view class="synthesis-text">{{view.content.synthesis}}</view>
+      </view>
+    </view>
+
+    <view class="closing-section">
+      <view class="closing-orbit"></view>
+      <view class="section-kicker">TAKE IT WITH YOU</view>
+      <view class="closing-label">留给你的问题</view>
+      <view class="reflection">{{view.content.reflectionQuestion}}</view>
+      <view class="closing-divider">✦</view>
+      <view class="action-label">今天只做这一件小事</view>
+      <view class="action-text">{{view.content.microAction}}</view>
+      <button class="secondary copy-action" bindtap="copyAction">复制这一步</button>
+    </view>
+
+    <view class="disclaimer">{{view.content.disclaimer}}</view>
+
+    <view class="result-actions">
+      <button wx:if="{{!view.isDaily && !view.saved}}" class="primary" bindtap="saveToHistory">保存这次照见</button>
+      <button class="secondary" bindtap="finish">{{!view.isDaily && !view.saved ? '不保存，回到首页' : '完成'}}</button>
+    </view>
+  </block>
+
+  <card-preview wx:if="{{previewCard}}" visible="{{previewVisible}}" image-path="{{previewCard.imagePath}}" roman="{{previewCard.roman}}" name="{{previewCard.name}}" english-name="{{previewCard.englishName}}" orientation="{{previewCard.orientation}}" orientation-label="{{previewCard.orientationLabel}}" position-label="{{view.isThree ? previewCard.positionLabel : ''}}" bind:close="closeCardPreview" />
+</view>

@@ -1,4 +1,4 @@
-import { CARD_BACK_IMAGE_PATH, getCard, getCardImagePath } from "../../core/cards";
+import { CARD_BACK_IMAGE_PATH, getCard, getCardThumbnailPath } from "../../core/cards";
 import { orientationLabel } from "../../core/interpretation";
 import { getReadingSpread } from "../../core/spreads";
 import type { Reading } from "../../core/types";
@@ -15,7 +15,7 @@ function toListItem(reading: Reading) {
       : isThree ? cards.map((card) => card.name).join(" · ") : cards[0].name,
     date: reading.businessDate,
     source: reading.interpretation?.source ?? "—",
-    imagePath: getCardImagePath(reading.cards[0].cardId),
+    imagePath: getCardThumbnailPath(reading.cards[0].cardId),
     reversed: reading.cards[0].orientation === "reversed",
   };
 }
@@ -24,7 +24,7 @@ Page({
   data: {
     today: null as ReturnType<typeof toListItem> | null,
     recent: [] as ReturnType<typeof toListItem>[],
-    collectionProgress: "0 / 22",
+    collectionProgress: "0 / 78",
     logoPath: "/assets/branding/arcana-mirror-logo.jpg",
     cardBack: CARD_BACK_IMAGE_PATH,
   },
@@ -42,7 +42,7 @@ Page({
   startDaily() {
     try {
       const reading = readingService.startDaily();
-      wx.navigateTo({ url: `/pages/ritual/index?id=${reading.id}` });
+      wx.navigateTo({ url: `/packages/deck/pages/ritual/index?id=${reading.id}` });
     } catch {
       wx.showToast({ title: "无法创建每日牌", icon: "none" });
     }
@@ -57,11 +57,11 @@ Page({
   },
 
   openHistory() {
-    wx.navigateTo({ url: "/pages/history/index" });
+    wx.navigateTo({ url: "/packages/deck/pages/history/index" });
   },
 
   openCollection() {
-    wx.navigateTo({ url: "/pages/collection/index" });
+    wx.navigateTo({ url: "/packages/deck/pages/collection/index" });
   },
 
   openSettings() {
@@ -70,6 +70,6 @@ Page({
 
   openReading(event: WechatMiniprogram.TouchEvent) {
     const id = String(event.currentTarget.dataset.id ?? "");
-    if (id) wx.navigateTo({ url: `/pages/result/index?id=${id}&from=history` });
+    if (id) wx.navigateTo({ url: `/packages/deck/pages/result/index?id=${id}&from=history` });
   },
 });

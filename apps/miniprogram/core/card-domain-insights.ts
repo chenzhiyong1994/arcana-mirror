@@ -1,3 +1,5 @@
+import type { TarotCard } from "./types";
+
 export interface CardDomainInsights {
   love: string;
   wealth: string;
@@ -140,8 +142,25 @@ const CARD_DOMAIN_INSIGHTS: Record<string, CardDomainInsights> = {
   },
 };
 
-export function getCardDomainInsights(cardId: string): CardDomainInsights {
+function buildMinorDomainInsights(card: TarotCard): CardDomainInsights {
+  const theme = card.suit === "wands"
+    ? "行动意愿、互动节奏与边界"
+    : card.suit === "cups"
+      ? "感受交流、互相回应与情绪边界"
+      : card.suit === "swords"
+        ? "沟通事实、判断方式与冲突代价"
+        : "现实投入、资源分配与长期稳定";
+  return {
+    love: `把${card.name}放进关系时，重点观察${theme}；${card.upright}`,
+    wealth: `把${card.name}放进资源问题时，不预测收益，先核对预算、风险与可控条件；${card.upright}`,
+    career: `把${card.name}放进工作处境时，重点核对职责、证据和下一步；${card.upright}`,
+    selfGrowth: `${card.upright}不必一次改变全部，先从“${card.reflection}”开始。`,
+  };
+}
+
+export function getCardDomainInsights(cardId: string, card?: TarotCard): CardDomainInsights {
   const insights = CARD_DOMAIN_INSIGHTS[cardId];
-  if (!insights) throw new Error(`Missing domain insights for tarot card: ${cardId}`);
-  return insights;
+  if (insights) return insights;
+  if (card?.arcana === "minor") return buildMinorDomainInsights(card);
+  throw new Error(`Missing domain insights for tarot card: ${cardId}`);
 }

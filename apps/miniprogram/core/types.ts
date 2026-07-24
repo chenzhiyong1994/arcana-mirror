@@ -3,6 +3,23 @@ export type Orientation = "upright" | "reversed";
 export type ReadingType = "daily" | "question";
 export type SpreadType = "single" | "three";
 export type SpreadPosition = "focus" | "situation" | "influence" | "action";
+export type Arcana = "major" | "minor";
+export type MinorSuit = "wands" | "cups" | "swords" | "pentacles";
+export type MinorRank =
+  | "ace"
+  | "two"
+  | "three"
+  | "four"
+  | "five"
+  | "six"
+  | "seven"
+  | "eight"
+  | "nine"
+  | "ten"
+  | "page"
+  | "knight"
+  | "queen"
+  | "king";
 export type ReadingStatus =
   | "drawn"
   | "generating"
@@ -19,6 +36,9 @@ export interface TarotCard {
   roman: string;
   name: string;
   englishName: string;
+  arcana: Arcana;
+  suit?: MinorSuit;
+  rank?: MinorRank;
   keywords: string[];
   upright: string;
   reversed: string;

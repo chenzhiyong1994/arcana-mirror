@@ -1,6 +1,7 @@
 import type { TarotCard } from "./types";
+import { MINOR_ARCANA } from "./minor-cards";
 
-export const TAROT_CARDS: TarotCard[] = [
+const MAJOR_ARCANA_DATA: Omit<TarotCard, "arcana">[] = [
   { id: "major-00", sequence: 0, roman: "0", name: "愚者", englishName: "The Fool", keywords: ["开始", "自由", "信任"], upright: "以开放和好奇进入新的阶段，同时留意脚下的现实。", reversed: "冲动或迟疑都可能让开始失去方向，需要先确认边界。", reflection: "如果不要求一次做对，你愿意先迈出哪一小步？" },
   { id: "major-01", sequence: 1, roman: "I", name: "魔术师", englishName: "The Magician", keywords: ["行动", "资源", "专注"], upright: "你已经拥有可以启动事情的资源，关键是把意图转成行动。", reversed: "资源可能被分散或使用失衡，需要重新确认真实能力与承诺。", reflection: "你手上哪一项现成资源最值得先用起来？" },
   { id: "major-02", sequence: 2, roman: "II", name: "女祭司", englishName: "The High Priestess", keywords: ["直觉", "沉静", "未知"], upright: "答案尚未完全显现，安静观察比立即定论更有帮助。", reversed: "你可能忽略内在感受，或把猜测当成直觉。", reflection: "暂不下结论时，你还能观察到什么细节？" },
@@ -24,6 +25,13 @@ export const TAROT_CARDS: TarotCard[] = [
   { id: "major-20", sequence: 20, roman: "XX", name: "审判", englishName: "Judgement", keywords: ["回顾", "召唤", "决定"], upright: "回顾过去并回应真正重要的召唤，准备作出成熟决定。", reversed: "自我批判或迟迟不回应，会让旧问题持续占据注意力。", reflection: "如果停止责备自己，这段经历真正要求你学会什么？" },
   { id: "major-21", sequence: 21, roman: "XXI", name: "世界", englishName: "The World", keywords: ["完成", "整合", "展开"], upright: "一个阶段正在完成，经验得到整合，也为下一段旅程腾出空间。", reversed: "收尾尚有缺口，先完成关键闭环再急于开启下一阶段。", reflection: "为了真正结束这一阶段，还缺哪一个具体动作？" }
 ];
+
+export const MAJOR_ARCANA: TarotCard[] = MAJOR_ARCANA_DATA.map((card) => ({
+  ...card,
+  arcana: "major",
+}));
+
+export const TAROT_CARDS: TarotCard[] = [...MAJOR_ARCANA, ...MINOR_ARCANA];
 
 const CARD_IMAGE_FILES = [
   "major-00-fool",
@@ -51,6 +59,7 @@ const CARD_IMAGE_FILES = [
 ] as const;
 
 export const CARD_BACK_IMAGE_PATH = "/assets/cards/card-back.jpg";
+export const DECK_CARD_BACK_IMAGE_PATH = "/packages/deck/assets/cards/card-back.jpg";
 
 export function getCard(cardId: string): TarotCard {
   const card = TAROT_CARDS.find((item) => item.id === cardId);
@@ -60,5 +69,16 @@ export function getCard(cardId: string): TarotCard {
 
 export function getCardImagePath(cardId: string): string {
   const card = getCard(cardId);
-  return `/assets/cards/${CARD_IMAGE_FILES[card.sequence]}.jpg`;
+  const filename = card.arcana === "major"
+    ? CARD_IMAGE_FILES[card.sequence]
+    : card.id;
+  return `/packages/deck/assets/cards/${filename}.jpg`;
+}
+
+export function getCardThumbnailPath(cardId: string): string {
+  const card = getCard(cardId);
+  const filename = card.arcana === "major"
+    ? CARD_IMAGE_FILES[card.sequence]
+    : card.id;
+  return `/assets/card-thumbs/${filename}.jpg`;
 }

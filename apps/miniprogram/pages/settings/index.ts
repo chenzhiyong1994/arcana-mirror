@@ -1,7 +1,7 @@
 import { collectionService, readingService } from "../../services/app-services";
 
 Page({
-  data: { collectionProgress: "0 / 22" },
+  data: { collectionProgress: "0 / 78" },
 
   onShow() {
     const progress = collectionService.getProgress();
@@ -34,7 +34,7 @@ Page({
         if (!result.confirm) return;
         try {
           collectionService.clear();
-          this.setData({ collectionProgress: "0 / 22" });
+          this.setData({ collectionProgress: "0 / 78" });
           wx.showToast({ title: "图鉴已重置", icon: "success" });
         } catch {
           wx.showToast({ title: "重置失败", icon: "none" });

@@ -2,11 +2,19 @@
   "pages": [
     "pages/home/index",
     "pages/question/index",
-    "pages/ritual/index",
-    "pages/result/index",
-    "pages/history/index",
-    "pages/collection/index",
     "pages/settings/index"
+  ],
+  "subPackages": [
+    {
+      "root": "packages/deck",
+      "name": "deck",
+      "pages": [
+        "pages/ritual/index",
+        "pages/result/index",
+        "pages/history/index",
+        "pages/collection/index"
+      ]
+    }
   ],
   "window": {
     "navigationBarBackgroundColor": "#090907",

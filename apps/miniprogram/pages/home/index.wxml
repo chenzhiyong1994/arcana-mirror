@@ -40,14 +40,14 @@
       <view class="reading-glyph"><view class="glyph-card"></view></view>
       <view class="reading-index">01</view>
       <view class="reading-name">一张牌</view>
-      <view class="reading-desc">聚焦一个核心提示<br/>适合快速整理思绪</view>
+      <view class="reading-desc"><text>聚焦一个核心提示</text><text class="reading-desc-line">适合快速整理思绪</text></view>
       <view class="reading-enter">开始解读 <text>→</text></view>
     </view>
     <view class="reading-card three" bindtap="startThreeQuestion">
       <view class="reading-glyph triple"><view class="glyph-card"></view><view class="glyph-card"></view><view class="glyph-card"></view></view>
       <view class="reading-index">03</view>
       <view class="reading-name">三张牌</view>
-      <view class="reading-desc">现状 · 关键影响 · 行动<br/>适合拆解复杂困扰</view>
+      <view class="reading-desc"><text>现状 · 关键影响 · 行动</text><text class="reading-desc-line">适合拆解复杂困扰</text></view>
       <view class="reading-enter">进入牌阵 <text>→</text></view>
     </view>
   </view>
@@ -56,7 +56,7 @@
     <view class="collection-orbit"><text>{{collectionProgress}}</text></view>
     <view class="collection-info">
       <view class="section-kicker">ARCANA COLLECTION</view>
-      <view class="collection-copy">我的大阿尔卡那图鉴</view>
+      <view class="collection-copy">我的七十八张心镜图鉴</view>
       <view class="collection-note">每一次亲手翻牌，都让牌库亮起一格。</view>
     </view>
     <view class="arrow">›</view>

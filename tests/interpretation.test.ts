@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { getCardImagePath, TAROT_CARDS } from "../apps/miniprogram/core/cards";
+import {
+  getCardImagePath,
+  getCardThumbnailPath,
+  MAJOR_ARCANA,
+  TAROT_CARDS,
+} from "../apps/miniprogram/core/cards";
+import { MINOR_ARCANA } from "../apps/miniprogram/core/minor-cards";
 import {
   buildFallbackInterpretation,
   buildStaticDailyInterpretation,
@@ -44,8 +50,42 @@ const validOutput: InterpretationContent = {
 };
 
 describe("validateInterpretation", () => {
-  it("provides focused topic insights and image mappings for all 22 cards", () => {
+  it("defines a complete ordered 78-card deck", () => {
+    const minorRanks = [
+      "ace",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "page",
+      "knight",
+      "queen",
+      "king",
+    ];
+    expect(TAROT_CARDS).toHaveLength(78);
+    expect(MAJOR_ARCANA).toHaveLength(22);
+    expect(MINOR_ARCANA).toHaveLength(56);
+    expect(MAJOR_ARCANA.every((card) => card.arcana === "major")).toBe(true);
+    expect(MINOR_ARCANA.every((card) => card.arcana === "minor")).toBe(true);
+    expect(TAROT_CARDS.map((card) => card.sequence)).toEqual(
+      Array.from({ length: 78 }, (_, index) => index),
+    );
+    expect(new Set(TAROT_CARDS.map((card) => card.id)).size).toBe(78);
+    for (const suit of ["wands", "cups", "swords", "pentacles"] as const) {
+      const suitCards = MINOR_ARCANA.filter((card) => card.suit === suit);
+      expect(suitCards).toHaveLength(14);
+      expect(suitCards.map((card) => card.rank)).toEqual(minorRanks);
+    }
+  });
+
+  it("provides focused topic insights and unique image mappings for all 78 cards", () => {
     const paths = new Set<string>();
+    const thumbnailPaths = new Set<string>();
     for (const card of TAROT_CARDS) {
       const relationship = buildTopicInsight(card, "upright", "relationship");
       const career = buildTopicInsight(card, "reversed", "career");
@@ -54,9 +94,15 @@ describe("validateInterpretation", () => {
       expect(relationship.topicInsight).not.toBe(career.topicInsight);
       expect(relationship.basis).toBe(card.upright);
       expect(career.basis).toBe(card.reversed);
-      paths.add(getCardImagePath(card.id));
+      const imagePath = getCardImagePath(card.id);
+      const thumbnailPath = getCardThumbnailPath(card.id);
+      expect(imagePath).toMatch(/^\/packages\/deck\/assets\/cards\/.+\.jpg$/);
+      expect(thumbnailPath).toMatch(/^\/assets\/card-thumbs\/.+\.jpg$/);
+      paths.add(imagePath);
+      thumbnailPaths.add(thumbnailPath);
     }
-    expect(paths.size).toBe(22);
+    expect(paths.size).toBe(78);
+    expect(thumbnailPaths.size).toBe(78);
   });
 
   it("accepts output that matches the reading facts", () => {

@@ -35,6 +35,7 @@
 .triple .glyph-card:nth-child(3) { transform: rotate(10deg); }
 .reading-name { margin-top: 16rpx; font-size: 34rpx; }
 .reading-desc { margin-top: 12rpx; color: var(--muted); font-size: 22rpx; line-height: 1.55; }
+.reading-desc-line { display: block; }
 .reading-enter { position: absolute; right: 24rpx; bottom: 24rpx; left: 24rpx; color: var(--gold-bright); font-size: 23rpx; }
 .reading-enter text { float: right; }
 .collection-entry { display: flex; align-items: center; margin-top: 64rpx; padding: 30rpx 0; border-top: 1rpx solid rgba(184, 150, 87, 0.25); border-bottom: 1rpx solid rgba(184, 150, 87, 0.25); }

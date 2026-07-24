@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "抽牌仪式",
+  "usingComponents": {
+    "card-preview": "/components/card-preview/index"
+  }
+}

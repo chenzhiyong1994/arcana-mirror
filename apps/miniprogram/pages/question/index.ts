@@ -55,7 +55,7 @@ Page({
   continueWithQuestion(question: string) {
     try {
       const reading = readingService.startQuestion(question, this.data.selectedSpread);
-      wx.navigateTo({ url: `/pages/ritual/index?id=${reading.id}` });
+      wx.navigateTo({ url: `/packages/deck/pages/ritual/index?id=${reading.id}` });
     } catch {
       wx.showToast({ title: "无法开始解读", icon: "none" });
     }

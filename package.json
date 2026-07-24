@@ -1,10 +1,13 @@
 {
   "name": "arcana-mirror",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
+    "generate:minor-specs": "node tools/generate-minor-card-specs.mjs",
+    "build:minor-contact-sheets": "pwsh -NoProfile -File tools/build-minor-contact-sheets.ps1",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "validate:assets": "node tools/validate-deck-assets.mjs",
     "test:watch": "vitest"
   },
   "devDependencies": {

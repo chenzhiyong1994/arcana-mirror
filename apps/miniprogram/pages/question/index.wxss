@@ -3,6 +3,7 @@
 .flow-line { flex: 1; height: 1rpx; margin: 0 12rpx; background: rgba(184,150,87,0.25); }
 .flow-line-active { width: 33%; height: 100%; background: var(--gold-bright); }
 .question-page .title { margin-top: 24rpx; font-size: 64rpx; }
+.question-page .title-line { display: block; }
 .question-page .subtitle { margin-top: 20rpx; }
 .form-section { margin-top: 58rpx; }
 .field-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 16rpx; border-bottom: 1rpx solid rgba(184,150,87,0.25); color: var(--paper-dim); font-size: 27rpx; letter-spacing: 2rpx; }

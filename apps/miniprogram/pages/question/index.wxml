@@ -7,7 +7,7 @@
 
   <view class="enter-up delay-1">
     <view class="eyebrow">SET YOUR INTENTION</view>
-    <view class="title">把问题，<br/>放到镜前。</view>
+    <view class="title"><text>把问题，</text><text class="title-line">放到镜前。</text></view>
     <view class="subtitle">一个清楚的问题，比一个确定的预言更有力量。关注你能观察、理解和选择的部分。</view>
   </view>
 

@@ -17,7 +17,7 @@ describe("CollectionService", () => {
     service.recordReveal("major-09", "upright");
     service.recordReveal("major-09", "reversed");
     const card = service.listCatalog().find((item) => item.id === "major-09");
-    expect(service.getProgress()).toEqual({ discovered: 1, total: 22 });
+    expect(service.getProgress()).toEqual({ discovered: 1, total: 78 });
     expect(card?.revealCount).toBe(2);
     expect(card?.orientationProgress).toBe("正位 / 逆位");
   });

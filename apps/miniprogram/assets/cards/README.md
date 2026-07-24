@@ -1,11 +1,13 @@
 # 小程序卡牌资源
 
-本目录包含 A“仪式典藏”22 张大阿尔卡那预览图与统一卡背的移动端版本。
+本目录现在只保留首页主包使用的 512×768 统一卡背。
 
-- 来源：2026-07-21 完成的 `style-a-deck-generation-kit/output` 正式交付；原始文件为 1024×1536 PNG。
-- 生成与验收依据：仓库 `deliverables/style-a-deck-generation-kit/` 中的 Prompt、牌义清单与 QA 门禁；22 张牌的语义、统一风格、命名、尺寸、卡背对称和缩略图检查均已通过。
-- 小程序处理：使用 FFmpeg Lanczos 从正式预览原图确定性缩放为 640×960，并以 JPEG `q:v=5`、`yuvj420p` 输出；22 张牌与卡背合计约 3.26 MB。该尺寸覆盖当前鉴赏大图的主要物理像素需求，同时避免直接引入约 75 MB 的原始 PNG。
-- 原图来源：本地 `output.zip` 仅作为 1024×1536 正式交付输入，不进入 Git；移动端文件名与原图逐一对应。
+- 78 张 192×288 首页缩略图位于 `../card-thumbs/`；
+- 78 张 384×576 展示牌面与分包卡背位于 `../../packages/deck/assets/cards/`；
+- 仪式、结果、历史和图鉴页面位于普通分包 `packages/deck`，避免 78 张完整牌组挤占主包；
+- 22 张大阿尔卡那生成合同位于 `deliverables/style-a-deck-generation-kit/`，56 张小阿尔卡那合同位于 `deliverables/style-a-minor-arcana-generation-kit/`；
+- 完整小阿尔卡那源图与验收报告位于 `assets/tarot-card-style/minor-arcana/`。
+
 - 展示规则：正位直接展示，逆位由前端将同一图片旋转 180°；不维护第二套逆位图片。
 
-文件名与 `core/cards.ts` 中的 0—XXI 顺序一一对应。替换任何图片时必须继续保持 2:3 比例和相同文件名。
+替换任何图片时必须保持 2:3 比例、相同文件名，并同步更新源图、分包展示图和主包缩略图；完成后运行 `npm run validate:assets`。

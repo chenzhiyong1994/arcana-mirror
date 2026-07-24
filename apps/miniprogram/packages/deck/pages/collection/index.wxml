@@ -1,0 +1,78 @@
+<!-- Card experience subpackage page. -->
+<view class="page collection-page">
+  <view class="collection-head enter-up">
+    <view class="eyebrow">THE COMPLETE TAROT</view>
+    <view class="title">心镜图鉴</view>
+    <view class="subtitle">大阿尔卡那与四组小阿尔卡那，共同组成完整的七十八张心镜。</view>
+  </view>
+
+  <view class="progress-panel enter-up delay-1">
+    <view class="progress-orbit">
+      <view class="progress-number">{{progress}}</view>
+      <view class="progress-label">已照见</view>
+    </view>
+    <view class="progress-copy">
+      <view class="percent">{{percent}}<text>%</text></view>
+      <view class="progress-caption">完整牌组探索进度</view>
+      <view class="progress-track"><view class="progress-fill" style="width: {{percent}}%"></view></view>
+      <view class="progress-note">每次翻开都会记录正逆位与相遇次数。</view>
+    </view>
+  </view>
+
+  <block wx:for="{{sections}}" wx:key="key" wx:for-item="section">
+    <view class="collection-section">
+      <view class="section-heading">
+        <view>
+          <view class="section-eyebrow">{{section.eyebrow}}</view>
+          <view class="section-title">{{section.title}}</view>
+        </view>
+        <view class="section-progress">{{section.discovered}} / {{section.total}}</view>
+      </view>
+      <view class="collection-rule"><text>{{section.range}}</text><view></view><text>{{section.total}} CARDS</text></view>
+      <view class="collection-grid">
+        <view wx:for="{{section.cards}}" wx:key="id" class="collection-card {{item.discovered ? 'discovered' : 'locked'}}" data-id="{{item.id}}" bindtap="openCard">
+          <view class="image-shell">
+            <image class="card-image" src="{{item.discovered ? item.imagePath : cardBack}}" mode="aspectFill" />
+            <view wx:if="{{!item.discovered}}" class="locked-veil"><view class="lock-sigil">◇</view></view>
+            <view wx:else class="discovered-shine"></view>
+          </view>
+          <view class="card-index">{{item.roman}}</view>
+          <view class="card-name">{{item.discovered ? item.name : '未照见'}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view wx:if="{{selected}}" class="detail-mask" bindtap="closeCard">
+    <view class="detail-panel" catchtap="stopPropagation">
+      <view class="sheet-handle"></view>
+      <view class="close" bindtap="closeCard" aria-role="button" aria-label="关闭卡牌详情">×</view>
+      <view class="detail-hero">
+        <view class="detail-halo"></view>
+        <view class="detail-image-wrap" bindtap="openCardPreview" aria-role="button" aria-label="查看{{selected.name}}大图">
+          <image class="detail-image" src="{{selected.imagePath}}" mode="aspectFit" />
+          <view class="detail-zoom-cue"><text>⌕</text> 查看大图</view>
+        </view>
+      </view>
+      <view class="detail-index">{{selected.roman}}</view>
+      <view class="detail-title">{{selected.name}}</view>
+      <view class="detail-en">{{selected.englishName}}</view>
+      <view class="detail-meta"><text>翻开 {{selected.revealCount}} 次</text><text>{{selected.orientationProgress}}</text></view>
+      <view class="ornament-rule">✦</view>
+      <view class="detail-section">
+        <view class="detail-label">正位 · LIGHT</view>
+        <view class="detail-text">{{selected.upright}}</view>
+      </view>
+      <view class="detail-section">
+        <view class="detail-label">逆位 · SHADOW</view>
+        <view class="detail-text">{{selected.reversed}}</view>
+      </view>
+      <view class="reflection-card">
+        <view class="detail-label">SELF REFLECTION</view>
+        <view class="reflection-text">{{selected.reflection}}</view>
+      </view>
+    </view>
+  </view>
+
+  <card-preview wx:if="{{selected}}" visible="{{previewVisible}}" image-path="{{selected.imagePath}}" roman="{{selected.roman}}" name="{{selected.name}}" english-name="{{selected.englishName}}" orientation="upright" orientation-label="正向牌面" bind:close="closeCardPreview" />
+</view>

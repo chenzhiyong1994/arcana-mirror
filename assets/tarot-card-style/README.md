@@ -2,7 +2,7 @@
 
 ## 当前状态
 
-视觉探索保留两个方向；本轮 22 张大阿尔卡那完整生成已选用 A，G 继续归档为备选：
+视觉探索保留两个方向；当前 78 张完整牌组已选用 A，G 继续归档为备选：
 
 1. **A：仪式典藏（本轮生成方向）**——黑灰手工版画、纤维纸、不均匀旧金箔与精细仪式边框；
 2. **G：古典新艺术（备选）**——清晰黑色轮廓、克制全彩平涂、低颗粒与有机曲线边框。
@@ -15,7 +15,9 @@
 - `concepts/style-nouveau-g-classical-v1.png`：G 方案正面与统一卡背概念样稿；
 - `style-hermit-v3.png`：只用于校验隐士牌义、人物关系与核心道具，不代表已确认的主视觉。
 
-两套方案的 Prompt、优劣势与验收结论见 [`concepts/README.md`](concepts/README.md)。A 风格的 22 张逐牌提示词、参考图、公共资产规范和验收清单见 [`../../deliverables/style-a-deck-generation-kit/README.md`](../../deliverables/style-a-deck-generation-kit/README.md)。
+两套方案的 Prompt、优劣势与验收结论见 [`concepts/README.md`](concepts/README.md)。A 风格的 22 张大阿尔卡那合同见 [`../../deliverables/style-a-deck-generation-kit/README.md`](../../deliverables/style-a-deck-generation-kit/README.md)，56 张小阿尔卡那合同见 [`../../deliverables/style-a-minor-arcana-generation-kit/README.md`](../../deliverables/style-a-minor-arcana-generation-kit/README.md)。
+
+正式小阿尔卡那源图位于 `minor-arcana/faces/`，四花色联排与完整返工、Prompt、验收记录位于 `minor-arcana/contact-sheets/` 和 `minor-arcana/generation-report.md`。
 
 ## 共同牌义基准
 
@@ -38,5 +40,5 @@
 
 1. 由接收交接包的 Agent 先制作统一正面框、独立卡背和隐士试产；
 2. 验证缩略图、文字叠加、翻牌与正逆位；
-3. 再完成 22 张纯牌面插画并执行逐牌语义验收；
-4. 全套通过一致性门禁后回填项目资产。
+3. 22 张大阿尔卡那与 56 张小阿尔卡那均执行逐牌语义验收；
+4. 当前 78 张已通过整套一致性门禁并回填项目资产；后续替换单牌时仍须重新执行对应逐牌与花色联排检查。

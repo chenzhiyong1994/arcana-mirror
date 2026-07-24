@@ -8,20 +8,22 @@
 
 ## 当前状态
 
-- 阶段：v1.0 正式版候选；CloudBase AI 与 `hy3` 已接入，正在完成发布前人工门禁
+- 阶段：v1.1 完整牌组候选；CloudBase AI 与 `hy3` 已接入，78 张牌组工程门禁已通过，仍需发布前人工门禁
 - 工程：微信原生小程序 TypeScript + 本地 Repository + CloudBase AI Provider；无需在小程序包内配置模型密钥
 - MVP：每日一牌、主题单牌与“现状—关键影响—行动建议”三牌模式、安全阻断与降级、可选本地历史
-- 解读：按用户选择的主题提供聚焦解读；总览、逐牌切换、可展开牌义、综合提示、反思与行动按接收顺序渐进呈现
-- 图鉴：22 张大阿卡纳按实际翻牌解锁，记录正逆位与翻开次数，独立于历史管理
-- 视觉：A“仪式典藏”22 张正式卡牌与统一卡背已经接入小程序移动端资源；Logo 已选定 L5“繁饰日蚀心镜”
+- 解读：模型直接根据用户问题识别重点；总览、逐牌切换、可展开牌义、综合提示、反思与行动按接收顺序渐进呈现
+- 图鉴：78 张完整牌组按大阿尔卡那、权杖、圣杯、宝剑、星币分组，按实际翻牌解锁并记录正逆位与翻开次数
+- 视觉：A“仪式典藏”22 张大阿尔卡那、56 张小阿尔卡那与统一卡背已经接入；Logo 已选定 L5“繁饰日蚀心镜”
+- 包体：仪式、结果、历史、图鉴和完整牌面置于 `deck` 普通分包；主包保留 78 张轻量缩略图，主包和分包均低于 2 MiB
 - 鉴赏：翻牌后、结果页和图鉴详情均可进入沉浸大图，保留正逆位、牌位与卡牌名称信息
-- 首版预算：64—80 小时，80 小时硬上限
 
 ## 卡牌视觉
 
 ![A 仪式典藏正反面样稿](assets/tarot-card-style/concepts/style-concept-a-ritual-archive-v1.png)
 
-本轮全套卡牌使用 A“仪式典藏”：黑灰手工版画、纤维纸与不均匀旧金箔。22 张牌与统一卡背已完成生成、语义及技术验收，并从 1024×1536 正式原图确定性生成 640×960 高清移动端版本，接入抽牌、结果、鉴赏大图和图鉴页面；逆位由前端旋转同一资产。完整生成合同见 [A 风格全套卡牌生成包](deliverables/style-a-deck-generation-kit/README.md)。
+全套 78 张卡牌使用 A“仪式典藏”：黑灰手工版画、纤维纸与不均匀旧金。22 张大阿尔卡那与 56 张小阿尔卡那均已完成生成、逐牌语义和整套一致性验收；正式源图确定性生成分包展示图与主包缩略图，接入抽牌、结果、鉴赏大图和分组图鉴，逆位由前端旋转同一资产。
+
+生成合同分别见 [大阿尔卡那生成包](deliverables/style-a-deck-generation-kit/README.md) 与 [小阿尔卡那生成包](deliverables/style-a-minor-arcana-generation-kit/README.md)，最终验收见 [56 张生成报告](assets/tarot-card-style/minor-arcana/generation-report.md)。
 
 ## 文档
 
@@ -35,8 +37,10 @@
 8. [长程开发执行基线](docs/product/07-execution-baseline.md)
 9. [v0.2 三牌与图鉴扩展 PRD](docs/product/08-v0.2-three-card-and-collection.md)
 10. [v0.3 高保真体验与解读减负](docs/product/09-v0.3-high-fidelity-experience.md)
-11. [卡片风格基准](assets/tarot-card-style/README.md)
-12. [A 风格全套卡牌生成交接包](deliverables/style-a-deck-generation-kit/README.md)
+11. [v1.1 完整 78 张牌组](docs/product/10-v1.1-complete-78-card-deck.md)
+12. [卡片风格基准](assets/tarot-card-style/README.md)
+13. [A 风格大阿尔卡那生成交接包](deliverables/style-a-deck-generation-kit/README.md)
+14. [A 风格小阿尔卡那生成交接包](deliverables/style-a-minor-arcana-generation-kit/README.md)
 
 ## 仓库结构
 
@@ -54,6 +58,7 @@ workspace/         # 临时工作文件，不进入版本库
 npm install
 npm run typecheck
 npm test
+npm run validate:assets
 ```
 
 随后在微信开发者工具中导入仓库根目录。工程已配置正式小程序 AppID，并在 `apps/miniprogram/config/cloud.ts` 中固定 CloudBase 环境 `<your-cloudbase-env-id>`、AI Provider `cloudbase` 和模型 `hy3`。基础库需不低于 3.15.1；当前工程使用 3.17.0。

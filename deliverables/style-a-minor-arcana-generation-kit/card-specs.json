@@ -1,0 +1,905 @@
+{
+  "schemaVersion": "1.0.0",
+  "deckVersion": "complete-78",
+  "source": "apps/miniprogram/core/minor-cards.ts",
+  "styleContract": "STYLE_A_MINOR_MASTER_PROMPT.md",
+  "cardPromptContract": "CARD_PROMPTS.md",
+  "cards": [
+    {
+      "id": "minor-wands-ace",
+      "filename": "minor-wands-ace.jpg",
+      "sequence": 22,
+      "roman": "A",
+      "name": "权杖王牌",
+      "englishName": "Ace of Wands",
+      "suit": "wands",
+      "rank": "ace",
+      "keywords": [
+        "灵感",
+        "潜能",
+        "启动"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-ace"
+    },
+    {
+      "id": "minor-wands-02",
+      "filename": "minor-wands-02.jpg",
+      "sequence": 23,
+      "roman": "II",
+      "name": "权杖二",
+      "englishName": "Two of Wands",
+      "suit": "wands",
+      "rank": "two",
+      "keywords": [
+        "规划",
+        "视野",
+        "选择"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-02"
+    },
+    {
+      "id": "minor-wands-03",
+      "filename": "minor-wands-03.jpg",
+      "sequence": 24,
+      "roman": "III",
+      "name": "权杖三",
+      "englishName": "Three of Wands",
+      "suit": "wands",
+      "rank": "three",
+      "keywords": [
+        "拓展",
+        "进展",
+        "远见"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-03"
+    },
+    {
+      "id": "minor-wands-04",
+      "filename": "minor-wands-04.jpg",
+      "sequence": 25,
+      "roman": "IV",
+      "name": "权杖四",
+      "englishName": "Four of Wands",
+      "suit": "wands",
+      "rank": "four",
+      "keywords": [
+        "庆祝",
+        "稳定",
+        "归属"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-04"
+    },
+    {
+      "id": "minor-wands-05",
+      "filename": "minor-wands-05.jpg",
+      "sequence": 26,
+      "roman": "V",
+      "name": "权杖五",
+      "englishName": "Five of Wands",
+      "suit": "wands",
+      "rank": "five",
+      "keywords": [
+        "竞争",
+        "摩擦",
+        "磨合"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-05"
+    },
+    {
+      "id": "minor-wands-06",
+      "filename": "minor-wands-06.jpg",
+      "sequence": 27,
+      "roman": "VI",
+      "name": "权杖六",
+      "englishName": "Six of Wands",
+      "suit": "wands",
+      "rank": "six",
+      "keywords": [
+        "认可",
+        "进展",
+        "信心"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-06"
+    },
+    {
+      "id": "minor-wands-07",
+      "filename": "minor-wands-07.jpg",
+      "sequence": 28,
+      "roman": "VII",
+      "name": "权杖七",
+      "englishName": "Seven of Wands",
+      "suit": "wands",
+      "rank": "seven",
+      "keywords": [
+        "立场",
+        "边界",
+        "坚持"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-07"
+    },
+    {
+      "id": "minor-wands-08",
+      "filename": "minor-wands-08.jpg",
+      "sequence": 29,
+      "roman": "VIII",
+      "name": "权杖八",
+      "englishName": "Eight of Wands",
+      "suit": "wands",
+      "rank": "eight",
+      "keywords": [
+        "速度",
+        "讯息",
+        "推进"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-08"
+    },
+    {
+      "id": "minor-wands-09",
+      "filename": "minor-wands-09.jpg",
+      "sequence": 30,
+      "roman": "IX",
+      "name": "权杖九",
+      "englishName": "Nine of Wands",
+      "suit": "wands",
+      "rank": "nine",
+      "keywords": [
+        "韧性",
+        "警觉",
+        "保留"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-09"
+    },
+    {
+      "id": "minor-wands-10",
+      "filename": "minor-wands-10.jpg",
+      "sequence": 31,
+      "roman": "X",
+      "name": "权杖十",
+      "englishName": "Ten of Wands",
+      "suit": "wands",
+      "rank": "ten",
+      "keywords": [
+        "负担",
+        "责任",
+        "过载"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-10"
+    },
+    {
+      "id": "minor-wands-page",
+      "filename": "minor-wands-page.jpg",
+      "sequence": 32,
+      "roman": "PAGE",
+      "name": "权杖侍从",
+      "englishName": "Page of Wands",
+      "suit": "wands",
+      "rank": "page",
+      "keywords": [
+        "好奇",
+        "讯号",
+        "探索"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-page"
+    },
+    {
+      "id": "minor-wands-knight",
+      "filename": "minor-wands-knight.jpg",
+      "sequence": 33,
+      "roman": "KNIGHT",
+      "name": "权杖骑士",
+      "englishName": "Knight of Wands",
+      "suit": "wands",
+      "rank": "knight",
+      "keywords": [
+        "追逐",
+        "热情",
+        "冒进"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-knight"
+    },
+    {
+      "id": "minor-wands-queen",
+      "filename": "minor-wands-queen.jpg",
+      "sequence": 34,
+      "roman": "QUEEN",
+      "name": "权杖王后",
+      "englishName": "Queen of Wands",
+      "suit": "wands",
+      "rank": "queen",
+      "keywords": [
+        "自信",
+        "创造",
+        "感染力"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-queen"
+    },
+    {
+      "id": "minor-wands-king",
+      "filename": "minor-wands-king.jpg",
+      "sequence": 35,
+      "roman": "KING",
+      "name": "权杖国王",
+      "englishName": "King of Wands",
+      "suit": "wands",
+      "rank": "king",
+      "keywords": [
+        "愿景",
+        "领导",
+        "影响"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-wands-king"
+    },
+    {
+      "id": "minor-cups-ace",
+      "filename": "minor-cups-ace.jpg",
+      "sequence": 36,
+      "roman": "A",
+      "name": "圣杯王牌",
+      "englishName": "Ace of Cups",
+      "suit": "cups",
+      "rank": "ace",
+      "keywords": [
+        "情感",
+        "开放",
+        "连接"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-ace"
+    },
+    {
+      "id": "minor-cups-02",
+      "filename": "minor-cups-02.jpg",
+      "sequence": 37,
+      "roman": "II",
+      "name": "圣杯二",
+      "englishName": "Two of Cups",
+      "suit": "cups",
+      "rank": "two",
+      "keywords": [
+        "互惠",
+        "连接",
+        "共识"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-02"
+    },
+    {
+      "id": "minor-cups-03",
+      "filename": "minor-cups-03.jpg",
+      "sequence": 38,
+      "roman": "III",
+      "name": "圣杯三",
+      "englishName": "Three of Cups",
+      "suit": "cups",
+      "rank": "three",
+      "keywords": [
+        "友谊",
+        "庆祝",
+        "支持"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-03"
+    },
+    {
+      "id": "minor-cups-04",
+      "filename": "minor-cups-04.jpg",
+      "sequence": 39,
+      "roman": "IV",
+      "name": "圣杯四",
+      "englishName": "Four of Cups",
+      "suit": "cups",
+      "rank": "four",
+      "keywords": [
+        "倦怠",
+        "停顿",
+        "重估"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-04"
+    },
+    {
+      "id": "minor-cups-05",
+      "filename": "minor-cups-05.jpg",
+      "sequence": 40,
+      "roman": "V",
+      "name": "圣杯五",
+      "englishName": "Five of Cups",
+      "suit": "cups",
+      "rank": "five",
+      "keywords": [
+        "失落",
+        "哀伤",
+        "余留"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-05"
+    },
+    {
+      "id": "minor-cups-06",
+      "filename": "minor-cups-06.jpg",
+      "sequence": 41,
+      "roman": "VI",
+      "name": "圣杯六",
+      "englishName": "Six of Cups",
+      "suit": "cups",
+      "rank": "six",
+      "keywords": [
+        "记忆",
+        "纯真",
+        "过去"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-06"
+    },
+    {
+      "id": "minor-cups-07",
+      "filename": "minor-cups-07.jpg",
+      "sequence": 42,
+      "roman": "VII",
+      "name": "圣杯七",
+      "englishName": "Seven of Cups",
+      "suit": "cups",
+      "rank": "seven",
+      "keywords": [
+        "选择",
+        "想象",
+        "辨别"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-07"
+    },
+    {
+      "id": "minor-cups-08",
+      "filename": "minor-cups-08.jpg",
+      "sequence": 43,
+      "roman": "VIII",
+      "name": "圣杯八",
+      "englishName": "Eight of Cups",
+      "suit": "cups",
+      "rank": "eight",
+      "keywords": [
+        "离开",
+        "寻找",
+        "取舍"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-08"
+    },
+    {
+      "id": "minor-cups-09",
+      "filename": "minor-cups-09.jpg",
+      "sequence": 44,
+      "roman": "IX",
+      "name": "圣杯九",
+      "englishName": "Nine of Cups",
+      "suit": "cups",
+      "rank": "nine",
+      "keywords": [
+        "满足",
+        "享受",
+        "感恩"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-09"
+    },
+    {
+      "id": "minor-cups-10",
+      "filename": "minor-cups-10.jpg",
+      "sequence": 45,
+      "roman": "X",
+      "name": "圣杯十",
+      "englishName": "Ten of Cups",
+      "suit": "cups",
+      "rank": "ten",
+      "keywords": [
+        "归属",
+        "和谐",
+        "共享"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-10"
+    },
+    {
+      "id": "minor-cups-page",
+      "filename": "minor-cups-page.jpg",
+      "sequence": 46,
+      "roman": "PAGE",
+      "name": "圣杯侍从",
+      "englishName": "Page of Cups",
+      "suit": "cups",
+      "rank": "page",
+      "keywords": [
+        "敏感",
+        "讯息",
+        "想象"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-page"
+    },
+    {
+      "id": "minor-cups-knight",
+      "filename": "minor-cups-knight.jpg",
+      "sequence": 47,
+      "roman": "KNIGHT",
+      "name": "圣杯骑士",
+      "englishName": "Knight of Cups",
+      "suit": "cups",
+      "rank": "knight",
+      "keywords": [
+        "理想",
+        "邀请",
+        "追寻"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-knight"
+    },
+    {
+      "id": "minor-cups-queen",
+      "filename": "minor-cups-queen.jpg",
+      "sequence": 48,
+      "roman": "QUEEN",
+      "name": "圣杯王后",
+      "englishName": "Queen of Cups",
+      "suit": "cups",
+      "rank": "queen",
+      "keywords": [
+        "共情",
+        "直觉",
+        "承接"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-queen"
+    },
+    {
+      "id": "minor-cups-king",
+      "filename": "minor-cups-king.jpg",
+      "sequence": 49,
+      "roman": "KING",
+      "name": "圣杯国王",
+      "englishName": "King of Cups",
+      "suit": "cups",
+      "rank": "king",
+      "keywords": [
+        "成熟",
+        "稳定",
+        "关怀"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-cups-king"
+    },
+    {
+      "id": "minor-swords-ace",
+      "filename": "minor-swords-ace.jpg",
+      "sequence": 50,
+      "roman": "A",
+      "name": "宝剑王牌",
+      "englishName": "Ace of Swords",
+      "suit": "swords",
+      "rank": "ace",
+      "keywords": [
+        "清晰",
+        "事实",
+        "决断"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-ace"
+    },
+    {
+      "id": "minor-swords-02",
+      "filename": "minor-swords-02.jpg",
+      "sequence": 51,
+      "roman": "II",
+      "name": "宝剑二",
+      "englishName": "Two of Swords",
+      "suit": "swords",
+      "rank": "two",
+      "keywords": [
+        "僵持",
+        "保护",
+        "选择"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-02"
+    },
+    {
+      "id": "minor-swords-03",
+      "filename": "minor-swords-03.jpg",
+      "sequence": 52,
+      "roman": "III",
+      "name": "宝剑三",
+      "englishName": "Three of Swords",
+      "suit": "swords",
+      "rank": "three",
+      "keywords": [
+        "伤痛",
+        "分离",
+        "真相"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-03"
+    },
+    {
+      "id": "minor-swords-04",
+      "filename": "minor-swords-04.jpg",
+      "sequence": 53,
+      "roman": "IV",
+      "name": "宝剑四",
+      "englishName": "Four of Swords",
+      "suit": "swords",
+      "rank": "four",
+      "keywords": [
+        "休息",
+        "恢复",
+        "整合"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-04"
+    },
+    {
+      "id": "minor-swords-05",
+      "filename": "minor-swords-05.jpg",
+      "sequence": 54,
+      "roman": "V",
+      "name": "宝剑五",
+      "englishName": "Five of Swords",
+      "suit": "swords",
+      "rank": "five",
+      "keywords": [
+        "冲突",
+        "胜负",
+        "代价"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-05"
+    },
+    {
+      "id": "minor-swords-06",
+      "filename": "minor-swords-06.jpg",
+      "sequence": 55,
+      "roman": "VI",
+      "name": "宝剑六",
+      "englishName": "Six of Swords",
+      "suit": "swords",
+      "rank": "six",
+      "keywords": [
+        "过渡",
+        "离开",
+        "迁移"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-06"
+    },
+    {
+      "id": "minor-swords-07",
+      "filename": "minor-swords-07.jpg",
+      "sequence": 56,
+      "roman": "VII",
+      "name": "宝剑七",
+      "englishName": "Seven of Swords",
+      "suit": "swords",
+      "rank": "seven",
+      "keywords": [
+        "策略",
+        "隐瞒",
+        "独行"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-07"
+    },
+    {
+      "id": "minor-swords-08",
+      "filename": "minor-swords-08.jpg",
+      "sequence": 57,
+      "roman": "VIII",
+      "name": "宝剑八",
+      "englishName": "Eight of Swords",
+      "suit": "swords",
+      "rank": "eight",
+      "keywords": [
+        "限制",
+        "信念",
+        "视角"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-08"
+    },
+    {
+      "id": "minor-swords-09",
+      "filename": "minor-swords-09.jpg",
+      "sequence": 58,
+      "roman": "IX",
+      "name": "宝剑九",
+      "englishName": "Nine of Swords",
+      "suit": "swords",
+      "rank": "nine",
+      "keywords": [
+        "焦虑",
+        "反刍",
+        "恐惧"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-09"
+    },
+    {
+      "id": "minor-swords-10",
+      "filename": "minor-swords-10.jpg",
+      "sequence": 59,
+      "roman": "X",
+      "name": "宝剑十",
+      "englishName": "Ten of Swords",
+      "suit": "swords",
+      "rank": "ten",
+      "keywords": [
+        "终点",
+        "崩解",
+        "释放"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-10"
+    },
+    {
+      "id": "minor-swords-page",
+      "filename": "minor-swords-page.jpg",
+      "sequence": 60,
+      "roman": "PAGE",
+      "name": "宝剑侍从",
+      "englishName": "Page of Swords",
+      "suit": "swords",
+      "rank": "page",
+      "keywords": [
+        "警觉",
+        "提问",
+        "表达"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-page"
+    },
+    {
+      "id": "minor-swords-knight",
+      "filename": "minor-swords-knight.jpg",
+      "sequence": 61,
+      "roman": "KNIGHT",
+      "name": "宝剑骑士",
+      "englishName": "Knight of Swords",
+      "suit": "swords",
+      "rank": "knight",
+      "keywords": [
+        "直进",
+        "速度",
+        "交锋"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-knight"
+    },
+    {
+      "id": "minor-swords-queen",
+      "filename": "minor-swords-queen.jpg",
+      "sequence": 62,
+      "roman": "QUEEN",
+      "name": "宝剑王后",
+      "englishName": "Queen of Swords",
+      "suit": "swords",
+      "rank": "queen",
+      "keywords": [
+        "辨别",
+        "独立",
+        "坦率"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-queen"
+    },
+    {
+      "id": "minor-swords-king",
+      "filename": "minor-swords-king.jpg",
+      "sequence": 63,
+      "roman": "KING",
+      "name": "宝剑国王",
+      "englishName": "King of Swords",
+      "suit": "swords",
+      "rank": "king",
+      "keywords": [
+        "理性",
+        "原则",
+        "权责"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-swords-king"
+    },
+    {
+      "id": "minor-pentacles-ace",
+      "filename": "minor-pentacles-ace.jpg",
+      "sequence": 64,
+      "roman": "A",
+      "name": "星币王牌",
+      "englishName": "Ace of Pentacles",
+      "suit": "pentacles",
+      "rank": "ace",
+      "keywords": [
+        "机会",
+        "基础",
+        "资源"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-ace"
+    },
+    {
+      "id": "minor-pentacles-02",
+      "filename": "minor-pentacles-02.jpg",
+      "sequence": 65,
+      "roman": "II",
+      "name": "星币二",
+      "englishName": "Two of Pentacles",
+      "suit": "pentacles",
+      "rank": "two",
+      "keywords": [
+        "平衡",
+        "适应",
+        "优先级"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-02"
+    },
+    {
+      "id": "minor-pentacles-03",
+      "filename": "minor-pentacles-03.jpg",
+      "sequence": 66,
+      "roman": "III",
+      "name": "星币三",
+      "englishName": "Three of Pentacles",
+      "suit": "pentacles",
+      "rank": "three",
+      "keywords": [
+        "协作",
+        "技艺",
+        "标准"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-03"
+    },
+    {
+      "id": "minor-pentacles-04",
+      "filename": "minor-pentacles-04.jpg",
+      "sequence": 67,
+      "roman": "IV",
+      "name": "星币四",
+      "englishName": "Four of Pentacles",
+      "suit": "pentacles",
+      "rank": "four",
+      "keywords": [
+        "安全",
+        "控制",
+        "执着"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-04"
+    },
+    {
+      "id": "minor-pentacles-05",
+      "filename": "minor-pentacles-05.jpg",
+      "sequence": 68,
+      "roman": "V",
+      "name": "星币五",
+      "englishName": "Five of Pentacles",
+      "suit": "pentacles",
+      "rank": "five",
+      "keywords": [
+        "匮乏",
+        "排除",
+        "援助"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-05"
+    },
+    {
+      "id": "minor-pentacles-06",
+      "filename": "minor-pentacles-06.jpg",
+      "sequence": 69,
+      "roman": "VI",
+      "name": "星币六",
+      "englishName": "Six of Pentacles",
+      "suit": "pentacles",
+      "rank": "six",
+      "keywords": [
+        "给予",
+        "接受",
+        "权力"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-06"
+    },
+    {
+      "id": "minor-pentacles-07",
+      "filename": "minor-pentacles-07.jpg",
+      "sequence": 70,
+      "roman": "VII",
+      "name": "星币七",
+      "englishName": "Seven of Pentacles",
+      "suit": "pentacles",
+      "rank": "seven",
+      "keywords": [
+        "耐心",
+        "评估",
+        "培育"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-07"
+    },
+    {
+      "id": "minor-pentacles-08",
+      "filename": "minor-pentacles-08.jpg",
+      "sequence": 71,
+      "roman": "VIII",
+      "name": "星币八",
+      "englishName": "Eight of Pentacles",
+      "suit": "pentacles",
+      "rank": "eight",
+      "keywords": [
+        "练习",
+        "精进",
+        "专注"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-08"
+    },
+    {
+      "id": "minor-pentacles-09",
+      "filename": "minor-pentacles-09.jpg",
+      "sequence": 72,
+      "roman": "IX",
+      "name": "星币九",
+      "englishName": "Nine of Pentacles",
+      "suit": "pentacles",
+      "rank": "nine",
+      "keywords": [
+        "独立",
+        "成果",
+        "品味"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-09"
+    },
+    {
+      "id": "minor-pentacles-10",
+      "filename": "minor-pentacles-10.jpg",
+      "sequence": 73,
+      "roman": "X",
+      "name": "星币十",
+      "englishName": "Ten of Pentacles",
+      "suit": "pentacles",
+      "rank": "ten",
+      "keywords": [
+        "传承",
+        "稳定",
+        "体系"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-10"
+    },
+    {
+      "id": "minor-pentacles-page",
+      "filename": "minor-pentacles-page.jpg",
+      "sequence": 74,
+      "roman": "PAGE",
+      "name": "星币侍从",
+      "englishName": "Page of Pentacles",
+      "suit": "pentacles",
+      "rank": "page",
+      "keywords": [
+        "学习",
+        "计划",
+        "实践"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-page"
+    },
+    {
+      "id": "minor-pentacles-knight",
+      "filename": "minor-pentacles-knight.jpg",
+      "sequence": 75,
+      "roman": "KNIGHT",
+      "name": "星币骑士",
+      "englishName": "Knight of Pentacles",
+      "suit": "pentacles",
+      "rank": "knight",
+      "keywords": [
+        "勤勉",
+        "规律",
+        "可靠"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-knight"
+    },
+    {
+      "id": "minor-pentacles-queen",
+      "filename": "minor-pentacles-queen.jpg",
+      "sequence": 76,
+      "roman": "QUEEN",
+      "name": "星币王后",
+      "englishName": "Queen of Pentacles",
+      "suit": "pentacles",
+      "rank": "queen",
+      "keywords": [
+        "照料",
+        "资源",
+        "踏实"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-queen"
+    },
+    {
+      "id": "minor-pentacles-king",
+      "filename": "minor-pentacles-king.jpg",
+      "sequence": 77,
+      "roman": "KING",
+      "name": "星币国王",
+      "englishName": "King of Pentacles",
+      "suit": "pentacles",
+      "rank": "king",
+      "keywords": [
+        "经营",
+        "丰盛",
+        "责任"
+      ],
+      "promptSection": "CARD_PROMPTS.md#minor-pentacles-king"
+    }
+  ]
+}

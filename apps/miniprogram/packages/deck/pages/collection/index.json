@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "七十八张图鉴",
+  "usingComponents": {
+    "card-preview": "/components/card-preview/index"
+  }
+}
