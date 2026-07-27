@@ -1,4 +1,5 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -18,6 +19,18 @@ const paths = {
   contactSheets: join(
     projectRoot,
     "assets/tarot-card-style/minor-arcana/contact-sheets"
+  ),
+  sharedFrameSource: join(
+    projectRoot,
+    "assets/tarot-card-style/shared/front-frame-overlay.png"
+  ),
+  sharedCardBackSource: join(
+    projectRoot,
+    "assets/tarot-card-style/shared/card-back.png"
+  ),
+  sharedFrameRuntime: join(
+    projectRoot,
+    "apps/miniprogram/assets/cards/front-frame-overlay.png"
   ),
   cardSpecs: join(
     projectRoot,
@@ -84,6 +97,26 @@ const readJpegSize = (filename) => {
   }
   fail(`Could not read JPEG dimensions: ${filename}`);
 };
+
+const readPngMetadata = (filename) => {
+  const buffer = readFileSync(filename);
+  const signature = "89504e470d0a1a0a";
+  if (buffer.subarray(0, 8).toString("hex") !== signature) {
+    fail(`Not a PNG file: ${filename}`);
+  }
+  if (buffer.subarray(12, 16).toString("ascii") !== "IHDR") {
+    fail(`PNG is missing its IHDR header: ${filename}`);
+  }
+  const colorType = buffer[25];
+  return {
+    width: buffer.readUInt32BE(16),
+    height: buffer.readUInt32BE(20),
+    hasAlpha: colorType === 4 || colorType === 6,
+  };
+};
+
+const sha256 = (filename) =>
+  createHash("sha256").update(readFileSync(filename)).digest("hex").toUpperCase();
 
 const assertDimensions = (directory, filenames, width, height) => {
   for (const filename of filenames) {
@@ -162,6 +195,39 @@ if (legacyMainFaces.length !== 0) {
 }
 assertDimensions(paths.mainCards, ["card-back.jpg"], 512, 768);
 
+const canonicalSharedAssets = [
+  {
+    filename: paths.sharedFrameSource,
+    hash: "04A5700E1ED8B37D9E509C263B5B82534A23BC6657A4F65F74280C5CCBF56C7A",
+    requiresAlpha: true,
+  },
+  {
+    filename: paths.sharedCardBackSource,
+    hash: "C792C762986BF5EEB6568E434C4D12748187D07F7943FDA3319D45C6AB251A5B",
+    requiresAlpha: false,
+  },
+];
+for (const asset of canonicalSharedAssets) {
+  const metadata = readPngMetadata(asset.filename);
+  if (metadata.width !== 1024 || metadata.height !== 1536) {
+    fail(`Canonical shared asset must be 1024x1536: ${asset.filename}.`);
+  }
+  if (asset.requiresAlpha && !metadata.hasAlpha) {
+    fail(`Canonical shared frame must preserve transparency: ${asset.filename}.`);
+  }
+  if (sha256(asset.filename) !== asset.hash) {
+    fail(`Canonical shared asset hash changed unexpectedly: ${asset.filename}.`);
+  }
+}
+const runtimeFrameMetadata = readPngMetadata(paths.sharedFrameRuntime);
+if (
+  runtimeFrameMetadata.width !== 384 ||
+  runtimeFrameMetadata.height !== 576 ||
+  !runtimeFrameMetadata.hasAlpha
+) {
+  fail("Runtime shared frame must be a transparent 384x576 PNG.");
+}
+
 for (const suit of ["wands", "cups", "swords", "pentacles"]) {
   const sheet = `${suit}.jpg`;
   if (!listJpegs(paths.contactSheets).includes(sheet)) {
@@ -174,8 +240,10 @@ const cardFaceWxml = readFileSync(join(paths.tarotCardFace, "index.wxml"), "utf8
 const cardFaceWxss = readFileSync(join(paths.tarotCardFace, "index.wxss"), "utf8");
 for (const requiredMarkup of [
   "arcana === 'minor'",
-  'class="rank-plaque"',
-  'class="name-plaque"',
+  'class="frame-overlay"',
+  'src="/assets/cards/front-frame-overlay.png"',
+  'class="frame-rank"',
+  'class="frame-title"',
   "{{roman}}",
   "{{name}}",
   "{{englishName}}",
@@ -185,10 +253,11 @@ for (const requiredMarkup of [
   }
 }
 for (const requiredStyle of [
-  ".frame-line--outer",
-  ".frame-line--inner",
-  ".rank-plaque",
-  ".name-plaque",
+  ".frame-overlay",
+  ".frame-rank",
+  ".frame-title",
+  ".frame-name",
+  ".frame-english",
   ".tarot-face.is-reversed",
 ]) {
   if (!cardFaceWxss.includes(requiredStyle)) {
@@ -225,6 +294,7 @@ console.log(
     `Formal sources: ${sourceFilenames.length} Minor Arcana faces at 1024x1536.`,
     `Deck package: ${deckFaces.length} faces + back at 384x576 (${deckPackageBytes} bytes).`,
     `Main package: ${thumbnailFilenames.length} thumbnails at 192x288 (${mainPackageBytes} bytes total excluding deck package).`,
-    `Card presentation: shared frame and identity layer registered in ${cardPresentationConsumers.length} consumers.`,
+    "Shared assets: canonical 1024x1536 frame/back verified; transparent runtime frame is 384x576.",
+    `Card presentation: canonical frame and identity layer registered in ${cardPresentationConsumers.length} consumers.`,
   ].join("\n")
 );

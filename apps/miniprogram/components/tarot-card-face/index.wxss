@@ -25,209 +25,77 @@
   height: 100%;
 }
 
-.face-patina {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, rgba(0, 0, 0, .42), transparent 10%, transparent 90%, rgba(0, 0, 0, .42)),
-    linear-gradient(180deg, rgba(0, 0, 0, .22), transparent 17%, transparent 70%, rgba(0, 0, 0, .72));
-  pointer-events: none;
-}
-
-.frame-line,
-.frame-rail,
-.frame-corner,
-.rank-plaque,
-.name-plaque {
+.frame-overlay {
   position: absolute;
   z-index: 2;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
-.frame-line {
-  border: 1rpx solid rgba(201, 161, 82, .86);
-  box-shadow: 0 0 2rpx rgba(0, 0, 0, .8), inset 0 0 2rpx rgba(0, 0, 0, .8);
+.frame-rank,
+.frame-title {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
 }
 
-.frame-line--outer {
-  inset: 2.1%;
-}
-
-.frame-line--inner {
-  inset: 3.8%;
-  border-color: rgba(220, 181, 98, .58);
-}
-
-.frame-rail {
-  top: 20%;
-  bottom: 20%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: column;
-  color: rgba(218, 177, 92, .6);
-  font-family: Georgia, serif;
-  font-size: 8rpx;
-  text-shadow: 0 1rpx 3rpx #000;
-}
-
-.frame-rail--left {
-  left: 2.55%;
-}
-
-.frame-rail--right {
-  right: 2.55%;
-}
-
-.frame-corner {
+.frame-rank {
+  top: 3.7%;
+  left: 37.5%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 11%;
-  height: 7.2%;
-  border: 1rpx solid rgba(209, 168, 83, .68);
-  background: rgba(8, 7, 5, .74);
-  color: rgba(228, 190, 111, .86);
-  font-family: Georgia, serif;
-  font-size: 12rpx;
-  line-height: 1;
-  text-shadow: 0 1rpx 4rpx #000;
-}
-
-.frame-corner--tl {
-  top: 3.8%;
-  left: 3.8%;
-  border-right-color: rgba(209, 168, 83, .28);
-  border-bottom-color: rgba(209, 168, 83, .28);
-}
-
-.frame-corner--tr {
-  top: 3.8%;
-  right: 3.8%;
-  border-bottom-color: rgba(209, 168, 83, .28);
-  border-left-color: rgba(209, 168, 83, .28);
-}
-
-.frame-corner--bl {
-  bottom: 3.8%;
-  left: 3.8%;
-  border-top-color: rgba(209, 168, 83, .28);
-  border-right-color: rgba(209, 168, 83, .28);
-}
-
-.frame-corner--br {
-  right: 3.8%;
-  bottom: 3.8%;
-  border-top-color: rgba(209, 168, 83, .28);
-  border-left-color: rgba(209, 168, 83, .28);
-}
-
-.rank-plaque {
-  top: 2.1%;
-  left: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 31%;
-  height: 8.8%;
-  border-right: 1rpx solid rgba(209, 168, 83, .65);
-  border-bottom: 1rpx solid rgba(209, 168, 83, .75);
-  border-left: 1rpx solid rgba(209, 168, 83, .65);
-  background: linear-gradient(180deg, rgba(9, 8, 6, .94), rgba(15, 12, 8, .82));
+  width: 25%;
+  height: 4.8%;
   color: #e2bd72;
-  transform: translateX(-50%);
-  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, .35);
-}
-
-.rank-value {
-  position: relative;
-  z-index: 1;
-  max-width: 76%;
   overflow: hidden;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 13rpx;
+  font-size: 15rpx;
   letter-spacing: 1rpx;
   line-height: 1;
+  text-align: center;
   text-overflow: ellipsis;
   text-shadow: 0 1rpx 4rpx #000;
   white-space: nowrap;
 }
 
-.rank-wing {
-  position: absolute;
-  bottom: -1rpx;
-  width: 21%;
-  height: 36%;
-  border-top: 1rpx solid rgba(221, 181, 99, .6);
-}
-
-.rank-wing--left {
-  left: -21%;
-  transform: skewY(-24deg);
-}
-
-.rank-wing--right {
-  right: -21%;
-  transform: skewY(24deg);
-}
-
-.name-plaque {
-  right: 3.8%;
-  bottom: 3.8%;
-  left: 3.8%;
+.frame-title {
+  right: 24.5%;
+  bottom: 4.15%;
+  left: 24.5%;
   display: flex;
   align-items: center;
-  height: 15.2%;
-  border-top: 1rpx solid rgba(223, 181, 94, .78);
-  border-bottom: 1rpx solid rgba(223, 181, 94, .78);
-  background: linear-gradient(180deg, rgba(10, 8, 6, .9), rgba(15, 12, 8, .97));
-  box-shadow: 0 -5rpx 13rpx rgba(0, 0, 0, .46), inset 0 1rpx 0 rgba(255, 225, 151, .07);
-}
-
-.plaque-wing {
-  display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  width: 17%;
-  height: 58%;
-  border-top: 1rpx solid rgba(207, 165, 81, .38);
-  border-bottom: 1rpx solid rgba(207, 165, 81, .38);
-  color: rgba(222, 180, 94, .72);
-  font-size: 7rpx;
-}
-
-.plaque-wing--left {
-  border-right: 1rpx solid rgba(207, 165, 81, .56);
-}
-
-.plaque-wing--right {
-  border-left: 1rpx solid rgba(207, 165, 81, .56);
-}
-
-.plaque-copy {
-  flex: 1;
+  height: 8.7%;
   min-width: 0;
+  overflow: hidden;
   text-align: center;
   text-shadow: 0 1rpx 4rpx #000;
 }
 
-.plaque-name {
+.frame-name {
+  width: 100%;
   overflow: hidden;
   color: #e5c47f;
-  font-family: "Songti SC", "STSong", serif;
-  font-size: 17rpx;
+  font-family: "Songti SC", "STSong", "SimSun", serif;
+  font-size: 18rpx;
   letter-spacing: 2rpx;
   line-height: 1.15;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.plaque-english {
+.frame-english {
   margin-top: 3rpx;
+  width: 100%;
   overflow: hidden;
-  color: rgba(215, 185, 128, .66);
+  color: #d8b56f;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 7rpx;
+  font-size: 9rpx;
   letter-spacing: .5rpx;
   line-height: 1;
   text-overflow: ellipsis;
@@ -235,21 +103,18 @@
   white-space: nowrap;
 }
 
-.tarot-face--micro .rank-value { font-size: 5rpx; letter-spacing: 0; }
-.tarot-face--micro .frame-corner { font-size: 4rpx; }
-.tarot-face--micro .plaque-name { font-size: 6rpx; letter-spacing: 0; }
-.tarot-face--micro .plaque-english { display: none; }
-.tarot-face--micro .plaque-wing { font-size: 3rpx; }
+.tarot-face--micro .frame-rank { font-size: 4rpx; letter-spacing: 0; }
+.tarot-face--micro .frame-name { font-size: 5rpx; letter-spacing: 0; }
+.tarot-face--micro .frame-english { display: none; }
 
-.tarot-face--compact .rank-value { font-size: 10rpx; }
-.tarot-face--compact .frame-corner { font-size: 8rpx; }
-.tarot-face--compact .plaque-name { font-size: 13rpx; letter-spacing: 1rpx; }
-.tarot-face--compact .plaque-english { font-size: 6rpx; }
-.tarot-face--compact .plaque-wing { font-size: 5rpx; }
+.tarot-face--compact .frame-rank { font-size: 10rpx; }
+.tarot-face--compact .frame-name { font-size: 13rpx; letter-spacing: 1rpx; }
+.tarot-face--compact .frame-english { font-size: 6rpx; }
 
-.tarot-face--hero .rank-value { font-size: 22rpx; letter-spacing: 2rpx; }
-.tarot-face--hero .frame-corner { font-size: 21rpx; }
-.tarot-face--hero .frame-rail { font-size: 11rpx; }
-.tarot-face--hero .plaque-name { font-size: 30rpx; letter-spacing: 4rpx; }
-.tarot-face--hero .plaque-english { margin-top: 5rpx; font-size: 11rpx; letter-spacing: 1rpx; }
-.tarot-face--hero .plaque-wing { font-size: 10rpx; }
+.tarot-face--hero .frame-rank { font-size: 20rpx; letter-spacing: 2rpx; }
+.tarot-face--hero .frame-name { font-size: 24rpx; letter-spacing: 3rpx; }
+.tarot-face--hero .frame-english { margin-top: 4rpx; font-size: 12rpx; letter-spacing: 1rpx; }
+
+.tarot-face--preview .frame-rank { font-size: 28rpx; letter-spacing: 2rpx; }
+.tarot-face--preview .frame-name { font-size: 32rpx; letter-spacing: 4rpx; }
+.tarot-face--preview .frame-english { margin-top: 6rpx; font-size: 17rpx; letter-spacing: 1rpx; }

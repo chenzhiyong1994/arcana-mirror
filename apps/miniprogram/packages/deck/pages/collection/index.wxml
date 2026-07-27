@@ -69,7 +69,7 @@
               name="{{selected.name}}"
               english-name="{{selected.englishName}}"
               orientation="upright"
-              variant="hero"
+              variant="standard"
             />
           </view>
           <view class="detail-zoom-cue"><text>⌕</text> 查看大图</view>

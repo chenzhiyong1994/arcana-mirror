@@ -6,30 +6,15 @@
   <image class="face-art" src="{{imagePath}}" mode="aspectFill" />
 
   <block wx:if="{{arcana === 'minor'}}">
-    <view class="face-patina"></view>
-    <view class="frame-line frame-line--outer"></view>
-    <view class="frame-line frame-line--inner"></view>
-    <view class="frame-rail frame-rail--left"><text>·</text><text>✦</text><text>·</text></view>
-    <view class="frame-rail frame-rail--right"><text>·</text><text>✦</text><text>·</text></view>
-
-    <view class="frame-corner frame-corner--tl"><text>◇</text></view>
-    <view class="frame-corner frame-corner--tr"><text>◇</text></view>
-    <view class="frame-corner frame-corner--bl"><text>◇</text></view>
-    <view class="frame-corner frame-corner--br"><text>◇</text></view>
-
-    <view class="rank-plaque">
-      <view class="rank-wing rank-wing--left"></view>
-      <text class="rank-value">{{roman}}</text>
-      <view class="rank-wing rank-wing--right"></view>
-    </view>
-
-    <view class="name-plaque">
-      <view class="plaque-wing plaque-wing--left"><text>✦</text></view>
-      <view class="plaque-copy">
-        <view class="plaque-name">{{name}}</view>
-        <view class="plaque-english">{{englishName}}</view>
-      </view>
-      <view class="plaque-wing plaque-wing--right"><text>✦</text></view>
+    <image
+      class="frame-overlay"
+      src="/assets/cards/front-frame-overlay.png"
+      mode="scaleToFill"
+    />
+    <text class="frame-rank">{{roman}}</text>
+    <view class="frame-title">
+      <view class="frame-name">{{name}}</view>
+      <view class="frame-english">{{englishName}}</view>
     </view>
   </block>
 </view>

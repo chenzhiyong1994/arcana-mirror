@@ -5,6 +5,7 @@
   "scripts": {
     "generate:minor-specs": "node tools/generate-minor-card-specs.mjs",
     "build:minor-contact-sheets": "pwsh -NoProfile -File tools/build-minor-contact-sheets.ps1",
+    "build:shared-card-assets": "pwsh -NoProfile -File tools/build-shared-card-assets.ps1",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "validate:assets": "node tools/validate-deck-assets.mjs",

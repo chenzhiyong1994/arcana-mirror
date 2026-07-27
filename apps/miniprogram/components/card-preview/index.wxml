@@ -20,7 +20,7 @@
         name="{{name}}"
         english-name="{{englishName}}"
         orientation="{{orientation}}"
-        variant="hero"
+        variant="preview"
       />
       <view class="preview-vignette"></view>
       <view class="preview-sheen"></view>

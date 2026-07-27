@@ -13,6 +13,8 @@
 
 - `concepts/style-concept-a-ritual-archive-v1.png`：A 方案正面与统一卡背概念样稿；
 - `concepts/style-nouveau-g-classical-v1.png`：G 方案正面与统一卡背概念样稿；
+- `shared/front-frame-overlay.png`：大、小阿尔卡那共用的 1024×1536 RGBA 正面框原件；
+- `shared/card-back.png`：1024×1536 统一卡背原件；
 - `style-hermit-v3.png`：只用于校验隐士牌义、人物关系与核心道具，不代表已确认的主视觉。
 
 两套方案的 Prompt、优劣势与验收结论见 [`concepts/README.md`](concepts/README.md)。A 风格的 22 张大阿尔卡那合同见 [`../../deliverables/style-a-deck-generation-kit/README.md`](../../deliverables/style-a-deck-generation-kit/README.md)，56 张小阿尔卡那合同见 [`../../deliverables/style-a-minor-arcana-generation-kit/README.md`](../../deliverables/style-a-minor-arcana-generation-kit/README.md)。
@@ -36,7 +38,7 @@
 
 翻牌动效只在正面层与统一卡背层之间切换；卡背不按卡牌重新生成，生成图片中的示意文字不进入正式资产。
 
-当前实现由 `apps/miniprogram/components/tarot-card-face/` 负责成牌呈现：22 张大阿尔卡那保留原图内已经烘焙的边框、编号和铭牌，56 张无框小阿尔卡那通过组件叠加同构的双层旧金框、顶部牌阶和底部中英文铭牌。正逆位旋转完整成牌，所有页面不得绕过组件直接展示已解锁牌面。
+当前实现由 `apps/miniprogram/components/tarot-card-face/` 负责成牌呈现：22 张大阿尔卡那保留原图内已经烘焙的共享框、编号和铭牌，56 张无框小阿尔卡那通过组件叠加 `shared/front-frame-overlay.png` 的运行时缩放图，以及顶部牌阶和底部中英文铭牌。两者使用同一框体原件，不再以 CSS 近似绘制。正逆位旋转完整成牌，所有页面不得绕过组件直接展示已解锁牌面。
 
 ## 后续门禁
 

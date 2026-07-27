@@ -36,7 +36,7 @@
             name="{{item.name}}"
             english-name="{{item.englishName}}"
             orientation="{{item.orientation}}"
-            variant="{{view.isThree ? 'compact' : 'hero'}}"
+            variant="{{view.isThree ? 'compact' : 'standard'}}"
           />
           <view class="card-select-glow"></view>
         </view>
