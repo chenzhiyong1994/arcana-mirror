@@ -1,0 +1,35 @@
+<view
+  class="tarot-face tarot-face--{{arcana}} tarot-face--{{variant}} {{orientation === 'reversed' ? 'is-reversed' : ''}}"
+  aria-role="img"
+  aria-label="{{name}} · {{orientation === 'reversed' ? '逆位' : '正位'}}"
+>
+  <image class="face-art" src="{{imagePath}}" mode="aspectFill" />
+
+  <block wx:if="{{arcana === 'minor'}}">
+    <view class="face-patina"></view>
+    <view class="frame-line frame-line--outer"></view>
+    <view class="frame-line frame-line--inner"></view>
+    <view class="frame-rail frame-rail--left"><text>·</text><text>✦</text><text>·</text></view>
+    <view class="frame-rail frame-rail--right"><text>·</text><text>✦</text><text>·</text></view>
+
+    <view class="frame-corner frame-corner--tl"><text>◇</text></view>
+    <view class="frame-corner frame-corner--tr"><text>◇</text></view>
+    <view class="frame-corner frame-corner--bl"><text>◇</text></view>
+    <view class="frame-corner frame-corner--br"><text>◇</text></view>
+
+    <view class="rank-plaque">
+      <view class="rank-wing rank-wing--left"></view>
+      <text class="rank-value">{{roman}}</text>
+      <view class="rank-wing rank-wing--right"></view>
+    </view>
+
+    <view class="name-plaque">
+      <view class="plaque-wing plaque-wing--left"><text>✦</text></view>
+      <view class="plaque-copy">
+        <view class="plaque-name">{{name}}</view>
+        <view class="plaque-english">{{englishName}}</view>
+      </view>
+      <view class="plaque-wing plaque-wing--right"><text>✦</text></view>
+    </view>
+  </block>
+</view>

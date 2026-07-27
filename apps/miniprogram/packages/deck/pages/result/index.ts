@@ -21,6 +21,7 @@ function toView(reading: Reading) {
     const position = getReadingPosition(reading, index);
     return {
       cardId: card.id,
+      arcana: card.arcana,
       roman: card.roman,
       name: card.name,
       englishName: card.englishName,

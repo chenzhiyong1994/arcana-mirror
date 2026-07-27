@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "本地照见" }
+{
+  "navigationBarTitleText": "本地照见",
+  "usingComponents": {
+    "tarot-card-face": "/components/tarot-card-face/index"
+  }
+}

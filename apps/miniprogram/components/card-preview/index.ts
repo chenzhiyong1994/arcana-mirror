@@ -2,6 +2,7 @@ Component({
   properties: {
     visible: { type: Boolean, value: false },
     imagePath: { type: String, value: "" },
+    arcana: { type: String, value: "major" },
     roman: { type: String, value: "" },
     name: { type: String, value: "" },
     englishName: { type: String, value: "" },

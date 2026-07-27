@@ -38,7 +38,7 @@
 .detail-hero { position: relative; display: flex; justify-content: center; height: 525rpx; }
 .detail-halo { position: absolute; top: 70rpx; left: 50%; width: 340rpx; height: 340rpx; border: 1rpx solid rgba(184,150,87,.15); border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 60rpx rgba(184,150,87,.09); }
 .detail-image-wrap { position: relative; z-index: 1; display: flex; align-items: center; flex-direction: column; }
-.detail-image { display: block; width: 300rpx; height: 450rpx; border: 1rpx solid rgba(224,191,121,.55); border-radius: 5rpx; box-shadow: 0 25rpx 56rpx rgba(0,0,0,.56); transition: transform 180ms ease, box-shadow 180ms ease; }
+.detail-image { display: block; width: 300rpx; height: 450rpx; overflow: hidden; border: 1rpx solid rgba(224,191,121,.55); border-radius: 5rpx; box-shadow: 0 25rpx 56rpx rgba(0,0,0,.56); transition: transform 180ms ease, box-shadow 180ms ease; }
 .detail-image-wrap:active .detail-image { transform: scale(.985); box-shadow: 0 16rpx 40rpx rgba(0,0,0,.5), 0 0 22rpx rgba(184,150,87,.12); }
 .detail-zoom-cue { margin-top: 14rpx; color: rgba(224,191,121,.76); font-size: 19rpx; letter-spacing: 2rpx; }
 .detail-zoom-cue text { margin-right: 4rpx; color: var(--gold-bright); font-size: 25rpx; }

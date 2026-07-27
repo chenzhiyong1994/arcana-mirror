@@ -9,6 +9,10 @@ function toListItem(reading: Reading) {
   const isThree = getReadingSpread(reading) === "three";
   return {
     id: reading.id,
+    arcana: cards[0].arcana,
+    roman: cards[0].roman,
+    name: cards[0].name,
+    englishName: cards[0].englishName,
     typeLabel: reading.type === "daily" ? "每日一牌" : isThree ? "三牌解读" : "单牌解读",
     title: reading.type === "daily"
       ? `${cards[0].name} · ${orientationLabel(reading.cards[0].orientation)}`

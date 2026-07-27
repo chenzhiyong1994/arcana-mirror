@@ -27,6 +27,10 @@ const paths = {
     projectRoot,
     "assets/tarot-card-style/minor-arcana/generation-report.md"
   ),
+  tarotCardFace: join(
+    projectRoot,
+    "apps/miniprogram/components/tarot-card-face"
+  ),
 };
 
 const fail = (message) => {
@@ -91,6 +95,15 @@ const assertDimensions = (directory, filenames, width, height) => {
     }
   }
 };
+
+const cardPresentationConsumers = [
+  "pages/home/index",
+  "components/card-preview/index",
+  "packages/deck/pages/ritual/index",
+  "packages/deck/pages/result/index",
+  "packages/deck/pages/history/index",
+  "packages/deck/pages/collection/index",
+];
 
 const specs = JSON.parse(readFileSync(paths.cardSpecs, "utf8"));
 if (specs.schemaVersion !== "1.0.0" || specs.deckVersion !== "complete-78") {
@@ -157,6 +170,47 @@ for (const suit of ["wands", "cups", "swords", "pentacles"]) {
 }
 statSync(paths.generationReport);
 
+const cardFaceWxml = readFileSync(join(paths.tarotCardFace, "index.wxml"), "utf8");
+const cardFaceWxss = readFileSync(join(paths.tarotCardFace, "index.wxss"), "utf8");
+for (const requiredMarkup of [
+  "arcana === 'minor'",
+  'class="rank-plaque"',
+  'class="name-plaque"',
+  "{{roman}}",
+  "{{name}}",
+  "{{englishName}}",
+]) {
+  if (!cardFaceWxml.includes(requiredMarkup)) {
+    fail(`Tarot card face is missing required markup: ${requiredMarkup}.`);
+  }
+}
+for (const requiredStyle of [
+  ".frame-line--outer",
+  ".frame-line--inner",
+  ".rank-plaque",
+  ".name-plaque",
+  ".tarot-face.is-reversed",
+]) {
+  if (!cardFaceWxss.includes(requiredStyle)) {
+    fail(`Tarot card face is missing required style: ${requiredStyle}.`);
+  }
+}
+for (const consumer of cardPresentationConsumers) {
+  const wxml = readFileSync(join(paths.appRoot, `${consumer}.wxml`), "utf8");
+  const config = JSON.parse(
+    readFileSync(join(paths.appRoot, `${consumer}.json`), "utf8")
+  );
+  if (!wxml.includes("<tarot-card-face")) {
+    fail(`${consumer}.wxml does not use the shared tarot-card-face component.`);
+  }
+  if (
+    config.usingComponents?.["tarot-card-face"] !==
+    "/components/tarot-card-face/index"
+  ) {
+    fail(`${consumer}.json does not register tarot-card-face.`);
+  }
+}
+
 const mainPackageBytes = directoryBytes(paths.appRoot, paths.deckPackage);
 const deckPackageBytes = directoryBytes(paths.deckPackage);
 if (mainPackageBytes >= twoMebibytes || deckPackageBytes >= twoMebibytes) {
@@ -171,5 +225,6 @@ console.log(
     `Formal sources: ${sourceFilenames.length} Minor Arcana faces at 1024x1536.`,
     `Deck package: ${deckFaces.length} faces + back at 384x576 (${deckPackageBytes} bytes).`,
     `Main package: ${thumbnailFilenames.length} thumbnails at 192x288 (${mainPackageBytes} bytes total excluding deck package).`,
+    `Card presentation: shared frame and identity layer registered in ${cardPresentationConsumers.length} consumers.`,
   ].join("\n")
 );

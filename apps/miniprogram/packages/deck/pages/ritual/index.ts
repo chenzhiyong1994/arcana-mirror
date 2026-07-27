@@ -6,6 +6,7 @@ import { collectionService, readingService } from "../../../../services/app-serv
 
 interface RitualCardView {
   cardId: string;
+  arcana: "major" | "minor";
   roman: string;
   name: string;
   englishName: string;
@@ -40,6 +41,7 @@ Page({
       const card = getCard(drawn.cardId);
       return {
         cardId: card.id,
+        arcana: card.arcana,
         roman: card.roman,
         name: card.name,
         englishName: card.englishName,

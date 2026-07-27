@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "抽牌仪式",
   "usingComponents": {
-    "card-preview": "/components/card-preview/index"
+    "card-preview": "/components/card-preview/index",
+    "tarot-card-face": "/components/tarot-card-face/index"
   }
 }

@@ -30,7 +30,16 @@
               <view class="tap-hint"><text>✦</text><view>{{isThree ? '翻开' : '轻触翻牌'}}</view></view>
             </view>
             <view class="card-face card-front-face">
-              <image class="card-image {{item.orientation === 'reversed' ? 'reversed' : ''}}" src="{{item.imagePath}}" mode="aspectFill" />
+              <tarot-card-face
+                class="front-card"
+                image-path="{{item.imagePath}}"
+                arcana="{{item.arcana}}"
+                roman="{{item.roman}}"
+                name="{{item.name}}"
+                english-name="{{item.englishName}}"
+                orientation="{{item.orientation}}"
+                variant="{{isThree ? 'compact' : 'hero'}}"
+              />
               <view class="front-vignette"></view>
             </view>
           </view>
@@ -57,5 +66,5 @@
     <view class="ritual-foot">牌面用于自我反思，不代替现实证据与专业建议。</view>
   </block>
 
-  <card-preview wx:if="{{previewCard}}" visible="{{previewVisible}}" image-path="{{previewCard.imagePath}}" roman="{{previewCard.roman}}" name="{{previewCard.name}}" english-name="{{previewCard.englishName}}" orientation="{{previewCard.orientation}}" orientation-label="{{previewCard.orientationLabel}}" position-label="{{isThree ? previewCard.positionLabel : ''}}" bind:close="closeCardPreview" />
+  <card-preview wx:if="{{previewCard}}" visible="{{previewVisible}}" image-path="{{previewCard.imagePath}}" arcana="{{previewCard.arcana}}" roman="{{previewCard.roman}}" name="{{previewCard.name}}" english-name="{{previewCard.englishName}}" orientation="{{previewCard.orientation}}" orientation-label="{{previewCard.orientationLabel}}" position-label="{{isThree ? previewCard.positionLabel : ''}}" bind:close="closeCardPreview" />
 </view>

@@ -11,6 +11,10 @@ function toItem(reading: Reading) {
   const isThree = getReadingSpread(reading) === "three";
   return {
     id: reading.id,
+    arcana: cards[0].arcana,
+    roman: cards[0].roman,
+    name: cards[0].name,
+    englishName: cards[0].englishName,
     kind: reading.type === "daily"
       ? "每日一牌"
       : `${reading.topic ? TOPIC_LABELS[reading.topic] : "主题解读"} · ${isThree ? "三牌" : "单牌"}`,

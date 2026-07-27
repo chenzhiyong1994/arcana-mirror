@@ -10,7 +10,17 @@
     <view class="timeline-line"></view>
     <view wx:for="{{items}}" wx:key="id" class="history-item" data-id="{{item.id}}" bindtap="openReading">
       <view class="timeline-dot">✦</view>
-      <image class="history-image {{item.reversed ? 'reversed' : ''}}" src="{{item.imagePath}}" mode="aspectFill" />
+      <view class="history-image">
+        <tarot-card-face
+          image-path="{{item.imagePath}}"
+          arcana="{{item.arcana}}"
+          roman="{{item.roman}}"
+          name="{{item.name}}"
+          english-name="{{item.englishName}}"
+          orientation="{{item.reversed ? 'reversed' : 'upright'}}"
+          variant="micro"
+        />
+      </view>
       <view class="history-main">
         <view class="meta">{{item.date}} · {{item.source}}</view>
         <view class="kind">{{item.kind}}</view>

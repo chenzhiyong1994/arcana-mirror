@@ -119,29 +119,6 @@
   pointer-events: none;
 }
 
-.frame-line { position: absolute; z-index: 4; pointer-events: none; }
-.frame-line-outer { inset: 15rpx; border: 1rpx solid rgba(20, 15, 9, 0.75); }
-.frame-line-inner { inset: 20rpx; border: 1rpx solid rgba(229, 190, 111, 0.2); }
-
-.frame-corner {
-  position: absolute;
-  z-index: 5;
-  color: rgba(239, 203, 127, 0.78);
-  font-family: Georgia, serif;
-  font-size: 36rpx;
-  line-height: 1;
-  pointer-events: none;
-  text-shadow: 0 2rpx 9rpx #000;
-}
-
-.corner-tl { top: 19rpx; left: 19rpx; }
-.corner-tr { top: 19rpx; right: 19rpx; }
-.corner-bl { bottom: 19rpx; left: 19rpx; }
-.corner-br { right: 19rpx; bottom: 19rpx; }
-
-.preview-image { display: block; width: 100%; height: auto; }
-.preview-image.reversed { transform: rotate(180deg); }
-
 .preview-vignette {
   position: absolute;
   z-index: 2;

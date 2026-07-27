@@ -16,7 +16,6 @@
 .stage-halo { position: absolute; top: 50%; left: 16%; width: 300rpx; height: 300rpx; border: 1rpx solid rgba(184, 150, 87, 0.12); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 90rpx rgba(184, 150, 87, 0.11), inset 0 0 80rpx rgba(184, 150, 87, 0.05); }
 .mini-card { position: relative; z-index: 1; flex: 0 0 214rpx; height: 322rpx; overflow: hidden; border: 2rpx solid rgba(224, 191, 121, 0.62); border-radius: 7rpx; background: #0d0b08; box-shadow: 0 20rpx 46rpx rgba(0, 0, 0, 0.58), 0 0 26rpx rgba(184, 150, 87, 0.12); transform: rotate(-3deg); }
 .mini-card-image { width: 100%; height: 100%; }
-.mini-card-image.reversed, .history-thumb.reversed { transform: rotate(180deg); }
 .mini-card-shine { position: absolute; top: -20%; left: -40%; width: 34%; height: 140%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); animation: gold-sheen 5.6s ease-in-out 1.2s infinite; }
 .daily-copy { position: relative; z-index: 2; flex: 1; min-width: 0; margin-left: 34rpx; }
 .daily-title { margin-top: 14rpx; font-size: 36rpx; line-height: 1.35; }
@@ -48,7 +47,7 @@
 .section-head .text-button { margin: 0; }
 .history-list { margin-top: 20rpx; border-top: 1rpx solid rgba(184, 150, 87, 0.2); }
 .history-row { display: flex; align-items: center; min-height: 126rpx; padding: 20rpx 0; border-bottom: 1rpx solid rgba(184, 150, 87, 0.17); }
-.history-thumb { width: 58rpx; height: 88rpx; border: 1rpx solid rgba(184,150,87,0.52); border-radius: 3rpx; }
+.history-thumb { flex: 0 0 58rpx; width: 58rpx; height: 88rpx; overflow: hidden; border: 1rpx solid rgba(184,150,87,0.52); border-radius: 3rpx; }
 .history-copy { flex: 1; min-width: 0; margin-left: 20rpx; }
 .history-type { color: var(--muted); font-size: 20rpx; }
 .history-title { margin-top: 8rpx; overflow: hidden; font-size: 28rpx; text-overflow: ellipsis; white-space: nowrap; }

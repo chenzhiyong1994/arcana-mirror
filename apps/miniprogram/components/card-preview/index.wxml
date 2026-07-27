@@ -12,13 +12,16 @@
   <view class="preview-stage" catchtap="holdPreview">
     <view class="preview-kicker">ARCANA IN FULL</view>
     <view class="preview-frame">
-      <view class="frame-line frame-line-outer"></view>
-      <view class="frame-line frame-line-inner"></view>
-      <view class="frame-corner corner-tl">⌜</view>
-      <view class="frame-corner corner-tr">⌝</view>
-      <view class="frame-corner corner-bl">⌞</view>
-      <view class="frame-corner corner-br">⌟</view>
-      <image class="preview-image {{orientation === 'reversed' ? 'reversed' : ''}}" src="{{imagePath}}" mode="widthFix" />
+      <tarot-card-face
+        class="preview-card-face"
+        image-path="{{imagePath}}"
+        arcana="{{arcana}}"
+        roman="{{roman}}"
+        name="{{name}}"
+        english-name="{{englishName}}"
+        orientation="{{orientation}}"
+        variant="hero"
+      />
       <view class="preview-vignette"></view>
       <view class="preview-sheen"></view>
     </view>

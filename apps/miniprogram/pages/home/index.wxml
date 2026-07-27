@@ -17,7 +17,18 @@
   <view class="daily-stage enter-up delay-2">
     <view class="stage-halo"></view>
     <view class="mini-card">
-      <image class="mini-card-image {{today && today.reversed ? 'reversed' : ''}}" src="{{today ? today.imagePath : cardBack}}" mode="aspectFill" />
+      <tarot-card-face
+        wx:if="{{today}}"
+        class="mini-card-face"
+        image-path="{{today.imagePath}}"
+        arcana="{{today.arcana}}"
+        roman="{{today.roman}}"
+        name="{{today.name}}"
+        english-name="{{today.englishName}}"
+        orientation="{{today.reversed ? 'reversed' : 'upright'}}"
+        variant="compact"
+      />
+      <image wx:else class="mini-card-image" src="{{cardBack}}" mode="aspectFill" />
       <view class="mini-card-shine"></view>
     </view>
     <view class="daily-copy">
@@ -72,7 +83,17 @@
 
   <view wx:if="{{recent.length}}" class="history-list">
     <view wx:for="{{recent}}" wx:key="id" class="history-row" data-id="{{item.id}}" bindtap="openReading">
-      <image class="history-thumb {{item.reversed ? 'reversed' : ''}}" src="{{item.imagePath}}" mode="aspectFill" />
+      <view class="history-thumb">
+        <tarot-card-face
+          image-path="{{item.imagePath}}"
+          arcana="{{item.arcana}}"
+          roman="{{item.roman}}"
+          name="{{item.name}}"
+          english-name="{{item.englishName}}"
+          orientation="{{item.reversed ? 'reversed' : 'upright'}}"
+          variant="micro"
+        />
+      </view>
       <view class="history-copy">
         <view class="history-type">{{item.typeLabel}} · {{item.date}}</view>
         <view class="history-title">{{item.title}}</view>

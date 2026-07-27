@@ -32,7 +32,18 @@
       <view class="collection-grid">
         <view wx:for="{{section.cards}}" wx:key="id" class="collection-card {{item.discovered ? 'discovered' : 'locked'}}" data-id="{{item.id}}" bindtap="openCard">
           <view class="image-shell">
-            <image class="card-image" src="{{item.discovered ? item.imagePath : cardBack}}" mode="aspectFill" />
+            <tarot-card-face
+              wx:if="{{item.discovered}}"
+              class="catalog-card-face"
+              image-path="{{item.imagePath}}"
+              arcana="{{item.arcana}}"
+              roman="{{item.roman}}"
+              name="{{item.name}}"
+              english-name="{{item.englishName}}"
+              orientation="upright"
+              variant="compact"
+            />
+            <image wx:else class="card-image" src="{{cardBack}}" mode="aspectFill" />
             <view wx:if="{{!item.discovered}}" class="locked-veil"><view class="lock-sigil">◇</view></view>
             <view wx:else class="discovered-shine"></view>
           </view>
@@ -50,7 +61,17 @@
       <view class="detail-hero">
         <view class="detail-halo"></view>
         <view class="detail-image-wrap" bindtap="openCardPreview" aria-role="button" aria-label="查看{{selected.name}}大图">
-          <image class="detail-image" src="{{selected.imagePath}}" mode="aspectFit" />
+          <view class="detail-image">
+            <tarot-card-face
+              image-path="{{selected.imagePath}}"
+              arcana="{{selected.arcana}}"
+              roman="{{selected.roman}}"
+              name="{{selected.name}}"
+              english-name="{{selected.englishName}}"
+              orientation="upright"
+              variant="hero"
+            />
+          </view>
           <view class="detail-zoom-cue"><text>⌕</text> 查看大图</view>
         </view>
       </view>
@@ -74,5 +95,5 @@
     </view>
   </view>
 
-  <card-preview wx:if="{{selected}}" visible="{{previewVisible}}" image-path="{{selected.imagePath}}" roman="{{selected.roman}}" name="{{selected.name}}" english-name="{{selected.englishName}}" orientation="upright" orientation-label="正向牌面" bind:close="closeCardPreview" />
+  <card-preview wx:if="{{selected}}" visible="{{previewVisible}}" image-path="{{selected.imagePath}}" arcana="{{selected.arcana}}" roman="{{selected.roman}}" name="{{selected.name}}" english-name="{{selected.englishName}}" orientation="upright" orientation-label="正向牌面" bind:close="closeCardPreview" />
 </view>

@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "阿卡纳心镜" }
+{
+  "navigationBarTitleText": "阿卡纳心镜",
+  "usingComponents": {
+    "tarot-card-face": "/components/tarot-card-face/index"
+  }
+}

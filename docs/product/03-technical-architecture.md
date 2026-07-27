@@ -12,6 +12,8 @@ v0.2 在该边界内增加 `SpreadType`、最多三张牌的结构化解读，�
 
 v1.1 将 Card 只读数据扩展为 22 张大阿尔卡那与 56 张小阿尔卡那。旧 `major-*` ID 不变，旧 Reading 无需迁移。78 张展示牌面和仪式/结果/历史/图鉴页面位于普通分包 `packages/deck`；主包只保留首页所需的轻量缩略图与卡背。`getCardImagePath` 与 `getCardThumbnailPath` 显式区分两种资源路径，主包和分包各自保持低于 2 MiB。
 
+卡面展示统一经过主包组件 `components/tarot-card-face`。组件根据 `arcana` 区分已经包含完整框体的大阿尔卡那与无框小阿尔卡那：前者不重复叠加，后者确定性渲染旧金边框、牌阶和双语铭牌。首页、仪式、结果、历史、图鉴和鉴赏大图均复用该层，逆位在组件根节点执行 180° 旋转。
+
 首版不采用微服务、消息队列、Redis、向量数据库、Kubernetes 或复杂工作流引擎。这些能力对当前访问规模没有必要，反而会稀释项目重点。
 
 推荐实施路径分两档：
@@ -148,6 +150,7 @@ MVP 使用 CloudBase 时仍保留上述逻辑边界；不要把所有代码堆�
 apps/miniprogram/
   core/cards.ts                    # 22+56 合并、查找与资源路径
   core/minor-cards.ts              # 56 张受控牌义
+  components/tarot-card-face/      # 大牌透传、小牌边框与身份叠加
   assets/card-thumbs/              # 主包 78 张 192×288 缩略图
   assets/cards/card-back.jpg       # 主包卡背
   packages/deck/
@@ -163,8 +166,9 @@ assets/tarot-card-style/
 - 小阿尔卡那四花色各 14 张，牌阶固定为 A、II—X、PAGE、KNIGHT、QUEEN、KING；
 - 主页不得引用 `packages/deck` 内图片，使用 `getCardThumbnailPath`；
 - `deck` 分包页面使用 `getCardImagePath` 和分包卡背；
+- 已解锁牌面不得由页面直接输出动态 `<image>`，统一交给 `tarot-card-face` 处理边框、身份与正逆位；
 - 正式源图不直接进入小程序包，发布图和缩略图由源图确定性生成；
-- `npm run validate:assets` 检查数量、文件名、尺寸、对应关系和包体预算。
+- `npm run validate:assets` 检查数量、文件名、尺寸、对应关系、六个展示入口的组件注册和包体预算。
 
 ## 6. 后续云函数目标契约（v1.0 未实现）
 

@@ -28,7 +28,16 @@
       <view wx:for="{{view.cards}}" wx:key="cardId" class="visual-card {{activeCardIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="handleCardTap" aria-role="button" aria-label="{{activeCardIndex === index ? '查看' + item.name + '大图' : '切换到' + item.name + '解读'}}">
         <view wx:if="{{view.isThree}}" class="position-label"><text>0{{index + 1}}</text>{{item.positionLabel}}</view>
         <view class="visual-image-shell">
-          <image class="card-image {{item.orientation === 'reversed' ? 'reversed' : ''}}" src="{{item.imagePath}}" mode="aspectFill" />
+          <tarot-card-face
+            class="result-card-face"
+            image-path="{{item.imagePath}}"
+            arcana="{{item.arcana}}"
+            roman="{{item.roman}}"
+            name="{{item.name}}"
+            english-name="{{item.englishName}}"
+            orientation="{{item.orientation}}"
+            variant="{{view.isThree ? 'compact' : 'hero'}}"
+          />
           <view class="card-select-glow"></view>
         </view>
         <view class="visual-name">{{item.name}}</view>
@@ -117,5 +126,5 @@
     </view>
   </block>
 
-  <card-preview wx:if="{{previewCard}}" visible="{{previewVisible}}" image-path="{{previewCard.imagePath}}" roman="{{previewCard.roman}}" name="{{previewCard.name}}" english-name="{{previewCard.englishName}}" orientation="{{previewCard.orientation}}" orientation-label="{{previewCard.orientationLabel}}" position-label="{{view.isThree ? previewCard.positionLabel : ''}}" bind:close="closeCardPreview" />
+  <card-preview wx:if="{{previewCard}}" visible="{{previewVisible}}" image-path="{{previewCard.imagePath}}" arcana="{{previewCard.arcana}}" roman="{{previewCard.roman}}" name="{{previewCard.name}}" english-name="{{previewCard.englishName}}" orientation="{{previewCard.orientation}}" orientation-label="{{previewCard.orientationLabel}}" position-label="{{view.isThree ? previewCard.positionLabel : ''}}" bind:close="closeCardPreview" />
 </view>
