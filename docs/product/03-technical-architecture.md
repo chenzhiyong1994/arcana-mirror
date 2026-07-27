@@ -12,7 +12,7 @@ v0.2 在该边界内增加 `SpreadType`、最多三张牌的结构化解读，�
 
 v1.1 将 Card 只读数据扩展为 22 张大阿尔卡那与 56 张小阿尔卡那。旧 `major-*` ID 不变，旧 Reading 无需迁移。78 张展示牌面和仪式/结果/历史/图鉴页面位于普通分包 `packages/deck`；主包只保留首页所需的轻量缩略图与卡背。`getCardImagePath` 与 `getCardThumbnailPath` 显式区分两种资源路径，主包和分包各自保持低于 2 MiB。
 
-卡面展示统一经过主包组件 `components/tarot-card-face`。组件根据 `arcana` 区分已经包含完整框体的大阿尔卡那与无框小阿尔卡那：前者不重复叠加，后者使用与大牌成品相同的 `assets/tarot-card-style/shared/front-frame-overlay.png` 运行时缩放图，再确定性渲染牌阶和双语铭牌；不允许以 CSS 重新描摹另一套框体。首页、仪式、结果、历史、图鉴和鉴赏大图均复用该层，逆位在组件根节点执行 180° 旋转。
+卡面展示统一经过主包组件 `components/tarot-card-face`。组件根据 `arcana` 区分已经包含完整框体的大阿尔卡那与无框小阿尔卡那：前者不重复叠加，后者使用与大牌成品相同的 `assets/tarot-card-style/shared/front-frame-overlay.png` 运行时缩放图，再确定性渲染花色内牌阶标记和双语铭牌；不允许以 CSS 重新描摹另一套框体。大牌顶部是 0—XXI 序列编号，小牌顶部是 A、II—X 或宫廷身份，不把内部 0—77 数组顺序误印为小牌编号。首页、仪式、结果、历史、图鉴和鉴赏大图均复用该层，逆位在组件根节点执行 180° 旋转。
 
 首版不采用微服务、消息队列、Redis、向量数据库、Kubernetes 或复杂工作流引擎。这些能力对当前访问规模没有必要，反而会稀释项目重点。
 
@@ -163,7 +163,7 @@ assets/tarot-card-style/
 
 约束：
 
-- `TAROT_CARDS` 必须包含连续序号 0—77，ID 和图片路径唯一；
+- `TAROT_CARDS` 必须包含连续内部序号 0—77，ID 和图片路径唯一；该字段只用于排序与资源映射，不等同于牌面编号；
 - 小阿尔卡那四花色各 14 张，牌阶固定为 A、II—X、PAGE、KNIGHT、QUEEN、KING；
 - 主页不得引用 `packages/deck` 内图片，使用 `getCardThumbnailPath`；
 - `deck` 分包页面使用 `getCardImagePath` 和分包卡背；

@@ -16,7 +16,7 @@
         class="preview-card-face"
         image-path="{{imagePath}}"
         arcana="{{arcana}}"
-        roman="{{roman}}"
+        top-mark="{{roman}}"
         name="{{name}}"
         english-name="{{englishName}}"
         orientation="{{orientation}}"

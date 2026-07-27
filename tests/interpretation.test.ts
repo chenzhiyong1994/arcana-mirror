@@ -67,6 +67,22 @@ describe("validateInterpretation", () => {
       "queen",
       "king",
     ];
+    const minorFaceMarks = [
+      "A",
+      "II",
+      "III",
+      "IV",
+      "V",
+      "VI",
+      "VII",
+      "VIII",
+      "IX",
+      "X",
+      "PAGE",
+      "KNIGHT",
+      "QUEEN",
+      "KING",
+    ];
     expect(TAROT_CARDS).toHaveLength(78);
     expect(MAJOR_ARCANA).toHaveLength(22);
     expect(MINOR_ARCANA).toHaveLength(56);
@@ -80,6 +96,7 @@ describe("validateInterpretation", () => {
       const suitCards = MINOR_ARCANA.filter((card) => card.suit === suit);
       expect(suitCards).toHaveLength(14);
       expect(suitCards.map((card) => card.rank)).toEqual(minorRanks);
+      expect(suitCards.map((card) => card.roman)).toEqual(minorFaceMarks);
     }
   });
 

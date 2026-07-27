@@ -14,7 +14,7 @@
         <tarot-card-face
           image-path="{{item.imagePath}}"
           arcana="{{item.arcana}}"
-          roman="{{item.roman}}"
+          top-mark="{{item.roman}}"
           name="{{item.name}}"
           english-name="{{item.englishName}}"
           orientation="{{item.reversed ? 'reversed' : 'upright'}}"

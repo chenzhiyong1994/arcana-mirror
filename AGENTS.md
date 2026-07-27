@@ -13,7 +13,7 @@
 - 小程序 Logo 已选定 L5“繁饰日蚀心镜”，正式源文件为 `assets/branding/logo-concepts/logo-l5-ornate-eclipse-mirror-v1.png`；后续适配不得将其简化为扁平卡通或丢失手绘卷草、旧金边框与古镜质感。
 - 卡片生成必须先定义牌义层，再应用视觉层；核心人物、道具、姿态或象征缺失即不通过。
 - 卡牌标题和编号由前端叠加，不写死在生成图片中。
-- 大、小阿尔卡那的唯一共享正面框原件为 `assets/tarot-card-style/shared/front-frame-overlay.png`；小阿尔卡那必须通过 `apps/miniprogram/components/tarot-card-face/` 叠加其 384×576 运行时缩放图、顶部牌阶与底部中英文铭牌，不得再用 CSS 近似绘制；大阿尔卡那沿用已用该原件烘焙的成牌，不得重复套框。首页、仪式、结果、历史、图鉴和鉴赏大图都必须复用该组件，正逆位旋转整张成牌。
+- 大、小阿尔卡那的唯一共享正面框原件为 `assets/tarot-card-style/shared/front-frame-overlay.png`；小阿尔卡那必须通过 `apps/miniprogram/components/tarot-card-face/` 叠加其 384×576 运行时缩放图、顶部花色内牌阶标记与底部中英文铭牌，不得再用 CSS 近似绘制；大阿尔卡那沿用已用该原件烘焙的成牌，不得重复套框。大牌顶部为 0—XXI 序列编号，小牌顶部为 A、II—X 或 PAGE／KNIGHT／QUEEN／KING，工程内部 0—77 顺序不得印成小牌全局编号。首页、仪式、结果、历史、图鉴和鉴赏大图都必须复用该组件，正逆位旋转整张成牌。
 - 小程序 78 张展示图与仪式/结果/历史/图鉴页面位于普通分包 `apps/miniprogram/packages/deck/`，主包只保留 `assets/card-thumbs/` 缩略图和主包卡背；不得把完整展示图复制回主包，变更后运行 `npm run validate:assets`。
 - v0.3 前端基线为“黑金典藏 · 镜廊仪式”：深墨底、旧金细节、真实 A 卡面、克制光晕与翻牌动效；不得退回通用卡片式低保真界面。
 - 解读采用渐进披露和问题聚焦模型：首屏将用户困扰与“第一眼线索”分区展示，三牌一次只读一张，牌义依据默认折叠；新流程不要求用户预选感情/人际/事业/自我类别，由模型直接根据问题识别重点，旧主题字段和 v0.2 多维字段仅用于本地历史兼容。

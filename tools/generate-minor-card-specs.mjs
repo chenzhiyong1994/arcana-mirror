@@ -47,9 +47,32 @@ const cards = entries.map((entry) => {
 });
 
 const suits = ["wands", "cups", "swords", "pentacles"];
+const minorRankMarks = {
+  ace: "A",
+  two: "II",
+  three: "III",
+  four: "IV",
+  five: "V",
+  six: "VI",
+  seven: "VII",
+  eight: "VIII",
+  nine: "IX",
+  ten: "X",
+  page: "PAGE",
+  knight: "KNIGHT",
+  queen: "QUEEN",
+  king: "KING",
+};
 if (cards.length !== 56) throw new Error(`Expected 56 minor cards, received ${cards.length}`);
 if (new Set(cards.map((card) => card.id)).size !== 56) throw new Error("Duplicate minor card id");
 if (new Set(cards.map((card) => card.sequence)).size !== 56) throw new Error("Duplicate sequence");
+for (const card of cards) {
+  if (card.roman !== minorRankMarks[card.rank]) {
+    throw new Error(
+      `${card.id} must use its suit rank ${minorRankMarks[card.rank]} as the face mark, received ${card.roman}`,
+    );
+  }
+}
 for (const suit of suits) {
   if (cards.filter((card) => card.suit === suit).length !== 14) {
     throw new Error(`Suit ${suit} does not contain 14 cards`);

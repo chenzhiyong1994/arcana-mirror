@@ -37,7 +37,7 @@
               class="catalog-card-face"
               image-path="{{item.imagePath}}"
               arcana="{{item.arcana}}"
-              roman="{{item.roman}}"
+              top-mark="{{item.roman}}"
               name="{{item.name}}"
               english-name="{{item.englishName}}"
               orientation="upright"
@@ -65,7 +65,7 @@
             <tarot-card-face
               image-path="{{selected.imagePath}}"
               arcana="{{selected.arcana}}"
-              roman="{{selected.roman}}"
+              top-mark="{{selected.roman}}"
               name="{{selected.name}}"
               english-name="{{selected.englishName}}"
               orientation="upright"

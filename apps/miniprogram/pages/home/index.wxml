@@ -22,7 +22,7 @@
         class="mini-card-face"
         image-path="{{today.imagePath}}"
         arcana="{{today.arcana}}"
-        roman="{{today.roman}}"
+        top-mark="{{today.roman}}"
         name="{{today.name}}"
         english-name="{{today.englishName}}"
         orientation="{{today.reversed ? 'reversed' : 'upright'}}"
@@ -87,7 +87,7 @@
         <tarot-card-face
           image-path="{{item.imagePath}}"
           arcana="{{item.arcana}}"
-          roman="{{item.roman}}"
+          top-mark="{{item.roman}}"
           name="{{item.name}}"
           english-name="{{item.englishName}}"
           orientation="{{item.reversed ? 'reversed' : 'upright'}}"

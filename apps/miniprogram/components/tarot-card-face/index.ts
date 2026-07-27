@@ -1,7 +1,7 @@
 Component({
   properties: {
     imagePath: { type: String, value: "" },
-    roman: { type: String, value: "" },
+    topMark: { type: String, value: "" },
     name: { type: String, value: "" },
     englishName: { type: String, value: "" },
     arcana: { type: String, value: "major" },

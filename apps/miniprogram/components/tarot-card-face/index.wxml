@@ -11,7 +11,7 @@
       src="/assets/cards/front-frame-overlay.png"
       mode="scaleToFill"
     />
-    <text class="frame-rank">{{roman}}</text>
+    <text class="frame-rank">{{topMark}}</text>
     <view class="frame-title">
       <view class="frame-name">{{name}}</view>
       <view class="frame-english">{{englishName}}</view>

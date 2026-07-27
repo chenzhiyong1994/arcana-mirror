@@ -33,6 +33,10 @@ export type MockMode = "success" | "timeout" | "invalid" | "unsafe";
 export interface TarotCard {
   id: string;
   sequence: number;
+  /**
+   * 顶部牌面标记：大阿尔卡那为 0—XXI 序列编号；
+   * 小阿尔卡那为花色内牌阶 A、II—X 或宫廷身份，不是 22—77 全局序号。
+   */
   roman: string;
   name: string;
   englishName: string;

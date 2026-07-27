@@ -152,6 +152,29 @@ const uniqueSequences = new Set(specs.cards.map((card) => card.sequence));
 if (uniqueIds.size !== 56 || uniqueSequences.size !== 56) {
   fail("Minor Arcana IDs and sequences must each be unique.");
 }
+const minorRankMarks = {
+  ace: "A",
+  two: "II",
+  three: "III",
+  four: "IV",
+  five: "V",
+  six: "VI",
+  seven: "VII",
+  eight: "VIII",
+  nine: "IX",
+  ten: "X",
+  page: "PAGE",
+  knight: "KNIGHT",
+  queen: "QUEEN",
+  king: "KING",
+};
+for (const card of specs.cards) {
+  if (card.roman !== minorRankMarks[card.rank]) {
+    fail(
+      `${card.id} must use its suit rank ${minorRankMarks[card.rank]} as the face mark; found ${card.roman}.`
+    );
+  }
+}
 for (const suit of ["wands", "cups", "swords", "pentacles"]) {
   const count = specs.cards.filter((card) => card.suit === suit).length;
   if (count !== 14) fail(`Expected 14 ${suit} cards; found ${count}.`);
@@ -244,7 +267,7 @@ for (const requiredMarkup of [
   'src="/assets/cards/front-frame-overlay.png"',
   'class="frame-rank"',
   'class="frame-title"',
-  "{{roman}}",
+  "{{topMark}}",
   "{{name}}",
   "{{englishName}}",
 ]) {
@@ -271,6 +294,9 @@ for (const consumer of cardPresentationConsumers) {
   );
   if (!wxml.includes("<tarot-card-face")) {
     fail(`${consumer}.wxml does not use the shared tarot-card-face component.`);
+  }
+  if (!wxml.includes('top-mark="{{')) {
+    fail(`${consumer}.wxml does not pass the card face mark to tarot-card-face.`);
   }
   if (
     config.usingComponents?.["tarot-card-face"] !==
