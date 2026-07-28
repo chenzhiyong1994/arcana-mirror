@@ -36,7 +36,7 @@ export function classifyQuestion(rawQuestion: string): SafetyDecision {
     return {
       action: "rewrite",
       reasonCode: "DETERMINISTIC_PREDICTION",
-      message: "把确定性预测改成关注自身观察和选择的问题，会更适合自我探索。",
+      message: "把要求确定结论的问题改成关注自身观察和选择，会更适合自我探索。",
       suggestedQuestion: "面对这件事，我现在可以关注哪些感受、事实和选择？",
     };
   }

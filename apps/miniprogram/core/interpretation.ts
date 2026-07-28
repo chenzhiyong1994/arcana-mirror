@@ -10,8 +10,8 @@ import type {
   Topic,
 } from "./types";
 
-export const FIXED_DISCLAIMER = "本内容由 AI 结合牌面生成，仅供娱乐和自我反思；感情、事业与个人成长内容不构成确定性预测或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
-export const LOCAL_DISCLAIMER = "本内容依据本地牌义生成，仅供娱乐和自我反思；感情、事业与个人成长内容不构成确定性预测或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
+export const FIXED_DISCLAIMER = "本内容由 AI 结合牌面生成，仅供娱乐和自我反思；感情、事业与个人成长内容不构成对未来的确定性结论或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
+export const LOCAL_DISCLAIMER = "本内容依据本地牌义生成，仅供娱乐和自我反思；感情、事业与个人成长内容不构成对未来的确定性结论或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
 export const QUESTION_FOCUS_LABEL = "你的问题";
 
 const cardInsightProperties = {

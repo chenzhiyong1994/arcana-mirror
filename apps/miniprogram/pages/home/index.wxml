@@ -2,8 +2,8 @@
   <view class="brand enter-up">
     <image class="brand-seal" src="{{logoPath}}" mode="aspectFill" />
     <view class="brand-copy">
-      <view class="brand-cn">阿卡纳心镜</view>
-      <view class="brand-en">ARCANA MIRROR</view>
+      <view class="brand-cn">心镜拾光</view>
+      <view class="brand-en">MIRRORLIGHT</view>
     </view>
     <view class="brand-mark">✦</view>
   </view>
@@ -66,7 +66,7 @@
   <view class="collection-entry" bindtap="openCollection">
     <view class="collection-orbit"><text>{{collectionProgress}}</text></view>
     <view class="collection-info">
-      <view class="section-kicker">ARCANA COLLECTION</view>
+      <view class="section-kicker">MIRROR COLLECTION</view>
       <view class="collection-copy">我的七十八张心镜图鉴</view>
       <view class="collection-note">每一次亲手翻牌，都让牌库亮起一格。</view>
     </view>

@@ -1,12 +1,13 @@
-# 阿卡纳心镜项目指南
+# 心镜拾光项目指南
 
 ## 项目定位
 
-阿卡纳心镜（Arcana Mirror）是非商业化个人作品集项目，以塔罗为交互媒介提供娱乐性自我探索，不做确定性预测，不替代专业意见。
+心镜拾光是非商业化个人作品集项目，以图像卡片为交互媒介提供娱乐性自我探索，不对未来作确定性断言，不替代专业意见。
 
 ## 已确定基准
 
 - MVP 范围与架构以 `docs/product/` 为准。
+- 微信审核对外名称固定为“心镜拾光”；公众平台简介与审核元数据以 `docs/development/v1.0-ai-integration.md` 的发布检查为准。
 - `assets/tarot-card-style/style-hermit-v3.png` 只作为隐士牌义、人物关系和构图锚点；黑金 A 方向已归档为备选。
 - 当前完整 78 张牌组均使用黑金仪式典藏 A：22 张大阿尔卡那合同位于 `deliverables/style-a-deck-generation-kit/`，56 张小阿尔卡那合同位于 `deliverables/style-a-minor-arcana-generation-kit/`；古典新艺术 G 继续作为备选，不混入 A 牌组。
 - 小阿尔卡那正式源图、花色联排与验收报告位于 `assets/tarot-card-style/minor-arcana/`；任何单牌替换都必须重新通过对应逐牌语义、数量与整套一致性门禁。

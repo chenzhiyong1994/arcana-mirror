@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "阿卡纳心镜",
+  "navigationBarTitleText": "心镜拾光",
   "usingComponents": {
     "tarot-card-face": "/components/tarot-card-face/index"
   }

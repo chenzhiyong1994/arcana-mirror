@@ -152,7 +152,7 @@ function buildMinorDomainInsights(card: TarotCard): CardDomainInsights {
         : "现实投入、资源分配与长期稳定";
   return {
     love: `把${card.name}放进关系时，重点观察${theme}；${card.upright}`,
-    wealth: `把${card.name}放进资源问题时，不预测收益，先核对预算、风险与可控条件；${card.upright}`,
+    wealth: `把${card.name}放进资源问题时，不把牌面当作收益结论，先核对预算、风险与可控条件；${card.upright}`,
     career: `把${card.name}放进工作处境时，重点核对职责、证据和下一步；${card.upright}`,
     selfGrowth: `${card.upright}不必一次改变全部，先从“${card.reflection}”开始。`,
   };
