@@ -35,7 +35,9 @@ exports.main = async (event = {}) => {
   try {
     return await getShareCode(event);
   } catch (error) {
-    console.error("[api:share.code]", error?.errCode || error?.message || "unknown");
+    const code = error?.errCode || error?.code || "UNKNOWN";
+    const message = error?.errMsg || error?.message || "unknown";
+    console.error("[api:share.code]", code, message);
     return { ok: false, error: "SHARE_CODE_GENERATION_FAILED" };
   }
 };

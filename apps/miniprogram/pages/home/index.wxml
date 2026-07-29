@@ -5,7 +5,7 @@
       <view class="brand-cn">心镜拾光</view>
       <view class="brand-en">MIRRORLIGHT</view>
     </view>
-    <button class="brand-share" bindtap="generateAppPoster" loading="{{generatingPoster}}" disabled="{{generatingPoster}}">分享</button>
+    <view class="brand-mark">✦</view>
   </view>
 
   <view class="hero enter-up delay-1">
@@ -77,7 +77,8 @@
       <view class="section-kicker">RECENT MIRRORS</view>
       <view class="section-title small">最近照见</view>
     </view>
-    <button class="text-button" bindtap="openHistory">全部记录</button>
+    <view class="section-rule"></view>
+    <button class="text-button history-all" bindtap="openHistory">全部记录</button>
   </view>
 
   <view wx:if="{{recent.length}}" class="history-list">
@@ -106,7 +107,12 @@
     <view class="empty-copy">完成一次解读后，会自动出现在这里。</view>
   </view>
 
-  <button class="text-button settings-link" bindtap="openSettings">设置与数据</button>
+  <view class="home-share">
+    <button class="home-share-button" bindtap="generateAppPoster" loading="{{generatingPoster}}" disabled="{{generatingPoster}}">
+      <text class="share-symbol">✦</text>
+      <text>分享心镜拾光</text>
+    </button>
+  </view>
 
   <share-poster-preview visible="{{posterVisible}}" poster-path="{{posterPath}}" bind:close="closePoster" />
   <canvas type="2d" id="sharePoster" class="share-poster-canvas"></canvas>

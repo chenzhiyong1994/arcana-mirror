@@ -1,8 +1,7 @@
 {
   "pages": [
     "pages/home/index",
-    "pages/question/index",
-    "pages/settings/index"
+    "pages/question/index"
   ],
   "subPackages": [
     {

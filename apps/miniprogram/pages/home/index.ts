@@ -72,10 +72,6 @@ Page({
     wx.navigateTo({ url: "/packages/deck/pages/collection/index" });
   },
 
-  openSettings() {
-    wx.navigateTo({ url: "/pages/settings/index" });
-  },
-
   async generateAppPoster() {
     if (this.data.generatingPoster) return;
     this.setData({ generatingPoster: true });
@@ -86,7 +82,7 @@ Page({
     } catch {
       wx.showModal({
         title: "分享图暂时无法生成",
-        content: "请检查网络，并确认 CloudBase 的 api 云函数已经部署后再试。",
+        content: "请检查网络后再试。",
         showCancel: false,
         confirmText: "知道了",
       });

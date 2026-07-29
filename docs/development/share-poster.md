@@ -11,6 +11,10 @@
 
 `config.json` 已声明云调用权限，`package.json` 固定 `wx-server-sdk` 版本。云函数只接受 `share.code`，小程序码固定打开 `pages/home/index`；客户端传入的 `envVersion` 只允许 `develop`、`trial`、`release`。
 
+### 当前状态
+
+2026-07-29 已通过微信开发者工具将 `api` 上传至 `<your-cloudbase-env-id>`，采用云端安装依赖；开发版首页已成功获取小程序码并完成通用海报预览。首次部署后 OpenAPI 权限存在短暂生效窗口，等待权限传播后复测成功。
+
 ## 真机验收
 
 - 首页生成一次通用图，确认只有品牌介绍、卡背和小程序码，没有 Reading 内容；

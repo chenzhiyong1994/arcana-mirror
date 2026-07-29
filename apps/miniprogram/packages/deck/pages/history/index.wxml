@@ -24,8 +24,10 @@
         <view class="card-title">{{item.card}}</view>
         <view class="history-foot">
           <text class="source">{{item.source}}</text>
-          <text class="open-copy">重读 →</text>
-          <view class="delete" data-id="{{item.id}}" catchtap="deleteReading" aria-role="button" aria-label="删除这条记录">删除</view>
+          <view class="history-actions">
+            <button class="history-action reread" data-id="{{item.id}}" catchtap="openReading" aria-label="重读这条记录">重读</button>
+            <button class="history-action delete" data-id="{{item.id}}" catchtap="deleteReading" aria-label="删除这条记录">删除</button>
+          </view>
         </view>
       </view>
     </view>
