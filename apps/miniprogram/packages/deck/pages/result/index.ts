@@ -3,6 +3,7 @@ import { buildTopicInsight, orientationLabel } from "../../../../core/interpreta
 import { getReadingPosition, getReadingSpread } from "../../../../core/spreads";
 import type { InterpretationCard, Reading, Topic } from "../../../../core/types";
 import { readingService } from "../../../../services/app-services";
+import { createSharePoster } from "../../../../services/share-poster";
 
 const TOPIC_LABELS: Record<Topic, string> = {
   relationship: "感情",
@@ -82,6 +83,9 @@ Page({
     detailsExpanded: false,
     previewCard: null as ReturnType<typeof toView>["cards"][number] | null,
     previewVisible: false,
+    generatingPoster: false,
+    posterPath: "",
+    posterVisible: false,
     view: null as ReturnType<typeof toView> | null,
   },
 
@@ -150,6 +154,67 @@ Page({
     if (action) {
       wx.vibrateShort({ type: "light" });
       wx.setClipboardData({ data: action });
+    }
+  },
+
+  async generateSharePoster() {
+    const view = this.data.view;
+    if (this.data.generatingPoster || !view?.content) return;
+
+    this.setData({ generatingPoster: true });
+    wx.showLoading({ title: "正在显影", mask: true });
+    try {
+      const posterPath = await createSharePoster(this, {
+        topic: view.topic,
+        date: view.date,
+        title: view.title,
+        summary: view.content.summary,
+        microAction: view.content.microAction,
+        cards: view.cards,
+      });
+      this.setData({ posterPath, posterVisible: true });
+    } catch {
+      wx.showModal({
+        title: "分享图暂时无法生成",
+        content: "请检查网络，并确认 CloudBase 的 api 云函数已经部署后再试。",
+        showCancel: false,
+        confirmText: "知道了",
+      });
+    } finally {
+      wx.hideLoading();
+      this.setData({ generatingPoster: false });
+    }
+  },
+
+  closePoster() {
+    this.setData({ posterVisible: false });
+  },
+
+  noop() {},
+
+  previewPoster() {
+    const current = this.data.posterPath;
+    if (current) wx.previewImage({ current, urls: [current] });
+  },
+
+  async savePoster() {
+    const filePath = this.data.posterPath;
+    if (!filePath) return;
+    try {
+      await wx.saveImageToPhotosAlbum({ filePath });
+      wx.showToast({ title: "已保存到相册", icon: "success" });
+    } catch (error) {
+      const message = (error as { errMsg?: string }).errMsg ?? "";
+      if (message.includes("auth deny") || message.includes("auth denied")) {
+        const result = await wx.showModal({
+          title: "需要相册权限",
+          content: "请在设置中允许保存到相册，之后再点一次保存。",
+          confirmText: "去设置",
+        });
+        if (result.confirm) wx.openSetting({});
+        return;
+      }
+      wx.showToast({ title: "保存失败，请重试", icon: "none" });
     }
   },
 

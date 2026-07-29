@@ -4,9 +4,9 @@
 
 推荐采用：
 
-> **v1.1 当前实现：微信原生小程序（TypeScript）+ 78 张本地完整牌库 + 微信本地存储 Repository + CloudBase AI `hy3` Interpretation Provider。云函数、云数据库历史和跨设备账号继续后置。**
+> **当前实现：微信原生小程序（TypeScript）+ 78 张本地完整牌库 + 微信本地存储 Repository + CloudBase AI `hy3` Interpretation Provider + 仅生成小程序码的 CloudBase `api` 云函数。云数据库历史和跨设备账号继续后置。**
 
-页面依赖 `ReadingRepository` 与 `InterpretationProvider` 契约：Reading、历史与图鉴使用微信本地存储，主题解读的 Provider 已替换为小程序端 CloudBase AI 调用。应用初始化固定 CloudBase 环境 `<your-cloudbase-env-id>`，Provider 为 `cloudbase`，模型为 `hy3`，硬超时为 25 秒。每日一牌和 AI 失败路径继续使用受控本地牌义。
+页面依赖 `ReadingRepository` 与 `InterpretationProvider` 契约：Reading、历史与图鉴使用微信本地存储，主题解读的 Provider 已替换为小程序端 CloudBase AI 调用。应用初始化固定 CloudBase 环境 `<your-cloudbase-env-id>`，Provider 为 `cloudbase`，模型为 `hy3`，硬超时为 25 秒。每日一牌和 AI 失败路径继续使用受控本地牌义。结果分享图在客户端本地合成，`api` 云函数只通过 `wxacode.getUnlimited` 返回对应版本的小程序码，不接收 Reading 或用户问题。
 
 v0.2 在该边界内增加 `SpreadType`、最多三张牌的结构化解读，以及独立的 `CardCollectionRepository`。图鉴只记录卡牌 ID、首次/最近翻开时间、次数和已见正逆位，不复制 Reading 或用户问题；删除历史不会删除图鉴。旧 v0.1 Reading 没有 `spread` 字段时按单牌兼容读取。
 
@@ -54,6 +54,8 @@ flowchart LR
     MP -->|受控消息| CBAI[CloudBase AI]
     CBAI -->|model: hy3| LLM[HY3]
     MP -->|本地静态资源| ASSET[卡牌与品牌资产]
+    MP -->|share.code| API[CloudBase api 云函数]
+    API -->|云调用| WXCODE[微信小程序码]
     DEV[个人开发者] -->|配置环境与配额| CBAI
     DEV -->|查看调用记录| LOG[CloudBase 控制台]
 ```
@@ -170,16 +172,17 @@ assets/tarot-card-style/
 - 已解锁牌面不得由页面直接输出动态 `<image>`，统一交给 `tarot-card-face` 处理边框、身份与正逆位；
 - 正式源图不直接进入小程序包，发布图和缩略图由源图确定性生成；
 - `npm run build:shared-card-assets` 从正式正面框原件重建 384×576 RGBA 运行时图；
-- `npm run validate:assets` 检查数量、文件名、尺寸、共享资产哈希和透明通道、六个展示入口的组件注册和包体预算。
+- `npm run validate:assets` 检查数量、文件名、尺寸、共享资产哈希和透明通道、六个界面入口及分享图的成牌逻辑和包体预算。
 
-## 6. 后续云函数目标契约（v1.0 未实现）
+## 6. 云函数 action 契约
 
-如果未来把抽牌、历史或 AI 限流迁入云端，可通过 `wx.cloud.callFunction({ name: "api", data })` 调用单一 `api` 云函数，并在云函数内部按 `action` 路由。以下仅是目标应用契约，不是 v1.0 当前接口，也不是 HTTP REST 路径。
+当前单一 `api` 云函数只实现 `share.code`。如果未来把抽牌、历史或 AI 限流迁入云端，继续在该云函数内部按 `action` 路由；下表除 `share.code` 外仍是目标应用契约，不是当前接口，也不是 HTTP REST 路径。
 
 ### 6.1 Action 清单
 
 | Action | 用途 | 幂等 |
 | --- | --- | --- |
+| `share.code` | 生成固定打开首页、匹配 develop/trial/release 的小程序码 | 相同版本返回等价码 |
 | `reading.create` | 创建每日或主题 Reading，执行输入安全分类 | 请求体 `clientRequestId` |
 | `reading.draw` | 固化抽牌结果 | `(subject_id, action, clientRequestId)` 唯一；重复调用返回原结果 |
 | `reading.interpret` | 为主题问题生成或恢复解读 | `(reading_id, prompt_version)` 状态抢占；同一任务复用 |

@@ -44,6 +44,10 @@ const paths = {
     projectRoot,
     "apps/miniprogram/components/tarot-card-face"
   ),
+  sharePoster: join(
+    projectRoot,
+    "apps/miniprogram/services/share-poster.ts"
+  ),
 };
 
 const fail = (message) => {
@@ -306,6 +310,20 @@ for (const consumer of cardPresentationConsumers) {
   }
 }
 
+const sharePosterSource = readFileSync(paths.sharePoster, "utf8");
+for (const requiredSource of [
+  '"/assets/cards/front-frame-overlay.png"',
+  'card.arcana === "minor"',
+  "card.roman",
+  "card.name",
+  "card.englishName",
+  'card.orientation === "reversed"',
+]) {
+  if (!sharePosterSource.includes(requiredSource)) {
+    fail(`Share poster is missing required card presentation logic: ${requiredSource}.`);
+  }
+}
+
 const mainPackageBytes = directoryBytes(paths.appRoot, paths.deckPackage);
 const deckPackageBytes = directoryBytes(paths.deckPackage);
 if (mainPackageBytes >= twoMebibytes || deckPackageBytes >= twoMebibytes) {
@@ -321,6 +339,6 @@ console.log(
     `Deck package: ${deckFaces.length} faces + back at 384x576 (${deckPackageBytes} bytes).`,
     `Main package: ${thumbnailFilenames.length} thumbnails at 192x288 (${mainPackageBytes} bytes total excluding deck package).`,
     "Shared assets: canonical 1024x1536 frame/back verified; transparent runtime frame is 384x576.",
-    `Card presentation: canonical frame and identity layer registered in ${cardPresentationConsumers.length} consumers.`,
+    `Card presentation: canonical frame and identity layer registered in ${cardPresentationConsumers.length} UI consumers plus the share poster.`,
   ].join("\n")
 );

@@ -1,6 +1,7 @@
 {
   "appid": "touristappid",
   "compileType": "miniprogram",
+  "cloudfunctionRoot": "cloudfunctions/",
   "libVersion": "3.17.0",
   "miniprogramRoot": "apps/miniprogram/",
   "projectname": "arcana-mirror-local",
