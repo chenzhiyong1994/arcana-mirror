@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "心镜拾光",
   "usingComponents": {
+    "share-poster-preview": "/components/share-poster-preview/index",
     "tarot-card-face": "/components/tarot-card-face/index"
   }
 }

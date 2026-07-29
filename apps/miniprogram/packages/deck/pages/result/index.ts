@@ -44,19 +44,18 @@ function toView(reading: Reading) {
     id: reading.id,
     isDaily: reading.type === "daily",
     isThree,
-    saved: reading.saved,
     date: reading.businessDate,
     topic: reading.type === "daily" ? "每日一牌" : reading.topic ? TOPIC_LABELS[reading.topic] : "主题解读",
     title: isThree ? "三牌综合解读" : `${cards[0].name} · ${cards[0].orientationLabel}`,
     question: reading.question ?? "",
     cards,
     sourceLabel: interpretation?.source === "fallback"
-      ? "基础牌义降级"
+      ? "基础解读"
       : interpretation?.source === "static"
-        ? "静态牌义"
+        ? "本地牌义"
         : interpretation?.source === "ai"
-          ? "HY3 个性化解读"
-          : "本地兼容解读",
+          ? "AI 个性化解读"
+          : "兼容解读",
     isFallback: interpretation?.source === "fallback",
     reasonCode: interpretation?.reasonCode ?? "",
     content: content ? {
@@ -76,7 +75,6 @@ Page({
     id: "",
     loading: true,
     missing: false,
-    fromHistory: false,
     questionExpanded: false,
     activeCardIndex: 0,
     activeCard: null as ReturnType<typeof toView>["cards"][number] | null,
@@ -91,8 +89,7 @@ Page({
 
   async onLoad(options: Record<string, string>) {
     const id = options.id ?? "";
-    const fromHistory = options.from === "history";
-    this.setData({ id, fromHistory, questionExpanded: !fromHistory });
+    this.setData({ id, questionExpanded: false });
     let reading = readingService.getById(id);
     if (!reading) {
       this.setData({ loading: false, missing: true });
@@ -138,17 +135,6 @@ Page({
     this.setData({ detailsExpanded: !this.data.detailsExpanded });
   },
 
-  saveToHistory() {
-    try {
-      const reading = readingService.saveQuestionToHistory(this.data.id);
-      const view = toView(reading);
-      this.setData({ view, activeCard: view.cards[this.data.activeCardIndex] ?? view.cards[0] });
-      wx.showToast({ title: "已保存到本地历史", icon: "success" });
-    } catch {
-      wx.showToast({ title: "保存失败", icon: "none" });
-    }
-  },
-
   copyAction() {
     const action = this.data.view?.content?.microAction;
     if (action) {
@@ -188,34 +174,6 @@ Page({
 
   closePoster() {
     this.setData({ posterVisible: false });
-  },
-
-  noop() {},
-
-  previewPoster() {
-    const current = this.data.posterPath;
-    if (current) wx.previewImage({ current, urls: [current] });
-  },
-
-  async savePoster() {
-    const filePath = this.data.posterPath;
-    if (!filePath) return;
-    try {
-      await wx.saveImageToPhotosAlbum({ filePath });
-      wx.showToast({ title: "已保存到相册", icon: "success" });
-    } catch (error) {
-      const message = (error as { errMsg?: string }).errMsg ?? "";
-      if (message.includes("auth deny") || message.includes("auth denied")) {
-        const result = await wx.showModal({
-          title: "需要相册权限",
-          content: "请在设置中允许保存到相册，之后再点一次保存。",
-          confirmText: "去设置",
-        });
-        if (result.confirm) wx.openSetting({});
-        return;
-      }
-      wx.showToast({ title: "保存失败，请重试", icon: "none" });
-    }
   },
 
   finish() {

@@ -1,0 +1,11 @@
+.poster-modal { position: fixed; z-index: 1000; inset: 0; display: flex; align-items: flex-end; justify-content: center; }
+.poster-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.78); backdrop-filter: blur(8rpx); }
+.poster-sheet { position: relative; z-index: 1; box-sizing: border-box; width: 100%; max-height: 92vh; padding: 34rpx 40rpx calc(34rpx + env(safe-area-inset-bottom)); overflow-y: auto; border-top: 1rpx solid rgba(224,191,121,.46); background: #0c0a08; box-shadow: 0 -28rpx 80rpx rgba(0,0,0,.62); animation: poster-rise 360ms cubic-bezier(.22,.85,.25,1) both; }
+.poster-head { display: flex; align-items: center; justify-content: space-between; }
+.poster-title { color: #f4ead7; font-size: 34rpx; }
+.poster-close { display: flex; align-items: center; justify-content: center; width: 58rpx; height: 58rpx; color: #b89657; font-family: Georgia, serif; font-size: 38rpx; line-height: 1; }
+.poster-preview { display: block; width: 430rpx; margin: 26rpx auto 0; border: 1rpx solid rgba(224,191,121,.42); box-shadow: 0 22rpx 60rpx rgba(0,0,0,.58), 0 0 34rpx rgba(184,150,87,.08); }
+.poster-hint { margin: 20rpx 0 24rpx; color: #8f8575; font-size: 19rpx; letter-spacing: 1rpx; text-align: center; }
+.save-button { min-height: 88rpx; margin-top: 0; padding: 16rpx 30rpx; border: 1rpx solid #d2b16d; border-radius: 999rpx; background: linear-gradient(135deg, #d2b16d 0%, #a78346 62%, #8c6937 100%); color: #0b0907; font-family: inherit; font-size: 27rpx; line-height: 54rpx; }
+.save-button::after { border: 0; }
+@keyframes poster-rise { from { opacity: 0; transform: translateY(60rpx); } to { opacity: 1; transform: translateY(0); } }

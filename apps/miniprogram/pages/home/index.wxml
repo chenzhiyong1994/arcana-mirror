@@ -5,7 +5,7 @@
       <view class="brand-cn">心镜拾光</view>
       <view class="brand-en">MIRRORLIGHT</view>
     </view>
-    <view class="brand-mark">✦</view>
+    <button class="brand-share" bindtap="generateAppPoster" loading="{{generatingPoster}}" disabled="{{generatingPoster}}">分享</button>
   </view>
 
   <view class="hero enter-up delay-1">
@@ -34,7 +34,7 @@
     <view class="daily-copy">
       <view class="section-kicker">TODAY'S MIRROR</view>
       <view class="daily-title">{{today ? today.title : '今日牌仍在沉睡'}}</view>
-      <view class="daily-note">{{today ? '牌面已固定，随时回来重读。' : '一次抽取，留下一句今天值得记住的话。'}}</view>
+      <view class="daily-note">{{today ? '随时回来重读。' : '留下一句今天值得记住的话。'}}</view>
       <button class="primary daily-action" bindtap="startDaily">{{today ? '重新进入今日解读' : '抽取每日一牌'}}</button>
     </view>
   </view>
@@ -51,14 +51,14 @@
       <view class="reading-glyph"><view class="glyph-card"></view></view>
       <view class="reading-index">01</view>
       <view class="reading-name">一张牌</view>
-      <view class="reading-desc"><text>聚焦一个核心提示</text><text class="reading-desc-line">适合快速整理思绪</text></view>
+      <view class="reading-desc">聚焦一个核心提示</view>
       <view class="reading-enter">开始解读 <text>→</text></view>
     </view>
     <view class="reading-card three" bindtap="startThreeQuestion">
       <view class="reading-glyph triple"><view class="glyph-card"></view><view class="glyph-card"></view><view class="glyph-card"></view></view>
       <view class="reading-index">03</view>
       <view class="reading-name">三张牌</view>
-      <view class="reading-desc"><text>现状 · 关键影响 · 行动</text><text class="reading-desc-line">适合拆解复杂困扰</text></view>
+      <view class="reading-desc">现状 · 影响 · 行动</view>
       <view class="reading-enter">进入牌阵 <text>→</text></view>
     </view>
   </view>
@@ -68,7 +68,6 @@
     <view class="collection-info">
       <view class="section-kicker">MIRROR COLLECTION</view>
       <view class="collection-copy">我的七十八张心镜图鉴</view>
-      <view class="collection-note">每一次亲手翻牌，都让牌库亮起一格。</view>
     </view>
     <view class="arrow">›</view>
   </view>
@@ -104,8 +103,11 @@
   <view wx:else class="empty">
     <view class="empty-star">✦</view>
     <view>尚无记录</view>
-    <view class="empty-copy">完成一次解读后，你可以选择把它留在这台设备里。</view>
+    <view class="empty-copy">完成一次解读后，会自动出现在这里。</view>
   </view>
 
-  <button class="text-button settings-link" bindtap="openSettings">设置、AI 与数据说明</button>
+  <button class="text-button settings-link" bindtap="openSettings">设置与数据</button>
+
+  <share-poster-preview visible="{{posterVisible}}" poster-path="{{posterPath}}" bind:close="closePoster" />
+  <canvas type="2d" id="sharePoster" class="share-poster-canvas"></canvas>
 </view>

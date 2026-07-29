@@ -3,6 +3,7 @@ import { orientationLabel } from "../../core/interpretation";
 import { getReadingSpread } from "../../core/spreads";
 import type { Reading } from "../../core/types";
 import { collectionService, readingService } from "../../services/app-services";
+import { createAppSharePoster } from "../../services/share-poster";
 
 function toListItem(reading: Reading) {
   const cards = reading.cards.map((drawn) => getCard(drawn.cardId));
@@ -31,6 +32,9 @@ Page({
     collectionProgress: "0 / 78",
     logoPath: "/assets/branding/arcana-mirror-logo.jpg",
     cardBack: CARD_BACK_IMAGE_PATH,
+    generatingPoster: false,
+    posterPath: "",
+    posterVisible: false,
   },
 
   onShow() {
@@ -70,6 +74,30 @@ Page({
 
   openSettings() {
     wx.navigateTo({ url: "/pages/settings/index" });
+  },
+
+  async generateAppPoster() {
+    if (this.data.generatingPoster) return;
+    this.setData({ generatingPoster: true });
+    wx.showLoading({ title: "正在显影", mask: true });
+    try {
+      const posterPath = await createAppSharePoster(this);
+      this.setData({ posterPath, posterVisible: true });
+    } catch {
+      wx.showModal({
+        title: "分享图暂时无法生成",
+        content: "请检查网络，并确认 CloudBase 的 api 云函数已经部署后再试。",
+        showCancel: false,
+        confirmText: "知道了",
+      });
+    } finally {
+      wx.hideLoading();
+      this.setData({ generatingPoster: false });
+    }
+  },
+
+  closePoster() {
+    this.setData({ posterVisible: false });
   },
 
   openReading(event: WechatMiniprogram.TouchEvent) {

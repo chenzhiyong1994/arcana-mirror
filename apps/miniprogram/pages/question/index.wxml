@@ -8,7 +8,7 @@
   <view class="enter-up delay-1">
     <view class="eyebrow">SET YOUR INTENTION</view>
     <view class="title"><text>把问题，</text><text class="title-line">放到镜前。</text></view>
-    <view class="subtitle">一个清楚的问题，比一个确定的预言更有力量。关注你能观察、理解和选择的部分。</view>
+    <view class="subtitle">写下你能观察、理解和选择的部分。</view>
   </view>
 
   <view class="form-section enter-up delay-2">
@@ -34,7 +34,6 @@
       <textarea class="question-input" value="{{question}}" maxlength="200" placeholder="例如：我该如何理解最近和朋友之间的疏远？" placeholder-class="placeholder" bindinput="updateQuestion" />
       <view class="count">{{count}} / 200</view>
     </view>
-    <view class="prompt-note"><text>建议句式</text> 我该如何理解…… / 此刻什么最值得我看见？</view>
   </view>
 
   <view wx:if="{{decision}}" class="decision {{isBlocked ? 'blocked' : ''}}">
@@ -48,5 +47,8 @@
   </view>
 
   <button wx:if="{{!isBlocked}}" class="primary submit" bindtap="submitQuestion">进入{{selectedSpread === 'three' ? '三牌仪式' : '单牌仪式'}} <text>→</text></button>
-  <view class="privacy-note"><text>◇</text> 开始解读后，问题会发送至腾讯云开发 AI+ 的 HY3 模型；请勿填写姓名、电话、地址等个人信息。结果默认不保存，只有你主动选择后才会留在当前设备。</view>
+  <view class="privacy-note">
+    <view class="privacy-title"><text>◇</text> AI 只处理这一次问题</view>
+    <view class="privacy-copy">请勿填写姓名、电话或地址 · 本机自动保留最近 30 条解读</view>
+  </view>
 </view>

@@ -2,6 +2,7 @@
   "navigationBarTitleText": "心镜解读",
   "usingComponents": {
     "card-preview": "/components/card-preview/index",
+    "share-poster-preview": "/components/share-poster-preview/index",
     "tarot-card-face": "/components/tarot-card-face/index"
   }
 }

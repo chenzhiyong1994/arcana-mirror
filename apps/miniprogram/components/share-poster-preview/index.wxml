@@ -1,0 +1,12 @@
+<view wx:if="{{visible}}" class="poster-modal" catchtouchmove="noop">
+  <view class="poster-backdrop" bindtap="close"></view>
+  <view class="poster-sheet">
+    <view class="poster-head">
+      <view class="poster-title">分享图</view>
+      <view class="poster-close" bindtap="close" aria-role="button" aria-label="关闭">×</view>
+    </view>
+    <image class="poster-preview" src="{{posterPath}}" mode="widthFix" show-menu-by-longpress bindtap="preview" />
+    <view class="poster-hint">轻触放大 · 长按识别小程序码</view>
+    <button class="primary save-button" bindtap="save">保存到相册</button>
+  </view>
+</view>

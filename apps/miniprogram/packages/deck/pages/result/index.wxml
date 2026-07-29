@@ -21,7 +21,7 @@
       <view class="step-mark">03 / 03 · INTERPRETATION</view>
       <view class="eyebrow">{{view.topic}} · {{view.date}}</view>
       <view class="title">{{view.title}}</view>
-      <view class="source-line"><text class="source-dot"></text>{{view.sourceLabel}}{{view.isFallback ? ' · 已切换为基础牌义' : ''}}</view>
+      <view class="source-line"><text class="source-dot"></text>{{view.sourceLabel}}</view>
     </view>
 
     <view class="result-spread {{view.isThree ? 'three' : 'single'}} enter-up delay-1">
@@ -120,38 +120,19 @@
 
     <view class="disclaimer">{{view.content.disclaimer}}</view>
 
-    <view class="share-invitation">
-      <view class="share-star">✦</view>
-      <view class="share-copy">
-        <view class="share-title">把此刻的照见带给朋友</view>
-        <view class="share-note">生成含小程序码的分享图，不会展示你的原问题</view>
-      </view>
+    <view class="share-control">
       <button class="share-button" bindtap="generateSharePoster" loading="{{generatingPoster}}" disabled="{{generatingPoster}}">生成分享图</button>
+      <view class="share-note">不会展示你输入的原问题</view>
     </view>
 
     <view class="result-actions">
-      <button wx:if="{{!view.isDaily && !view.saved}}" class="primary" bindtap="saveToHistory">保存这次照见</button>
-      <button class="secondary" bindtap="finish">{{!view.isDaily && !view.saved ? '不保存，回到首页' : '完成'}}</button>
+      <button class="primary" bindtap="finish">完成</button>
     </view>
   </block>
 
   <card-preview wx:if="{{previewCard}}" visible="{{previewVisible}}" image-path="{{previewCard.imagePath}}" arcana="{{previewCard.arcana}}" roman="{{previewCard.roman}}" name="{{previewCard.name}}" english-name="{{previewCard.englishName}}" orientation="{{previewCard.orientation}}" orientation-label="{{previewCard.orientationLabel}}" position-label="{{view.isThree ? previewCard.positionLabel : ''}}" bind:close="closeCardPreview" />
 
-  <view wx:if="{{posterVisible}}" class="poster-modal" catchtouchmove="noop">
-    <view class="poster-backdrop" bindtap="closePoster"></view>
-    <view class="poster-sheet">
-      <view class="poster-head">
-        <view>
-          <view class="section-kicker">MIRRORLIGHT · SHARE</view>
-          <view class="poster-title">分享图已显影</view>
-        </view>
-        <view class="poster-close" bindtap="closePoster" aria-role="button" aria-label="关闭">×</view>
-      </view>
-      <image class="poster-preview" src="{{posterPath}}" mode="widthFix" show-menu-by-longpress bindtap="previewPoster" />
-      <view class="poster-hint">轻触放大 · 长按图片可识别小程序码或转发</view>
-      <button class="primary" bindtap="savePoster">保存到相册</button>
-    </view>
-  </view>
+  <share-poster-preview visible="{{posterVisible}}" poster-path="{{posterPath}}" bind:close="closePoster" />
 
   <canvas type="2d" id="sharePoster" class="share-poster-canvas"></canvas>
 </view>

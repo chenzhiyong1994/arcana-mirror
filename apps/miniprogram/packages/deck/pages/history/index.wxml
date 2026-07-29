@@ -3,13 +3,11 @@
   <view class="enter-up">
     <view class="eyebrow">MIRRORS KEPT LOCALLY</view>
     <view class="title">照见记录</view>
-    <view class="subtitle">只保存在当前设备。不使用账号，也不会跨设备同步。</view>
+    <view class="subtitle">自动保留最近 30 条 · 仅在当前设备可见</view>
   </view>
 
   <view wx:if="{{items.length}}" class="history-list enter-up delay-1">
-    <view class="timeline-line"></view>
     <view wx:for="{{items}}" wx:key="id" class="history-item" data-id="{{item.id}}" bindtap="openReading">
-      <view class="timeline-dot">✦</view>
       <view class="history-image">
         <tarot-card-face
           image-path="{{item.imagePath}}"
@@ -22,19 +20,21 @@
         />
       </view>
       <view class="history-main">
-        <view class="meta">{{item.date}} · {{item.source}}</view>
-        <view class="kind">{{item.kind}}</view>
+        <view class="history-meta"><text class="kind">{{item.kind}}</text><text>{{item.date}}</text></view>
         <view class="card-title">{{item.card}}</view>
-        <view class="open-copy">再次阅读 <text>→</text></view>
+        <view class="history-foot">
+          <text class="source">{{item.source}}</text>
+          <text class="open-copy">重读 →</text>
+          <view class="delete" data-id="{{item.id}}" catchtap="deleteReading" aria-role="button" aria-label="删除这条记录">删除</view>
+        </view>
       </view>
-      <button class="delete" data-id="{{item.id}}" catchtap="deleteReading">×</button>
     </view>
   </view>
 
   <view wx:else class="empty-panel enter-up delay-1">
     <image class="empty-seal" src="/assets/branding/arcana-mirror-logo.jpg" mode="aspectFill" />
     <view class="empty-title">镜面还没有留下痕迹</view>
-    <view class="muted">每日牌会自动保存；主题解读只有在你主动选择后才会留在这里。</view>
+    <view class="muted">完成一次解读后，会自动保留在这里。</view>
     <button class="primary" bindtap="startReading">开始一次解读</button>
   </view>
 </view>

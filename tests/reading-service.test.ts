@@ -27,14 +27,37 @@ describe("ReadingService", () => {
     expect(first.saved).toBe(true);
   });
 
-  it("does not add a question reading to history before explicit save", async () => {
-    const { service } = createService();
+  it("automatically keeps a completed question in recent history", async () => {
+    const { service, repository } = createService();
     const reading = service.startQuestion("我该如何理解最近的犹豫？");
     const interpreted = await service.interpretQuestion(reading.id);
     expect(interpreted.interpretation?.source).toBe("mock");
-    expect(service.listHistory()).toHaveLength(0);
-    service.saveQuestionToHistory(reading.id);
+    expect(interpreted.saved).toBe(true);
     expect(service.listHistory()).toHaveLength(1);
+    expect(repository.getWorking()).toBeUndefined();
+  });
+
+  it("keeps only the 30 most recent completed readings", async () => {
+    const repository = new MemoryReadingRepository();
+    let tick = 0;
+    const service = new ReadingService({
+      repository,
+      provider: new MockInterpretationProvider("success"),
+      now: () => new Date(Date.UTC(2026, 6, 19, 3, 0, tick++)),
+      random: () => 0.4,
+    });
+    const ids: string[] = [];
+
+    for (let index = 0; index < 31; index += 1) {
+      const reading = service.startQuestion(`第 ${index + 1} 次照见`);
+      ids.push(reading.id);
+      await service.interpretQuestion(reading.id);
+    }
+
+    const history = service.listHistory();
+    expect(history).toHaveLength(30);
+    expect(history[0].id).toBe(ids[30]);
+    expect(history.some((reading) => reading.id === ids[0])).toBe(false);
   });
 
   it("draws three unique cards and returns position-aware focused interpretations", async () => {
@@ -59,13 +82,13 @@ describe("ReadingService", () => {
     expect(() => service.saveQuestionToHistory(reading.id)).toThrow("READING_NOT_SAVABLE");
   });
 
-  it("discards an unsaved question when the flow ends", async () => {
+  it("keeps auto-saved history when the completed flow ends", async () => {
     const { service, repository } = createService();
     const reading = service.startQuestion("我该如何理解最近的犹豫？");
     await service.interpretQuestion(reading.id);
     service.discardQuestion(reading.id);
     expect(repository.getWorking()).toBeUndefined();
-    expect(service.listHistory()).toHaveLength(0);
+    expect(service.listHistory()).toHaveLength(1);
   });
 
   it.each(["timeout", "invalid", "unsafe"] as const)("falls back for mock mode %s", async (mode) => {

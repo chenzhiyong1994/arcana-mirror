@@ -2,23 +2,24 @@
   <view class="enter-up">
     <view class="eyebrow">MIRROR SETTINGS</view>
     <view class="title">设置与说明</view>
-    <view class="subtitle">了解 AI 解读与本地数据边界，也可以随时清理留在设备上的记录。</view>
+    <view class="subtitle">AI 与本地数据边界</view>
   </view>
 
   <view class="ai-panel enter-up delay-1">
     <view class="panel-icon">✦</view>
     <view class="section-kicker">CLOUDBASE AI · HY3</view>
-    <view class="section-title">个性化解读</view>
-    <view class="muted">主题问题会在你开始解读后发送至腾讯云开发 AI+，由 HY3 结合问题、牌面、正逆位与牌位生成建议。输出仍会经过牌面事实、结构和安全校验；服务异常时自动切换为本地基础牌义。</view>
+    <view class="section-title">AI 如何参与</view>
+    <view class="muted">HY3 只接收当前问题与牌面；服务异常时自动使用本地牌义。</view>
+    <view class="boundary-note">云开发可能保留调用记录 · 请勿输入可识别个人信息</view>
   </view>
 
   <view class="data-panel enter-up delay-2">
     <view class="panel-icon">◇</view>
     <view class="section-kicker">PRIVATE BY DEFAULT</view>
-    <view class="section-title">本地数据边界</view>
-    <view class="muted">本应用不建立账号或云端历史。你主动保存的历史与图鉴仅保存在当前设备；AI 请求由云开发处理，可能出现在开发者可见的调用记录中。请勿填写姓名、电话、地址等可识别个人信息。</view>
+    <view class="section-title">只留在这台设备</view>
+    <view class="muted">不建立账号或云端历史。解读记录与图鉴不会跨设备同步。</view>
     <view class="data-row">
-      <view><view class="data-name">解读历史</view><view class="data-note">每日牌与主动保存内容</view></view>
+      <view><view class="data-name">解读历史</view><view class="data-note">自动保留最近 30 条</view></view>
       <button class="danger-link" bindtap="clearHistory">全部清空</button>
     </view>
     <view class="data-row">
@@ -31,7 +32,7 @@
     <image class="about-logo" src="/assets/branding/arcana-mirror-logo.jpg" mode="aspectFill" />
     <view class="about-copy">
       <view class="section-title">心镜拾光</view>
-      <view class="muted">用于娱乐性自我探索，不替代现实判断，也不替代心理、医疗、法律或金融专业意见。</view>
+      <view class="muted">娱乐性自我探索，不替代现实判断或专业意见。</view>
       <view class="version">V1.1 · COMPLETE DECK · 78 CARDS</view>
     </view>
   </view>

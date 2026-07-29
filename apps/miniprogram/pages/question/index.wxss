@@ -25,8 +25,6 @@
 .question-input { width: 100%; height: 218rpx; box-sizing: border-box; padding: 26rpx 8rpx 12rpx; color: var(--paper); font-size: 30rpx; line-height: 1.68; }
 .placeholder { color: #6e665a; }
 .count { color: var(--muted); font-family: Georgia, serif; font-size: 19rpx; text-align: right; }
-.prompt-note { margin-top: 14rpx; color: var(--muted); font-size: 21rpx; line-height: 1.6; }
-.prompt-note text { margin-right: 8rpx; color: var(--gold); }
 .decision { display: flex; margin-top: 32rpx; padding: 26rpx; border: 1rpx solid rgba(184,150,87,0.42); background: rgba(184,150,87,0.06); }
 .decision.blocked { border-color: rgba(168,91,79,0.72); }
 .decision-symbol { display: flex; align-items: center; justify-content: center; flex: 0 0 50rpx; height: 50rpx; border: 1rpx solid currentColor; border-radius: 50%; color: var(--gold); font-size: 24rpx; }
@@ -38,5 +36,7 @@
 .rewrite { min-height: 72rpx; margin-top: 18rpx; padding: 9rpx 22rpx; font-size: 23rpx; line-height: 52rpx; }
 .submit { margin-top: 44rpx; }
 .submit text { float: right; font-size: 36rpx; }
-.privacy-note { margin-top: 22rpx; color: var(--muted); font-size: 21rpx; line-height: 1.6; text-align: center; }
-.privacy-note text { margin-right: 7rpx; color: var(--gold); }
+.privacy-note { margin-top: 24rpx; padding: 22rpx 24rpx; border-top: 1rpx solid rgba(184,150,87,.18); color: var(--muted); text-align: center; }
+.privacy-title { color: var(--paper-dim); font-size: 21rpx; }
+.privacy-title text { margin-right: 7rpx; color: var(--gold); }
+.privacy-copy { margin-top: 8rpx; font-size: 18rpx; line-height: 1.55; }

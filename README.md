@@ -16,7 +16,8 @@
 - 视觉：A“仪式典藏”22 张大阿尔卡那、56 张小阿尔卡那与统一卡背已经接入；Logo 已选定 L5“繁饰日蚀心镜”
 - 包体：仪式、结果、历史、图鉴和完整牌面置于 `deck` 普通分包；主包保留 78 张轻量缩略图，主包和分包均低于 2 MiB
 - 鉴赏：翻牌后、结果页和图鉴详情均可进入沉浸大图；统一成牌组件为小阿尔卡那补齐旧金边框、顶部牌阶与中英文铭牌，并保留正逆位、牌位与卡牌名称信息
-- 分享：结果页可生成黑金竖版分享图，包含牌面、受控摘要、微行动和可长按识别的小程序码；默认不展示用户原问题
+- 分享：首页可生成介绍小程序的通用分享图；结果页可生成包含牌面、受控摘要、微行动的黑金竖版分享图；两者均嵌入可长按识别的小程序码，结果图不展示用户原问题
+- 历史：每日牌与主题解读自动保留最近 30 条，仅存当前设备，可单条删除或全部清空
 
 ## 卡牌视觉
 
@@ -39,7 +40,7 @@
 9. [v0.2 三牌与图鉴扩展 PRD](docs/product/08-v0.2-three-card-and-collection.md)
 10. [v0.3 高保真体验与解读减负](docs/product/09-v0.3-high-fidelity-experience.md)
 11. [v1.1 完整 78 张牌组](docs/product/10-v1.1-complete-78-card-deck.md)
-12. [结果分享图增量](docs/product/11-share-poster.md)
+12. [分享图增量](docs/product/11-share-poster.md)
 13. [卡片风格基准](assets/tarot-card-style/README.md)
 14. [A 风格大阿尔卡那生成交接包](deliverables/style-a-deck-generation-kit/README.md)
 15. [A 风格小阿尔卡那生成交接包](deliverables/style-a-minor-arcana-generation-kit/README.md)
@@ -66,7 +67,7 @@ npm run validate:assets
 
 随后在微信开发者工具中导入仓库根目录。工程已配置正式小程序 AppID，并在 `apps/miniprogram/config/cloud.ts` 中固定 CloudBase 环境 `<your-cloudbase-env-id>`、AI Provider `cloudbase` 和模型 `hy3`。基础库需不低于 3.15.1；当前工程使用 3.17.0。
 
-使用结果分享图前，还需在微信开发者工具中将 `cloudfunctions/api` 上传部署到同一 CloudBase 环境；操作与真机门禁见 [分享图云函数部署与验收](docs/development/share-poster.md)。
+使用首页或结果分享图前，还需在微信开发者工具中将 `cloudfunctions/api` 上传部署到同一 CloudBase 环境；操作与真机门禁见 [分享图云函数部署与验收](docs/development/share-poster.md)。
 
 每日一牌仍使用本地受控牌义。主题问题会连同牌阵、卡牌事实和受控牌义发送至 CloudBase AI，由 `hy3` 直接根据问题识别重点并生成结构化建议；用户不再需要预选感情、人际、事业或自我类别。输出必须通过字段、牌面事实、问题焦点和安全校验，摘要不得机械复述原问题，否则自动降级为本地基础牌义。问题和历史不进入仓库，历史只保存在当前设备且不跨设备同步；CloudBase 控制台可能保留 AI 调用记录，用户不应输入姓名、电话、住址等可识别信息。
 

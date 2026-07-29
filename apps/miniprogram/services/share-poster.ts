@@ -214,6 +214,111 @@ function exportCanvas(
   });
 }
 
+function drawRotatedImage(
+  ctx: Canvas2DContext,
+  image: WechatMiniprogram.Image,
+  centerX: number,
+  centerY: number,
+  width: number,
+  height: number,
+  radians: number,
+  alpha = 1,
+) {
+  ctx.save();
+  ctx.translate(centerX, centerY);
+  ctx.rotate(radians);
+  ctx.globalAlpha = alpha;
+  ctx.shadowColor = "rgba(0, 0, 0, 0.68)";
+  ctx.shadowBlur = 30;
+  ctx.shadowOffsetY = 18;
+  ctx.drawImage(image, -width / 2, -height / 2, width, height);
+  ctx.shadowColor = "transparent";
+  ctx.strokeStyle = "rgba(224, 191, 121, 0.48)";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(-width / 2, -height / 2, width, height);
+  ctx.restore();
+}
+
+export async function createAppSharePoster(
+  page: WechatMiniprogram.Page.TrivialInstance,
+): Promise<string> {
+  const canvas = await getCanvas(page);
+  canvas.width = POSTER_WIDTH;
+  canvas.height = POSTER_HEIGHT;
+  const ctx = canvas.getContext("2d");
+  const [shareCode, logo, cardBack] = await Promise.all([
+    fetchShareCode().then((path) => loadCanvasImage(canvas, path)),
+    loadCanvasImage(canvas, "/assets/branding/arcana-mirror-logo.jpg"),
+    loadCanvasImage(canvas, "/assets/cards/card-back.jpg"),
+  ]);
+
+  drawBackground(ctx);
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillStyle = "#e0bf79";
+  ctx.font = "24px serif";
+  ctx.fillText("MIRRORLIGHT · 心镜拾光", 500, 132);
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(500, 244, 78, 0, Math.PI * 2);
+  ctx.clip();
+  ctx.drawImage(logo, 422, 166, 156, 156);
+  ctx.restore();
+  ctx.strokeStyle = "rgba(224, 191, 121, 0.58)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(500, 244, 84, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.fillStyle = "#f4ead7";
+  ctx.font = "600 68px serif";
+  ctx.fillText("翻开牌面，", 500, 405);
+  ctx.fillText("照见自己。", 500, 490);
+  ctx.fillStyle = "rgba(244, 234, 215, 0.65)";
+  ctx.font = "28px sans-serif";
+  ctx.fillText("用图像卡片整理当下，找到可以迈出的下一小步", 500, 550);
+
+  drawRotatedImage(ctx, cardBack, 315, 810, 220, 330, -0.14, 0.62);
+  drawRotatedImage(ctx, cardBack, 685, 810, 220, 330, 0.14, 0.62);
+  drawRotatedImage(ctx, cardBack, 500, 790, 260, 390, 0);
+
+  ctx.fillStyle = "#b89657";
+  ctx.font = "22px sans-serif";
+  ctx.fillText("每日一牌   ·   单牌与三牌   ·   AI 文字整理", 500, 1058);
+  ctx.strokeStyle = "rgba(184, 150, 87, 0.28)";
+  ctx.beginPath();
+  ctx.moveTo(150, 1102);
+  ctx.lineTo(850, 1102);
+  ctx.stroke();
+
+  const codeY = 1240;
+  ctx.fillStyle = "#f1eadc";
+  ctx.fillRect(76, codeY - 14, 306, 306);
+  ctx.drawImage(shareCode, 89, codeY - 1, 280, 280);
+  ctx.strokeStyle = "rgba(184, 150, 87, 0.55)";
+  ctx.strokeRect(76, codeY - 14, 306, 306);
+
+  ctx.textAlign = "left";
+  ctx.fillStyle = "#e0bf79";
+  ctx.font = "600 30px serif";
+  ctx.fillText("长按识别小程序码", 430, codeY + 66);
+  ctx.fillStyle = "rgba(244, 234, 215, 0.74)";
+  ctx.font = "26px sans-serif";
+  ctx.fillText("来看看，此刻什么值得被看见", 430, codeY + 116);
+  ctx.fillStyle = "rgba(244, 234, 215, 0.42)";
+  ctx.font = "19px sans-serif";
+  ctx.fillText("娱乐性自我探索 · 不替代专业意见", 430, codeY + 171);
+
+  ctx.textAlign = "center";
+  ctx.fillStyle = "rgba(184, 150, 87, 0.45)";
+  ctx.font = "18px serif";
+  ctx.fillText("A QUIET RITUAL FOR CLARITY", 500, 1594);
+
+  return exportCanvas(canvas, page);
+}
+
 export async function createSharePoster(
   page: WechatMiniprogram.Page.TrivialInstance,
   content: SharePosterContent,

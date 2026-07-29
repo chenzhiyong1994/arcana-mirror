@@ -11,7 +11,7 @@ Page({
   clearHistory() {
     wx.showModal({
       title: "清空全部本地历史？",
-      content: "每日牌和主动保存的主题解读都会被删除，且无法恢复。",
+      content: "最近 30 条解读记录都会被删除，且无法恢复。",
       confirmColor: "#a65248",
       success: (result) => {
         if (!result.confirm) return;

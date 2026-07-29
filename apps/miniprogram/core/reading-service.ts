@@ -11,6 +11,8 @@ import type {
   Topic,
 } from "./types";
 
+export const RECENT_READING_LIMIT = 30;
+
 export interface ReadingServiceDependencies {
   repository: ReadingRepository;
   provider: InterpretationProvider;
@@ -44,7 +46,7 @@ export class ReadingService {
       validationStatus: "valid",
       content: buildStaticDailyInterpretation(reading, card),
     };
-    this.dependencies.repository.save(reading);
+    this.saveRecent(reading);
     return reading;
   }
 
@@ -78,7 +80,7 @@ export class ReadingService {
         content: validation.content,
       };
       reading.updatedAt = this.now().toISOString();
-      this.persistWorkingOrSaved(reading);
+      this.keepCompletedQuestion(reading);
       return reading;
     } catch (error) {
       const reasonCode = error instanceof Error ? error.message : "AI_PROVIDER_ERROR";
@@ -96,7 +98,7 @@ export class ReadingService {
     ) throw new Error("READING_NOT_SAVABLE");
     reading.saved = true;
     reading.updatedAt = this.now().toISOString();
-    this.dependencies.repository.save(reading);
+    this.saveRecent(reading);
     this.dependencies.repository.clearWorking(id);
     return reading;
   }
@@ -174,8 +176,21 @@ export class ReadingService {
       content: buildFallbackInterpretation(reading, cards, reasonCode),
     };
     reading.updatedAt = this.now().toISOString();
-    this.persistWorkingOrSaved(reading);
+    this.keepCompletedQuestion(reading);
     return reading;
+  }
+
+  private keepCompletedQuestion(reading: Reading): void {
+    reading.saved = true;
+    this.saveRecent(reading);
+    this.dependencies.repository.clearWorking(reading.id);
+  }
+
+  private saveRecent(reading: Reading): void {
+    this.dependencies.repository.save(reading);
+    this.dependencies.repository.listSaved()
+      .slice(RECENT_READING_LIMIT)
+      .forEach((expired) => this.dependencies.repository.delete(expired.id));
   }
 
   private persistWorkingOrSaved(reading: Reading): void {

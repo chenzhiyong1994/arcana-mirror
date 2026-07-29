@@ -9,7 +9,7 @@ App({
         traceUser: false,
       });
     }
-    // 未保存的主题解读只属于一次本地流程，不跨应用重启保留。
+    // 未完成的主题流程不跨应用重启保留；完成结果已进入最近历史。
     localReadingRepository.clearWorking();
   },
 });
