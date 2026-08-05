@@ -127,6 +127,14 @@ Page({
     this.setData({ activeCardIndex, activeCard, detailsExpanded: false });
   },
 
+  selectReadingCard(event: WechatMiniprogram.TouchEvent) {
+    const activeCardIndex = Number(event.currentTarget.dataset.index);
+    const activeCard = this.data.view?.cards[activeCardIndex];
+    if (!activeCard || activeCardIndex === this.data.activeCardIndex) return;
+    wx.vibrateShort({ type: "light" });
+    this.setData({ activeCardIndex, activeCard, detailsExpanded: false });
+  },
+
   closeCardPreview() {
     this.setData({ previewVisible: false });
   },
