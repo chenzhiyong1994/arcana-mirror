@@ -169,11 +169,6 @@ Page({
     this.setData({ posterVisible: false });
   },
 
-  finish() {
-    if (this.data.id) readingService.discardQuestion(this.data.id);
-    wx.reLaunch({ url: "/pages/home/index" });
-  },
-
   returnHome() {
     wx.reLaunch({ url: "/pages/home/index" });
   },

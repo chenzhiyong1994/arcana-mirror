@@ -149,10 +149,6 @@
       <button class="share-button" bindtap="generateSharePoster" loading="{{generatingPoster}}" disabled="{{generatingPoster}}">生成分享图</button>
       <view class="share-note">不会展示你输入的原问题</view>
     </view>
-
-    <view class="result-actions">
-      <button class="primary" bindtap="finish">完成</button>
-    </view>
   </block>
 
   <card-preview wx:if="{{previewCard}}" visible="{{previewVisible}}" image-path="{{previewCard.imagePath}}" arcana="{{previewCard.arcana}}" roman="{{previewCard.roman}}" name="{{previewCard.name}}" english-name="{{previewCard.englishName}}" orientation="{{previewCard.orientation}}" orientation-label="{{previewCard.orientationLabel}}" position-label="{{view.isThree ? previewCard.positionLabel : ''}}" bind:close="closeCardPreview" />
