@@ -49,13 +49,6 @@ function toView(reading: Reading) {
     title: isThree ? "三牌综合解读" : `${cards[0].name} · ${cards[0].orientationLabel}`,
     question: reading.question ?? "",
     cards,
-    sourceLabel: interpretation?.source === "fallback"
-      ? "基础解读"
-      : interpretation?.source === "static"
-        ? "本地牌义"
-        : interpretation?.source === "ai"
-          ? "AI 个性化解读"
-          : "兼容解读",
     isFallback: interpretation?.source === "fallback",
     reasonCode: interpretation?.reasonCode ?? "",
     content: content ? {
@@ -124,14 +117,6 @@ Page({
       this.setData({ previewCard: activeCard, previewVisible: true });
       return;
     }
-    this.setData({ activeCardIndex, activeCard, detailsExpanded: false });
-  },
-
-  selectReadingCard(event: WechatMiniprogram.TouchEvent) {
-    const activeCardIndex = Number(event.currentTarget.dataset.index);
-    const activeCard = this.data.view?.cards[activeCardIndex];
-    if (!activeCard || activeCardIndex === this.data.activeCardIndex) return;
-    wx.vibrateShort({ type: "light" });
     this.setData({ activeCardIndex, activeCard, detailsExpanded: false });
   },
 

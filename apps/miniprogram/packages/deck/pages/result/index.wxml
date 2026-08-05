@@ -21,39 +21,16 @@
       <view class="step-mark">03 / 03 · INTERPRETATION</view>
       <view class="eyebrow">{{view.topic}} · {{view.date}}</view>
       <view class="title">{{view.title}}</view>
-      <view class="source-line"><text class="source-dot"></text>{{view.sourceLabel}}</view>
     </view>
 
-    <view class="result-spread {{view.isThree ? 'three' : 'single'}} enter-up delay-1">
-      <view wx:for="{{view.cards}}" wx:key="cardId" class="visual-card {{activeCardIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="handleCardTap" aria-role="button" aria-label="{{activeCardIndex === index ? '查看' + item.name + '大图' : '切换到' + item.name + '解读'}}">
-        <view wx:if="{{view.isThree}}" class="position-label"><text>0{{index + 1}}</text>{{item.positionLabel}}</view>
-        <view class="visual-image-shell">
-          <tarot-card-face
-            class="result-card-face"
-            image-path="{{item.imagePath}}"
-            arcana="{{item.arcana}}"
-            top-mark="{{item.roman}}"
-            name="{{item.name}}"
-            english-name="{{item.englishName}}"
-            orientation="{{item.orientation}}"
-            variant="{{view.isThree ? 'compact' : 'standard'}}"
-          />
-          <view class="card-select-glow"></view>
-        </view>
-        <view class="visual-name">{{item.name}}</view>
-        <view class="visual-orientation">{{item.orientationLabel}}</view>
-      </view>
-    </view>
-    <view class="spread-preview-hint"><text>⌕</text> {{view.isThree ? '轻触当前牌查看大图 · 下方「逐张看清」可随时切换' : '轻触牌面查看大图'}}</view>
-
-    <view wx:if="{{view.question}}" class="question-context enter-up delay-2" bindtap="toggleQuestion">
+    <view wx:if="{{view.question}}" class="question-context enter-up delay-1" bindtap="toggleQuestion">
       <view class="question-mark">“</view>
       <view class="question-label">你带来的困扰</view>
       <view class="question-toggle">{{questionExpanded ? '收起' : '回看'}} <text>{{questionExpanded ? '−' : '+'}}</text></view>
       <view wx:if="{{questionExpanded}}" class="question-text">{{view.question}}</view>
     </view>
 
-    <view class="lead-reading enter-up delay-2">
+    <view class="lead-reading enter-up delay-1">
       <view class="lead-symbol">✦</view>
       <view class="chapter-label"><text>01</text><view class="content-label">第一眼线索</view></view>
       <view class="lead-text">{{view.content.summary}}</view>
@@ -71,71 +48,76 @@
         <view class="section-progress">0{{activeCardIndex + 1}} / 0{{view.cards.length}}</view>
       </view>
 
-      <view wx:if="{{view.isThree}}" class="reading-switcher-wrap">
-        <view class="reading-switcher" aria-role="tablist" aria-label="切换逐张解读">
-          <view
-            wx:for="{{view.cards}}"
-            wx:key="cardId"
-            class="reading-tab {{activeCardIndex === index ? 'active' : ''}}"
-            data-index="{{index}}"
-            bindtap="selectReadingCard"
-            aria-role="button"
-            aria-label="查看{{item.positionLabel}}位置的{{item.name}}解读"
-          >
-            <view class="reading-tab-top"><text>0{{index + 1}}</text><view class="reading-tab-dot"></view></view>
-            <view class="reading-tab-position">{{item.positionLabel}}</view>
-            <view class="reading-tab-name">{{item.name}}</view>
+      <view class="reading-stage enter-up delay-2">
+        <view class="result-spread {{view.isThree ? 'three' : 'single'}}">
+          <view wx:for="{{view.cards}}" wx:key="cardId" class="visual-card {{activeCardIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="handleCardTap" aria-role="button" aria-label="{{activeCardIndex === index ? '查看' + item.name + '大图' : '切换到' + item.name + '解读'}}">
+            <view wx:if="{{view.isThree}}" class="position-label"><text>0{{index + 1}}</text>{{item.positionLabel}}</view>
+            <view class="visual-image-shell">
+              <tarot-card-face
+                class="result-card-face"
+                image-path="{{item.imagePath}}"
+                arcana="{{item.arcana}}"
+                top-mark="{{item.roman}}"
+                name="{{item.name}}"
+                english-name="{{item.englishName}}"
+                orientation="{{item.orientation}}"
+                variant="{{view.isThree ? 'compact' : 'standard'}}"
+              />
+              <view class="card-select-glow"></view>
+            </view>
+            <view class="visual-name">{{item.name}}</view>
+            <view class="visual-orientation">{{item.orientationLabel}}</view>
           </view>
         </view>
-        <view class="switcher-note">在这里切换牌面，下方内容会同步更新</view>
-      </view>
+        <view class="spread-preview-hint"><text>⌕</text> {{view.isThree ? '轻触牌面切换解读 · 再次轻触当前牌查看大图' : '轻触牌面查看大图'}}</view>
 
-      <view wx:if="{{activeCard}}" class="active-reading">
-        <view class="active-head">
-          <view class="active-number">{{activeCard.roman}}</view>
-          <view class="active-title-wrap">
-            <view class="active-position">{{activeCard.positionLabel}} · {{activeCard.orientationLabel}}</view>
-            <view class="active-title">{{activeCard.name}}</view>
-            <view class="active-en">{{activeCard.englishName}}</view>
-          </view>
-        </view>
-
-        <view class="reading-block reading-primary">
-          <view class="reading-block-head">
-            <view class="reading-block-number">01</view>
-            <view>
-              <view class="reading-block-kicker">牌面直觉</view>
-              <view class="reading-block-title">这张牌正在说</view>
+        <view wx:if="{{activeCard}}" class="active-reading reading-state-{{activeCardIndex}}">
+          <view class="active-head">
+            <view class="active-number">{{activeCard.roman}}</view>
+            <view class="active-title-wrap">
+              <view class="active-position">{{activeCard.positionLabel}} · {{activeCard.orientationLabel}}</view>
+              <view class="active-title">{{activeCard.name}}</view>
+              <view class="active-en">{{activeCard.englishName}}</view>
             </view>
           </view>
-          <view class="reading-primary-text">{{activeCard.contextualMeaning}}</view>
-        </view>
 
-        <view class="reading-block topic-insight">
-          <view class="reading-block-head">
-            <view class="reading-block-number">02</view>
-            <view>
-              <view class="reading-block-kicker">落到现实</view>
-              <view class="reading-block-title">围绕{{activeCard.topicLabel}}</view>
-            </view>
-          </view>
-          <view class="topic-insight-text">{{activeCard.topicInsight}}</view>
-        </view>
-
-        <view class="meaning-section">
-          <view class="meaning-toggle" bindtap="toggleDetails" aria-role="button" aria-label="{{detailsExpanded ? '收起牌义依据' : '查看牌义依据'}}">
-            <view class="meaning-toggle-copy">
-              <text class="reading-block-number">03</text>
+          <view class="reading-block reading-primary">
+            <view class="reading-block-head">
+              <view class="reading-block-number">01</view>
               <view>
-                <view class="reading-block-kicker">可选阅读</view>
-                <view class="meaning-toggle-title">牌义依据</view>
+                <view class="reading-block-kicker">牌面直觉</view>
+                <view class="reading-block-title">这张牌正在说</view>
               </view>
             </view>
-            <text class="toggle-mark">{{detailsExpanded ? '−' : '+'}}</text>
+            <view class="reading-primary-text">{{activeCard.contextualMeaning}}</view>
           </view>
-          <view wx:if="{{detailsExpanded}}" class="meaning-detail">
-            <view class="keywords"><text wx:for="{{activeCard.keywords}}" wx:key="*this" class="tag">{{item}}</text></view>
-            <view class="meaning-text">{{activeCard.basis}}</view>
+
+          <view class="reading-block topic-insight">
+            <view class="reading-block-head">
+              <view class="reading-block-number">02</view>
+              <view>
+                <view class="reading-block-kicker">落到现实</view>
+                <view class="reading-block-title">围绕{{activeCard.topicLabel}}</view>
+              </view>
+            </view>
+            <view class="topic-insight-text">{{activeCard.topicInsight}}</view>
+          </view>
+
+          <view class="meaning-section">
+            <view class="meaning-toggle" bindtap="toggleDetails" aria-role="button" aria-label="{{detailsExpanded ? '收起牌义依据' : '查看牌义依据'}}">
+              <view class="meaning-toggle-copy">
+                <text class="reading-block-number">03</text>
+                <view>
+                  <view class="reading-block-kicker">可选阅读</view>
+                  <view class="meaning-toggle-title">牌义依据</view>
+                </view>
+              </view>
+              <text class="toggle-mark">{{detailsExpanded ? '−' : '+'}}</text>
+            </view>
+            <view wx:if="{{detailsExpanded}}" class="meaning-detail">
+              <view class="keywords"><text wx:for="{{activeCard.keywords}}" wx:key="*this" class="tag">{{item}}</text></view>
+              <view class="meaning-text">{{activeCard.basis}}</view>
+            </view>
           </view>
         </view>
       </view>
