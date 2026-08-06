@@ -37,6 +37,27 @@ describe("ReadingService", () => {
     expect(repository.getWorking()).toBeUndefined();
   });
 
+  it("starts a three-card life reading without asking for a question", () => {
+    const { service } = createService([0.1, 0.2, 0.3, 0.8, 0.6, 0.3, 0.4]);
+    const reading = service.startLifeReading("three");
+
+    expect(reading.focusMode).toBe("life");
+    expect(reading.question).toBeUndefined();
+    expect(reading.cards).toHaveLength(3);
+  });
+
+  it("keeps wealth, career and love behind three fixed directions for life readings", async () => {
+    const { service } = createService();
+    const reading = service.startLifeReading();
+    const interpreted = await service.interpretQuestion(reading.id);
+
+    expect(interpreted.interpretation?.content.cards[0].directionInsights?.map((item) => item.label)).toEqual([
+      "财运",
+      "事业",
+      "爱情",
+    ]);
+  });
+
   it("keeps only the 30 most recent completed readings", async () => {
     const repository = new MemoryReadingRepository();
     let tick = 0;

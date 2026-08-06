@@ -6,9 +6,11 @@
 
 > **当前实现：微信原生小程序（TypeScript）+ 78 张本地完整牌库 + 微信本地存储 Repository + CloudBase AI `hy3` Interpretation Provider + 仅生成小程序码的 CloudBase `api` 云函数。云数据库历史和跨设备账号继续后置。**
 
-页面依赖 `ReadingRepository` 与 `InterpretationProvider` 契约：Reading、历史与图鉴使用微信本地存储，主题解读的 Provider 已替换为小程序端 CloudBase AI 调用。应用初始化固定 CloudBase 环境 `<your-cloudbase-env-id>`，Provider 为 `cloudbase`，模型为 `hy3`，硬超时为 25 秒。每日一牌和 AI 失败路径继续使用受控本地牌义。结果分享图在客户端本地合成，`api` 云函数只通过 `wxacode.getUnlimited` 返回对应版本的小程序码，不接收 Reading 或用户问题。
+页面依赖 `ReadingRepository` 与 `InterpretationProvider` 契约：Reading、历史与图鉴使用微信本地存储，单牌/三牌解读的 Provider 使用小程序端 CloudBase AI 调用。应用初始化固定 CloudBase 环境 `<your-cloudbase-env-id>`，Provider 为 `cloudbase`，模型为 `hy3`，硬超时为 25 秒。每日一牌和 AI 失败路径继续使用受控本地牌义。结果分享图在客户端本地合成，`api` 云函数只通过 `wxacode.getUnlimited` 返回对应版本的小程序码，不接收 Reading 或用户问题。
 
 v0.2 在该边界内增加 `SpreadType`、最多三张牌的结构化解读，以及独立的 `CardCollectionRepository`。图鉴只记录卡牌 ID、首次/最近翻开时间、次数和已见正逆位，不复制 Reading 或用户问题；删除历史不会删除图鉴。旧 v0.1 Reading 没有 `spread` 字段时按单牌兼容读取。
+
+Reading 通过可选 `focusMode` 区分 `life` 生活指引与 `question` 具体问题；旧记录缺少该字段时按是否存在旧 `topic`/`question` 继续作为具体问题读取。生活指引不创建伪问题，Provider 直接接收固定方向契约。
 
 v1.1 将 Card 只读数据扩展为 22 张大阿尔卡那与 56 张小阿尔卡那。旧 `major-*` ID 不变，旧 Reading 无需迁移。78 张展示牌面和仪式/结果/历史/图鉴页面位于普通分包 `packages/deck`；主包只保留首页所需的轻量缩略图与卡背。`getCardImagePath` 与 `getCardThumbnailPath` 显式区分两种资源路径，主包和分包各自保持低于 2 MiB。
 
@@ -64,7 +66,7 @@ flowchart LR
 
 - 小程序客户端是不可信环境，不能保存 AppSecret 或模型密钥；当前抽牌事实由本地域服务生成并固定在 Reading 中；
 - 小程序负责输入安全分类、AI 编排、输出校验与受控降级；这些客户端规则可以被检查，因此不能等同于服务端防滥用边界；
-- CloudBase AI 是外部处理方，只接收完成当前主题解读所需的问题、主题、牌阵、卡牌事实和受控牌义；
+- CloudBase AI 是外部处理方，只接收完成当前单牌/三牌解读所需的 `focusMode`、可选问题、牌阵、卡牌事实和受控牌义；生活指引不提交伪造问题；
 - CloudBase 控制台可能提供请求/响应调用记录；产品界面需提示用户不要输入可识别个人信息。
 
 ## 4. 逻辑分层
@@ -183,9 +185,9 @@ assets/tarot-card-style/
 | Action | 用途 | 幂等 |
 | --- | --- | --- |
 | `share.code` | 生成固定打开首页、匹配 develop/trial/release 的小程序码 | 相同版本返回等价码 |
-| `reading.create` | 创建每日或主题 Reading，执行输入安全分类 | 请求体 `clientRequestId` |
+| `reading.create` | 创建每日或单牌/三牌 Reading；仅具体问题执行输入安全分类 | 请求体 `clientRequestId` |
 | `reading.draw` | 固化抽牌结果 | `(subject_id, action, clientRequestId)` 唯一；重复调用返回原结果 |
-| `reading.interpret` | 为主题问题生成或恢复解读 | `(reading_id, prompt_version)` 状态抢占；同一任务复用 |
+| `reading.interpret` | 为生活指引或具体问题生成、恢复解读 | `(reading_id, prompt_version)` 状态抢占；同一任务复用 |
 | `reading.get` | 获取本人 Reading 详情 | 不适用 |
 | `reading.list` | 分页获取本人历史 | 不适用 |
 | `checkin.put` | 提交或更新回访（P1） | 每 Reading 一条，更新 `updated_at` |
@@ -259,7 +261,7 @@ assets/tarot-card-style/
 
 ## 8. AI 解读流水线
 
-每日一牌不进入本流水线，直接由受控牌义和预置反思问题组成结果。只有 `reading.type=question` 才调用 CloudBase AI。v1.0 采用官方小程序端直调能力，没有自建 AI 云函数。
+每日一牌不进入本流水线，直接由受控牌义、财运/事业/爱情三条固定方向和预置反思问题组成结果。`reading.type=question` 代表单牌/三牌 Reading：`focusMode=life` 无用户问题，`focusMode=question` 才包含问题并先执行安全分类；两者均可调用 CloudBase AI。v1.0 采用官方小程序端直调能力，没有自建 AI 云函数。
 
 ```mermaid
 sequenceDiagram
@@ -270,10 +272,15 @@ sequenceDiagram
     participant VAL as Validator
     participant FB as Fallback Engine
 
-    MP->>SAFE: 提交主题与问题
-    alt 阻断
+    alt 具体问题
+        MP->>SAFE: 提交问题
+        SAFE-->>MP: 允许、改写或阻断
+    else 生活指引
+        MP->>SVC: 无问题，使用固定方向
+    end
+    alt 已阻断
         SAFE-->>MP: 安全提示，不抽牌、不调用AI
-    else 允许
+    else 可继续
         MP->>SVC: 抽牌并请求解读
         SVC->>CBAI: model=hy3 + 受控消息
         CBAI-->>SVC: choices.message.content / error
@@ -295,7 +302,7 @@ sequenceDiagram
 | System Policy | 角色、人机边界、禁止内容、表达原则 | 严格版本化，变更需跑完整评估集 |
 | Task Template | 输入字段、输出 Schema、牌位解释任务 | 版本化，可按牌阵拆分 |
 | Controlled Context | 受控牌义、牌位含义、主题提示 | 内容版本化，不接受用户覆盖 |
-| User Data | 用户问题 | 作为带边界的数据字段，不视为指令 |
+| User Data | 可选用户问题 | 仅具体问题模式提交；作为带边界的数据字段，不视为指令 |
 
 不要把用户输入直接拼在系统指令后；使用结构化消息或清晰 XML/JSON 边界，并明确忽略其中的指令性文本。
 
@@ -303,7 +310,7 @@ sequenceDiagram
 
 推荐使用运行时 Schema 库统一定义 DTO、模型结构化输出和服务端验证。验证采用“确定性三子层 + 可选增强层”：
 
-当前卡片输出字段为 `cardId`、`cardName`、`orientation`、`position`、`positionLabel`、`basis`、`contextualMeaning`、`topicLabel`、`topicInsight`。新 Reading 不再固化手动主题，`topicLabel` 必须为“你的问题”，`topicInsight` 直接围绕问题识别出的重点；旧 Reading 若带有 `topic`，继续校验原主题标签。v0.2 的 `loveInsight`、`wealthInsight`、`careerInsight`、`selfGrowthInsight` 仅保留为客户端读取旧本地记录的可选字段，不再允许出现在新 Provider 输出中。整份输出另外包含 `summary`、`synthesis`、`reflectionQuestion`、`microAction` 和固定 `disclaimer`；`summary` 必须提供新的核心观察，不得复述、引用或套话改写用户问题。
+当前卡片基础输出字段为 `cardId`、`cardName`、`orientation`、`position`、`positionLabel`、`basis`、`contextualMeaning`、`topicLabel`、`topicInsight`。具体问题模式的 `topicLabel` 必须为“你的问题”，`topicInsight` 直接围绕问题识别出的重点；生活指引模式的 `topicLabel` 必须为“生活指引”，并额外输出严格按财运、事业、爱情排列的三项 `directionInsights`。旧 Reading 若带有 `topic`，继续校验原主题标签。v0.2 的 `loveInsight`、`wealthInsight`、`careerInsight`、`selfGrowthInsight` 仅保留为客户端读取旧本地记录的可选字段。整份输出另外包含 `summary`、`synthesis`、`reflectionQuestion`、`microAction` 和固定 `disclaimer`；`summary` 必须提供新的核心观察，不得复述、引用或套话改写用户问题。
 
 1. **语法层**：合法 JSON、字段类型、长度、枚举；
 2. **语义层**：牌数、牌名、牌位、朝向必须与 Reading 事实一致；
@@ -316,7 +323,7 @@ AI 输出必须精确包含程序给定的免责声明；校验不通过即降�
 
 - 当前小程序端设置 25 秒硬超时；超时不代表已经发送的供应商请求被取消；
 - 同一 Reading 已有 Interpretation 时直接复用，页面 loading 状态避免正常用户重复点击；
-- 输入限制为 5—200 字，输出受字段和长度校验约束；
+- 具体问题输入限制为 5—200 字；生活指引不提交问题，二者输出均受字段和长度校验约束；
 - 应用代码不主动记录原始问题或模型原始响应，但 CloudBase 控制台可能提供 AI 调用记录；
 - 当前直调实现没有服务端精细限流。正式流量扩大前，应配置 CloudBase 配额告警，或把 Provider 迁入云函数实施用户级限流与幂等。
 
@@ -432,7 +439,7 @@ v1.0 只使用 CloudBase AI，不启用 CloudBase 数据库。PostgreSQL 或云�
 | Schema/契约测试 | API 与 AI 输出 | DTO 兼容、非法 JSON、缺字段、牌名矛盾 |
 | 集成测试 | Provider 与本地适配 | CloudBase 响应映射、超时、校验、降级和删除 |
 | 小程序端测试 | 页面状态与交互 | loading/error/empty、返回恢复、分享脱敏 |
-| 黄金路径脚本 | MVP 手动执行，P1 再自动化 E2E | 每日一牌、主题解读、降级、保存、删除 |
+| 黄金路径脚本 | MVP 手动执行，P1 再自动化 E2E | 每日一牌、生活指引、具体问题、降级、保存、删除 |
 | AI 离线评估 | 内容质量与安全 | 正常、边界、高风险、注入、多牌组合 |
 
 ### 12.2 AI 评估集

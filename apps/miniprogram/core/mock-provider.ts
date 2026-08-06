@@ -25,6 +25,7 @@ export class MockInterpretationProvider implements InterpretationProvider {
     if (mode === "timeout") throw new MockProviderError("MOCK_TIMEOUT");
     if (mode === "invalid") return { summary: "字段不完整的模拟响应" };
 
+    const isLifeReading = reading.focusMode === "life";
     const context = reading.topic ? topicPrompts[reading.topic] : "当下值得留意的角度";
     const interpretedCards = cards.map((card, index) => {
       const position = getReadingPosition(reading, index);
@@ -37,9 +38,13 @@ export class MockInterpretationProvider implements InterpretationProvider {
     });
     const cardNames = cards.map((card) => card.name).join("、");
     const output = {
-      summary: getReadingSpread(reading) === "three"
-        ? `围绕“${context}”，${cardNames}把问题拆成现状、关键影响和下一步。先看清真正的张力，再把注意力带回你能选择的部分。`
-        : `围绕“${context}”，${cardNames}邀请你区分事实、感受和仍待确认的判断。`,
+      summary: isLifeReading
+        ? getReadingSpread(reading) === "three"
+          ? `${cardNames}把当下铺成现状、关键影响和下一步。依次看过生活三面，再留下最贴近现实的一条。`
+          : `${cardNames}邀请你从生活三面观察当下。逐项对照事实，不必一次带走所有含义。`
+        : getReadingSpread(reading) === "three"
+          ? `围绕“${context}”，${cardNames}把问题拆成现状、关键影响和下一步。先看清真正的张力，再把注意力带回你能选择的部分。`
+          : `围绕“${context}”，${cardNames}邀请你区分事实、感受和仍待确认的判断。`,
       cards: interpretedCards,
       synthesis: buildSynthesis(reading, cards),
       reflectionQuestion: getReadingSpread(reading) === "three"

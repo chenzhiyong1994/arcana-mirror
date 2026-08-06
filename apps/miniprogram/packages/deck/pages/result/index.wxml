@@ -6,7 +6,7 @@
     <view class="eyebrow">HY3 · READING THE MIRROR</view>
     <view class="title">AI 正在整理牌面</view>
     <view class="loading-dots"><text></text><text></text><text></text></view>
-    <view class="subtitle">它会结合你的问题与牌面生成个性化解读，请稍候。</view>
+    <view class="subtitle">它会结合牌面整理一份克制的自我探索解读，请稍候。</view>
   </view>
 
   <view wx:elif="{{missing}}" class="panel missing-panel">
@@ -92,7 +92,21 @@
             <view class="reading-primary-text">{{activeCard.contextualMeaning}}</view>
           </view>
 
-          <view class="reading-block topic-insight">
+          <view wx:if="{{activeCard.directionInsights.length}}" class="reading-block direction-insight">
+            <view class="reading-block-head">
+              <view class="reading-block-number">02</view>
+              <view>
+                <view class="reading-block-kicker">生活三面</view>
+                <view class="reading-block-title">一次看一个方向</view>
+              </view>
+            </view>
+            <view class="direction-tabs" aria-role="tablist" aria-label="切换生活方向">
+              <view wx:for="{{activeCard.directionInsights}}" wx:key="key" class="direction-tab {{activeDirectionIndex === index ? 'selected' : ''}}" data-index="{{index}}" bindtap="selectDirection" aria-role="tab" aria-selected="{{activeDirectionIndex === index}}">{{item.label}}</view>
+            </view>
+            <view wx:if="{{activeDirection}}" class="direction-text direction-state-{{activeDirectionIndex}}">{{activeDirection.content}}</view>
+          </view>
+
+          <view wx:else class="reading-block topic-insight">
             <view class="reading-block-head">
               <view class="reading-block-number">02</view>
               <view>

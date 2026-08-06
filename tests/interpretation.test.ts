@@ -8,6 +8,7 @@ import {
 import { MINOR_ARCANA } from "../apps/miniprogram/core/minor-cards";
 import {
   buildFallbackInterpretation,
+  buildDirectionInsights,
   buildStaticDailyInterpretation,
   buildTopicInsight,
   FIXED_DISCLAIMER,
@@ -106,11 +107,18 @@ describe("validateInterpretation", () => {
     for (const card of TAROT_CARDS) {
       const relationship = buildTopicInsight(card, "upright", "relationship");
       const career = buildTopicInsight(card, "reversed", "career");
+      const directions = buildDirectionInsights(card);
       expect(relationship.topicLabel).toBe("感情");
       expect(career.topicLabel).toBe("事业");
       expect(relationship.topicInsight).not.toBe(career.topicInsight);
       expect(relationship.basis).toBe(card.upright);
       expect(career.basis).toBe(card.reversed);
+      expect(directions.map(({ key, label }) => ({ key, label }))).toEqual([
+        { key: "wealth", label: "财运" },
+        { key: "career", label: "事业" },
+        { key: "love", label: "爱情" },
+      ]);
+      expect(directions.every((item) => item.content.length > 0 && item.content.length <= 240)).toBe(true);
       const imagePath = getCardImagePath(card.id);
       const thumbnailPath = getCardThumbnailPath(card.id);
       expect(imagePath).toMatch(/^\/packages\/deck\/assets\/cards\/.+\.jpg$/);
@@ -139,6 +147,18 @@ describe("validateInterpretation", () => {
     const dailyReading = { ...reading, type: "daily" as const };
     expect(buildStaticDailyInterpretation(dailyReading, TAROT_CARDS[9]).disclaimer).toBe(LOCAL_DISCLAIMER);
     expect(buildFallbackInterpretation(reading, [TAROT_CARDS[9]], "AI_TIMEOUT").disclaimer).toBe(LOCAL_DISCLAIMER);
+  });
+
+  it("gives the daily card three fixed life directions in a compact order", () => {
+    const dailyReading = { ...reading, type: "daily" as const, focusMode: undefined, topic: undefined, question: undefined };
+    const content = buildStaticDailyInterpretation(dailyReading, TAROT_CARDS[9]);
+
+    expect(content.cards[0].directionInsights?.map(({ key, label }) => ({ key, label }))).toEqual([
+      { key: "wealth", label: "财运" },
+      { key: "career", label: "事业" },
+      { key: "love", label: "爱情" },
+    ]);
+    expect(content.cards[0].directionInsights?.every((item) => item.content.length > 0)).toBe(true);
   });
 
   it("rejects a different card or orientation", () => {

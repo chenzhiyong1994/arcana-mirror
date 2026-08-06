@@ -14,7 +14,9 @@ function toListItem(reading: Reading) {
     roman: cards[0].roman,
     name: cards[0].name,
     englishName: cards[0].englishName,
-    typeLabel: reading.type === "daily" ? "每日一牌" : isThree ? "三牌解读" : "单牌解读",
+    typeLabel: reading.type === "daily"
+      ? "每日一牌"
+      : `${reading.focusMode === "life" ? "生活指引" : "具体问题"} · ${isThree ? "三牌" : "单牌"}`,
     title: reading.type === "daily"
       ? `${cards[0].name} · ${orientationLabel(reading.cards[0].orientation)}`
       : isThree ? cards.map((card) => card.name).join(" · ") : cards[0].name,

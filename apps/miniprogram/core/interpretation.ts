@@ -5,13 +5,14 @@ import type {
   InterpretationCard,
   InterpretationContent,
   Orientation,
+  ReadingDirection,
   Reading,
   TarotCard,
   Topic,
 } from "./types";
 
-export const FIXED_DISCLAIMER = "本内容由 AI 结合牌面生成，仅供娱乐和自我反思；感情、事业与个人成长内容不构成对未来的确定性结论或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
-export const LOCAL_DISCLAIMER = "本内容依据本地牌义生成，仅供娱乐和自我反思；感情、事业与个人成长内容不构成对未来的确定性结论或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
+export const FIXED_DISCLAIMER = "本内容由 AI 结合牌面生成，仅供娱乐和自我反思；感情、财务、事业与个人成长内容不构成对未来的确定性结论或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
+export const LOCAL_DISCLAIMER = "本内容依据本地牌义生成，仅供娱乐和自我反思；感情、财务、事业与个人成长内容不构成对未来的确定性结论或专业建议，重要决定请结合事实、专业意见和你自己的判断。";
 export const QUESTION_FOCUS_LABEL = "你的问题";
 
 const cardInsightProperties = {
@@ -24,6 +25,21 @@ const cardInsightProperties = {
   contextualMeaning: { type: "string", minLength: 1, maxLength: 280 },
   topicLabel: { type: "string", minLength: 1, maxLength: 12 },
   topicInsight: { type: "string", minLength: 1, maxLength: 240 },
+  directionInsights: {
+    type: "array",
+    minItems: 3,
+    maxItems: 3,
+    items: {
+      type: "object",
+      required: ["key", "label", "content"],
+      additionalProperties: false,
+      properties: {
+        key: { type: "string", enum: ["wealth", "career", "love"] },
+        label: { type: "string", enum: ["财运", "事业", "爱情"] },
+        content: { type: "string", minLength: 1, maxLength: 240 },
+      },
+    },
+  },
 } as const;
 
 export const interpretationJsonSchema = {
@@ -83,7 +99,26 @@ function normalizeForComparison(value: string): string {
 }
 
 export function getExpectedTopicLabel(reading: Reading): string {
+  if (usesFixedDirections(reading)) return "生活指引";
   return reading.topic ? topicLabels[reading.topic] : QUESTION_FOCUS_LABEL;
+}
+
+function usesFixedDirections(reading: Reading): boolean {
+  return reading.type === "daily" || reading.focusMode === "life";
+}
+
+function hasValidDirectionInsights(card: InterpretationCard): boolean {
+  const expected = [
+    { key: "wealth", label: "财运" },
+    { key: "career", label: "事业" },
+    { key: "love", label: "爱情" },
+  ] as const;
+  return card.directionInsights?.length === expected.length
+    && card.directionInsights.every((item, index) => (
+      item.key === expected[index].key
+      && item.label === expected[index].label
+      && isStringInRange(item.content, 1, 240)
+    ));
 }
 
 export function validateInterpretation(
@@ -125,6 +160,12 @@ export function validateInterpretation(
     if (outputCard.topicLabel !== getExpectedTopicLabel(reading)) {
       return { valid: false, reasonCode: "TOPIC_MISMATCH" };
     }
+    if (usesFixedDirections(reading) && !hasValidDirectionInsights(outputCard)) {
+      return { valid: false, reasonCode: "INVALID_DIRECTION_INSIGHTS" };
+    }
+    if (!usesFixedDirections(reading) && outputCard.directionInsights?.length) {
+      return { valid: false, reasonCode: "DIRECTION_MODE_MISMATCH" };
+    }
   }
   if (!isStringInRange(candidate.synthesis, 20, 320)) return { valid: false, reasonCode: "INVALID_SYNTHESIS" };
   if (!isStringInRange(candidate.reflectionQuestion, 1, 120)) return { valid: false, reasonCode: "INVALID_REFLECTION" };
@@ -143,6 +184,21 @@ const topicLabels: Record<Topic, string> = {
   career: "事业",
   self: "自我",
 };
+
+const directionLabels: Record<ReadingDirection, string> = {
+  wealth: "财运",
+  career: "事业",
+  love: "爱情",
+};
+
+export function buildDirectionInsights(card: TarotCard): NonNullable<InterpretationCard["directionInsights"]> {
+  const domain = getCardDomainInsights(card.id, card);
+  return (["wealth", "career", "love"] as const).map((key) => ({
+    key,
+    label: directionLabels[key],
+    content: domain[key],
+  }));
+}
 
 export function buildTopicInsight(card: TarotCard, orientation: Orientation, topic?: Topic) {
   const basis = orientation === "upright" ? card.upright : card.reversed;
@@ -173,6 +229,7 @@ export function buildInterpretationCard(
   const drawn = reading.cards[index];
   const position = getReadingPosition(reading, index);
   const insights = buildTopicInsight(card, drawn.orientation, reading.topic);
+  const isLifeReading = usesFixedDirections(reading);
   return {
     cardId: card.id,
     cardName: card.name,
@@ -181,8 +238,11 @@ export function buildInterpretationCard(
     positionLabel: position.label,
     basis: insights.basis,
     contextualMeaning: contextualMeaning ?? `${position.label}位置的${card.name}提醒你：先从${position.description}入手，把牌义与已经发生的事实对照，而不是急着把它变成结论。`,
-    topicLabel: insights.topicLabel,
-    topicInsight: insights.topicInsight,
+    topicLabel: isLifeReading ? "生活指引" : insights.topicLabel,
+    topicInsight: isLifeReading
+      ? "从财运、事业与爱情三个方向分别查看，一次只留下最贴近现实的一条。"
+      : insights.topicInsight,
+    ...(isLifeReading ? { directionInsights: buildDirectionInsights(card) } : {}),
   };
 }
 

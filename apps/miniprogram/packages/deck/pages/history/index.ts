@@ -17,7 +17,7 @@ function toItem(reading: Reading) {
     englishName: cards[0].englishName,
     kind: reading.type === "daily"
       ? "每日一牌"
-      : `${reading.topic ? TOPIC_LABELS[reading.topic] : "主题解读"} · ${isThree ? "三牌" : "单牌"}`,
+      : `${reading.focusMode === "life" ? "生活指引" : reading.topic ? TOPIC_LABELS[reading.topic] : "具体问题"} · ${isThree ? "三牌" : "单牌"}`,
     date: reading.businessDate,
     card: cards.map((card, index) => `${card.name} · ${orientationLabel(reading.cards[index].orientation)}`).join(" / "),
     source: reading.interpretation?.source === "fallback"

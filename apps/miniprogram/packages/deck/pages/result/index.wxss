@@ -68,6 +68,18 @@
 .reading-primary-text { margin-top: 18rpx; color: var(--paper); font-size: 31rpx; line-height: 1.68; }
 .topic-insight { background: linear-gradient(90deg, rgba(184,150,87,.09), rgba(184,150,87,.014)); }
 .topic-insight-text { margin-top: 15rpx; color: var(--paper-dim); font-size: 28rpx; line-height: 1.66; }
+.direction-insight { background: linear-gradient(90deg, rgba(184,150,87,.09), rgba(184,150,87,.014)); }
+.direction-tabs { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 24rpx; border-top: 1rpx solid rgba(184,150,87,.22); border-bottom: 1rpx solid rgba(184,150,87,.22); }
+.direction-tab { position: relative; padding: 19rpx 8rpx 17rpx; color: var(--muted); font-size: 23rpx; letter-spacing: 2rpx; text-align: center; transition: color 180ms ease, background 180ms ease; }
+.direction-tab + .direction-tab { border-left: 1rpx solid rgba(184,150,87,.16); }
+.direction-tab::after { position: absolute; right: 24rpx; bottom: -1rpx; left: 24rpx; height: 2rpx; background: var(--gold-bright); opacity: 0; transform: scaleX(.35); transition: opacity 180ms ease, transform 180ms ease; content: ""; }
+.direction-tab.selected { color: var(--gold-bright); background: rgba(184,150,87,.075); }
+.direction-tab.selected::after { opacity: 1; transform: scaleX(1); }
+.direction-tab:active { background: rgba(184,150,87,.12); }
+.direction-text { margin-top: 21rpx; color: var(--paper-dim); font-size: 28rpx; line-height: 1.66; animation: direction-reveal 240ms ease both; }
+.direction-state-0 { --direction-offset: -6rpx; }
+.direction-state-1 { --direction-offset: 0rpx; }
+.direction-state-2 { --direction-offset: 6rpx; }
 .meaning-section { background: rgba(8,7,5,.34); }
 .meaning-toggle { display: flex; align-items: center; justify-content: space-between; padding: 28rpx 30rpx; color: var(--muted); font-size: 22rpx; }
 .meaning-toggle:active { opacity: .72; }
@@ -99,6 +111,7 @@
 @keyframes orbit-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 @keyframes dot-wave { 0%,100% { opacity: .25; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-8rpx); } }
 @keyframes detail-open { from { opacity: 0; transform: translateY(-8rpx); } to { opacity: 1; transform: translateY(0); } }
+@keyframes direction-reveal { from { opacity: .35; transform: translateX(var(--direction-offset)); } to { opacity: 1; transform: translateX(0); } }
 @keyframes reading-reveal-0 { from { opacity: .45; transform: translateY(8rpx); } to { opacity: 1; transform: translateY(0); } }
 @keyframes reading-reveal-1 { from { opacity: .45; transform: translateY(8rpx); } to { opacity: 1; transform: translateY(0); } }
 @keyframes reading-reveal-2 { from { opacity: .45; transform: translateY(8rpx); } to { opacity: 1; transform: translateY(0); } }

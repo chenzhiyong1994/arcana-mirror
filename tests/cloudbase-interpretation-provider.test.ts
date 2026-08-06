@@ -39,6 +39,27 @@ describe("CloudBaseInterpretationProvider helpers", () => {
     expect(messages[1].content).toContain(FIXED_DISCLAIMER);
   });
 
+  it("requests three fixed directions without inventing a user question for life readings", () => {
+    const lifeReading: Reading = {
+      ...reading,
+      id: "life-ai-test",
+      focusMode: "life",
+      question: undefined,
+    };
+    const messages = buildCloudBaseAiMessages(lifeReading, [TAROT_CARDS[9]]);
+    const request = JSON.parse(messages[1].content) as {
+      question?: string;
+      focus: { mode: string; fixedDirections: string[]; requiredOutputLabel: string };
+    };
+
+    expect(request.question).toBeUndefined();
+    expect(request.focus).toMatchObject({
+      mode: "fixed_life_directions",
+      fixedDirections: ["财运", "事业", "爱情"],
+      requiredOutputLabel: "生活指引",
+    });
+  });
+
   it("parses a JSON object even when the model adds a code fence", () => {
     expect(parseCloudBaseAiJson("```json\n{\"summary\":\"ok\"}\n```")).toEqual({ summary: "ok" });
   });

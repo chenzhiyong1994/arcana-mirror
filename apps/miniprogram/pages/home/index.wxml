@@ -34,7 +34,7 @@
     <view class="daily-copy">
       <view class="section-kicker">TODAY'S MIRROR</view>
       <view class="daily-title">{{today ? today.title : '今日牌仍在沉睡'}}</view>
-      <view class="daily-note">{{today ? '随时回来重读。' : '留下一句今天值得记住的话。'}}</view>
+      <view class="daily-note">{{today ? '随时回来重读三个方向。' : '从生活三面，留下一条今日提醒。'}}</view>
       <button class="primary daily-action" bindtap="startDaily">{{today ? '重新进入今日解读' : '抽取每日一牌'}}</button>
     </view>
   </view>
@@ -42,7 +42,7 @@
   <view class="choice-head enter-up delay-3">
     <view>
       <view class="section-kicker">CHOOSE A READING</view>
-      <view class="section-title">此刻，你想看清什么？</view>
+      <view class="section-title">不用想好问题，也能开始。</view>
     </view>
   </view>
 

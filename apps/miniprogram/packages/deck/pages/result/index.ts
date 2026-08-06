@@ -1,5 +1,5 @@
 import { getCard, getCardImagePath } from "../../../../core/cards";
-import { buildTopicInsight, orientationLabel } from "../../../../core/interpretation";
+import { buildDirectionInsights, buildTopicInsight, orientationLabel } from "../../../../core/interpretation";
 import { getReadingPosition, getReadingSpread } from "../../../../core/spreads";
 import type { InterpretationCard, Reading, Topic } from "../../../../core/types";
 import { readingService } from "../../../../services/app-services";
@@ -15,6 +15,7 @@ const TOPIC_LABELS: Record<Topic, string> = {
 function toView(reading: Reading) {
   const interpretation = reading.interpretation;
   const isThree = getReadingSpread(reading) === "three";
+  const isLifeGuide = reading.type === "daily" || reading.focusMode === "life";
   const cards = reading.cards.map((drawn, index) => {
     const card = getCard(drawn.cardId);
     const output = interpretation?.content.cards[index] as Partial<InterpretationCard> | undefined;
@@ -37,6 +38,7 @@ function toView(reading: Reading) {
       topicInsight: output?.topicInsight
         ?? (reading.topic === "relationship" ? output?.loveInsight : reading.topic === "career" ? output?.careerInsight : output?.selfGrowthInsight)
         ?? fallback.topicInsight,
+      directionInsights: output?.directionInsights ?? (isLifeGuide ? buildDirectionInsights(card) : []),
     };
   });
   const content = interpretation?.content;
@@ -45,7 +47,7 @@ function toView(reading: Reading) {
     isDaily: reading.type === "daily",
     isThree,
     date: reading.businessDate,
-    topic: reading.type === "daily" ? "每日一牌" : reading.topic ? TOPIC_LABELS[reading.topic] : "主题解读",
+    topic: reading.type === "daily" ? "每日一牌" : reading.focusMode === "life" ? "生活指引" : reading.topic ? TOPIC_LABELS[reading.topic] : "主题解读",
     title: isThree ? "三牌综合解读" : `${cards[0].name} · ${cards[0].orientationLabel}`,
     question: reading.question ?? "",
     cards,
@@ -71,6 +73,8 @@ Page({
     questionExpanded: false,
     activeCardIndex: 0,
     activeCard: null as ReturnType<typeof toView>["cards"][number] | null,
+    activeDirectionIndex: 0,
+    activeDirection: null as ReturnType<typeof toView>["cards"][number]["directionInsights"][number] | null,
     detailsExpanded: false,
     previewCard: null as ReturnType<typeof toView>["cards"][number] | null,
     previewVisible: false,
@@ -97,7 +101,13 @@ Page({
       }
     }
     const view = toView(reading);
-    this.setData({ loading: false, view, activeCard: view.cards[0] });
+    this.setData({
+      loading: false,
+      view,
+      activeCard: view.cards[0],
+      activeDirectionIndex: 0,
+      activeDirection: view.cards[0].directionInsights[0] ?? null,
+    });
   },
 
   onUnload() {
@@ -117,7 +127,21 @@ Page({
       this.setData({ previewCard: activeCard, previewVisible: true });
       return;
     }
-    this.setData({ activeCardIndex, activeCard, detailsExpanded: false });
+    this.setData({
+      activeCardIndex,
+      activeCard,
+      activeDirectionIndex: 0,
+      activeDirection: activeCard.directionInsights[0] ?? null,
+      detailsExpanded: false,
+    });
+  },
+
+  selectDirection(event: WechatMiniprogram.TouchEvent) {
+    const activeDirectionIndex = Number(event.currentTarget.dataset.index);
+    const activeDirection = this.data.activeCard?.directionInsights[activeDirectionIndex];
+    if (!activeDirection || activeDirectionIndex === this.data.activeDirectionIndex) return;
+    wx.vibrateShort({ type: "light" });
+    this.setData({ activeDirectionIndex, activeDirection });
   },
 
   closeCardPreview() {

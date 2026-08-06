@@ -51,7 +51,13 @@ export class ReadingService {
   }
 
   startQuestion(question: string, spread: SpreadType = "single"): Reading {
-    const reading = this.createBaseReading("question", undefined, question.trim(), spread);
+    const reading = this.createBaseReading("question", undefined, question.trim(), spread, "question");
+    this.dependencies.repository.setWorking(reading);
+    return reading;
+  }
+
+  startLifeReading(spread: SpreadType = "single"): Reading {
+    const reading = this.createBaseReading("question", undefined, undefined, spread, "life");
     this.dependencies.repository.setWorking(reading);
     return reading;
   }
@@ -130,6 +136,7 @@ export class ReadingService {
     topic?: Topic,
     question?: string,
     spread: SpreadType = "single",
+    focusMode?: Reading["focusMode"],
   ): Reading {
     const now = this.now();
     const resolvedSpread: SpreadType = type === "daily" ? "single" : spread;
@@ -140,6 +147,7 @@ export class ReadingService {
       spread: resolvedSpread,
       status: "drawn",
       businessDate: toShanghaiBusinessDate(now),
+      focusMode,
       topic,
       question,
       cards,

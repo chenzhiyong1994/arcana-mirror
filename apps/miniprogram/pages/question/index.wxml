@@ -6,13 +6,26 @@
   </view>
 
   <view class="enter-up delay-1">
-    <view class="eyebrow">SET YOUR INTENTION</view>
-    <view class="title"><text>把问题，</text><text class="title-line">放到镜前。</text></view>
-    <view class="subtitle">写下你能观察、理解和选择的部分。</view>
+    <view class="eyebrow">CHOOSE YOUR WAY IN</view>
+    <view class="title"><text>把此刻，</text><text class="title-line">放到镜前。</text></view>
+    <view class="subtitle">不必先想好问题，也可以从生活的三个方向开始。</view>
   </view>
 
   <view class="form-section enter-up delay-2">
-    <view class="field-head"><text>选择牌阵</text><text class="field-index">I</text></view>
+    <view class="field-head"><text>选择解读方式</text><text class="field-index">I</text></view>
+    <view class="focus-switch" aria-role="radiogroup" aria-label="选择解读方式">
+      <view wx:for="{{focusModes}}" wx:key="value" class="focus-option {{selectedFocusMode === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectFocusMode" aria-role="radio" aria-checked="{{selectedFocusMode === item.value}}">
+        <view class="focus-status">{{selectedFocusMode === item.value ? '◆' : '◇'}}</view>
+        <view class="focus-copy">
+          <view class="focus-name">{{item.label}}</view>
+          <view class="focus-desc">{{item.description}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="form-section spread-section enter-up delay-2">
+    <view class="field-head"><text>选择牌阵</text><text class="field-index">II</text></view>
     <view class="spread-grid">
       <view wx:for="{{spreads}}" wx:key="value" class="spread-option {{selectedSpread === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectSpread">
         <view class="spread-visual {{item.value}}">
@@ -27,8 +40,8 @@
     </view>
   </view>
 
-  <view class="form-section enter-up delay-3">
-    <view class="field-head"><text>写下你的困扰</text><text class="field-index">II</text></view>
+  <view wx:if="{{selectedFocusMode === 'question'}}" class="form-section question-section mode-reveal">
+    <view class="field-head"><text>写下你的困扰</text><text class="field-index">III</text></view>
     <view class="question-shell">
       <view class="quote-mark">“</view>
       <textarea class="question-input" value="{{question}}" maxlength="200" placeholder="例如：我该如何理解最近和朋友之间的疏远？" placeholder-class="placeholder" bindinput="updateQuestion" />
@@ -46,8 +59,8 @@
     </view>
   </view>
 
-  <button wx:if="{{!isBlocked}}" class="primary submit" bindtap="submitQuestion">进入{{selectedSpread === 'three' ? '三牌仪式' : '单牌仪式'}} <text>→</text></button>
-  <view class="privacy-note">
+  <button wx:if="{{!isBlocked}}" class="primary submit" bindtap="submitReading">进入{{selectedSpread === 'three' ? '三牌仪式' : '单牌仪式'}} <text>→</text></button>
+  <view wx:if="{{selectedFocusMode === 'question'}}" class="privacy-note mode-reveal">
     <view class="privacy-title"><text>◇</text> AI 只处理这一次问题</view>
     <view class="privacy-copy">请勿填写姓名、电话或地址 · 本机自动保留最近 30 条解读</view>
   </view>

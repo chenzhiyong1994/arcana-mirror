@@ -1,6 +1,8 @@
 export type Topic = "relationship" | "interpersonal" | "career" | "self";
 export type Orientation = "upright" | "reversed";
 export type ReadingType = "daily" | "question";
+export type ReadingFocusMode = "life" | "question";
+export type ReadingDirection = "wealth" | "career" | "love";
 export type SpreadType = "single" | "three";
 export type SpreadPosition = "focus" | "situation" | "influence" | "action";
 export type Arcana = "major" | "minor";
@@ -65,6 +67,11 @@ export interface InterpretationCard {
   contextualMeaning: string;
   topicLabel: string;
   topicInsight: string;
+  directionInsights?: Array<{
+    key: ReadingDirection;
+    label: string;
+    content: string;
+  }>;
   /** Legacy v0.2 fields are optional so saved local records remain readable. */
   loveInsight?: string;
   wealthInsight?: string;
@@ -109,6 +116,8 @@ export interface Reading {
   spread?: SpreadType;
   status: ReadingStatus;
   businessDate: string;
+  /** Optional only for compatibility with readings created before life guidance was added. */
+  focusMode?: ReadingFocusMode;
   topic?: Topic;
   question?: string;
   cards: DrawnCard[];
