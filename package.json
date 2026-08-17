@@ -1,8 +1,26 @@
 {
   "name": "arcana-mirror",
   "version": "1.1.0",
+  "description": "A tarot-inspired self-reflection WeChat mini program with controlled AI interpretation and a complete 78-card deck.",
   "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenzhiyong1994/arcana-mirror.git"
+  },
+  "keywords": [
+    "wechat-miniprogram",
+    "typescript",
+    "cloudbase",
+    "tarot",
+    "self-reflection"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
+    "setup": "node tools/setup-local-config.mjs",
+    "postinstall": "node tools/setup-local-config.mjs",
     "generate:minor-specs": "node tools/generate-minor-card-specs.mjs",
     "build:minor-contact-sheets": "pwsh -NoProfile -File tools/build-minor-contact-sheets.ps1",
     "build:shared-card-assets": "pwsh -NoProfile -File tools/build-shared-card-assets.ps1",

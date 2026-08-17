@@ -3,7 +3,7 @@ import { localReadingRepository } from "./services/app-services";
 
 App({
   onLaunch() {
-    if (wx.cloud) {
+    if (wx.cloud && CLOUDBASE_ENV_ID) {
       wx.cloud.init({
         env: CLOUDBASE_ENV_ID,
         traceUser: false,

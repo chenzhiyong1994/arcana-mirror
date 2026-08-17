@@ -1,0 +1,43 @@
+name: Bug 报告
+description: 提交可复现的功能、兼容性或显示问题
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "请勿粘贴真实用户问题、AppID、CloudBase 环境 ID、密钥或个人信息。安全问题请使用 Security 页面的私密报告入口。"
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述
+      description: 实际发生了什么？你原本期待什么？
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 最小复现步骤
+      placeholder: "1. 打开…\n2. 选择…\n3. 观察到…"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 环境
+      description: 微信开发者工具/真机版本、系统和基础库版本；不要填写账号标识。
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 脱敏后的证据
+      description: 可选的截图、日志摘要或失败测试。请先移除账号、问题文本和凭据。
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索现有 Issue，没有发现同一问题。
+          required: true
+        - label: 我确认内容中不含密钥、真实用户数据或个人信息。
+          required: true

@@ -6,7 +6,7 @@
 
 > **当前实现：微信原生小程序（TypeScript）+ 78 张本地完整牌库 + 微信本地存储 Repository + CloudBase AI `hy3` Interpretation Provider + 仅生成小程序码的 CloudBase `api` 云函数。云数据库历史和跨设备账号继续后置。**
 
-页面依赖 `ReadingRepository` 与 `InterpretationProvider` 契约：Reading、历史与图鉴使用微信本地存储，单牌/三牌解读的 Provider 使用小程序端 CloudBase AI 调用。应用初始化固定 CloudBase 环境 `<your-cloudbase-env-id>`，Provider 为 `cloudbase`，模型为 `hy3`，硬超时为 25 秒。每日一牌和 AI 失败路径继续使用受控本地牌义。结果分享图在客户端本地合成，`api` 云函数只通过 `wxacode.getUnlimited` 返回对应版本的小程序码，不接收 Reading 或用户问题。
+页面依赖 `ReadingRepository` 与 `InterpretationProvider` 契约：Reading、历史与图鉴使用微信本地存储，单牌/三牌解读的 Provider 使用小程序端 CloudBase AI 调用。应用从被 Git 忽略的本地配置读取 CloudBase 环境 ID，Provider 为 `cloudbase`，模型为 `hy3`，硬超时为 25 秒。未配置环境或 AI 失败时继续使用受控本地牌义。结果分享图在客户端本地合成，`api` 云函数只通过 `wxacode.getUnlimited` 返回对应版本的小程序码，不接收 Reading 或用户问题。
 
 v0.2 在该边界内增加 `SpreadType`、最多三张牌的结构化解读，以及独立的 `CardCollectionRepository`。图鉴只记录卡牌 ID、首次/最近翻开时间、次数和已见正逆位，不复制 Reading 或用户问题；删除历史不会删除图鉴。旧 v0.1 Reading 没有 `spread` 字段时按单牌兼容读取。
 
@@ -340,7 +340,7 @@ interface InterpretationProvider {
 
 ### 8.5 v1.0 模型冻结
 
-- CloudBase 环境：`<your-cloudbase-env-id>`，区域 `ap-shanghai`；
+- CloudBase 环境：由维护者在本地私有配置中指定，当前部署区域为 `ap-shanghai`；
 - Provider：`cloudbase`；
 - 主模型：`hy3`；
 - 调用方式：`wx.cloud.extend.AI.createModel("cloudbase").generateText({ model, messages, ... })`，参数直接位于顶层；
@@ -459,7 +459,7 @@ v1.0 只使用 CloudBase AI，不启用 CloudBase 数据库。PostgreSQL 或云�
 
 ## 13. 部署与配置
 
-v1.0 当前配置位于 `apps/miniprogram/config/cloud.ts`：CloudBase 环境 `<your-cloudbase-env-id>`、Provider `cloudbase`、模型 `hy3`、超时 25 秒。基础库版本在 `project.config.json` 中为 3.17.0。环境 ID 和模型别名不是密钥；AppSecret、模型密钥和控制台凭据不得进入仓库。
+v1.0 的配置模板位于 `apps/miniprogram/config/cloud.example.ts`：Provider `cloudbase`、模型 `hy3`、超时 25 秒；`npm install` 会创建被 Git 忽略的 `cloud.ts`，环境 ID 只写在该本地文件中。基础库版本模板位于 `project.config.example.json`。环境 ID 和模型别名不是密钥，但开源仓库仍不提交具体环境标识；AppSecret、模型密钥和控制台凭据不得进入仓库。
 
 发布流程：
 

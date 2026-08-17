@@ -4,7 +4,7 @@
   "cloudfunctionRoot": "cloudfunctions/",
   "libVersion": "3.17.0",
   "miniprogramRoot": "apps/miniprogram/",
-  "projectname": "arcana-mirror-local",
+  "projectname": "arcana-mirror",
   "setting": {
     "es6": true,
     "postcss": true,

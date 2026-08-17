@@ -1,76 +1,173 @@
-# 心镜拾光
+<p align="center">
+  <img src="assets/readme/hero.jpg" alt="心镜拾光：黑金古镜与图像卡片" width="100%" />
+</p>
 
-> 翻开牌面，照见自己。
+<h1 align="center">心镜拾光</h1>
 
-心镜拾光是一款以图像卡片为交互媒介的微信小程序，通过短仪式、CloudBase AI 个性化解读和可选的本地历史，帮助用户整理困扰、获得新的观察角度并形成一个可执行的小行动。
+<p align="center">
+  翻开牌面，照见自己。<br />
+  一款以图像卡片、渐进式阅读与受控 AI 解读为核心的微信小程序。
+</p>
 
-它是一项非商业化个人作品集项目，不对未来作确定性断言，也不替代心理、医疗、法律或金融专业意见。
+<p align="center">
+  <a href="https://github.com/chenzhiyong1994/arcana-mirror/actions/workflows/ci.yml"><img src="https://github.com/chenzhiyong1994/arcana-mirror/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <img src="https://img.shields.io/badge/WeChat-Mini%20Program-07C160?logo=wechat&logoColor=white" alt="WeChat Mini Program" />
+  <img src="https://img.shields.io/badge/TypeScript-7.x-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/deck-78%20cards-B49455" alt="78 cards" />
+  <img src="https://img.shields.io/badge/code-MIT-8B7A55" alt="MIT License" />
+</p>
 
-## 当前状态
+心镜拾光不是“预测答案”的工具。它把随机出现的图像卡片当作一种反思媒介：先让用户观察自己的第一反应，再用受控牌义、具体问题与可执行的小行动，把模糊感受整理成更容易理解的线索。
 
-- 阶段：v1.1 完整牌组候选；CloudBase AI 与 `hy3` 已接入，78 张牌组工程门禁已通过，仍需发布前人工门禁
-- 工程：微信原生小程序 TypeScript + 本地 Repository + CloudBase AI Provider + 小程序码云函数；无需在小程序包内配置模型密钥或 AppSecret
-- MVP：带生活三向提示的每日一牌、单牌与“现状—关键影响—行动建议”三牌模式、安全阻断与降级、可选本地历史
-- 解读：单牌/三牌默认无需问题的生活指引，也可切换为具体问题；财运、事业、爱情使用页签一次只显示一段，总览、逐牌切换、可展开牌义、综合提示、反思与行动继续渐进呈现
-- 图鉴：78 张完整牌组按大阿尔卡那、权杖、圣杯、宝剑、星币分组，按实际翻牌解锁并记录正逆位与翻开次数
-- 视觉：A“仪式典藏”22 张大阿尔卡那、56 张小阿尔卡那与统一卡背已经接入；Logo 已选定 L5“繁饰日蚀心镜”
-- 包体：仪式、结果、历史、图鉴和完整牌面置于 `deck` 普通分包；主包保留 78 张轻量缩略图，主包和分包均低于 2 MiB
-- 鉴赏：翻牌后、结果页和图鉴详情均可进入沉浸大图；统一成牌组件为小阿尔卡那补齐旧金边框、顶部牌阶与中英文铭牌，并保留正逆位、牌位与卡牌名称信息
-- 分享：首页可生成介绍小程序的通用分享图；结果页可生成包含牌面、受控摘要、微行动的黑金竖版分享图；两者均嵌入可长按识别的小程序码，结果图不展示用户原问题
-- 历史：每日牌与单牌/三牌解读自动保留最近 30 条，仅存当前设备，可单条删除
+项目完整实现了从产品定义、78 张原创牌组、微信小程序交互，到 CloudBase AI 接入、安全校验、失败降级和资产门禁的一条端到端链路。它既是一款可运行的作品，也是一份关于“小型 AI 产品怎样守住边界”的工程样本。
 
-## 卡牌视觉
+> 内容仅供娱乐和自我反思，不构成心理、医疗、法律、金融或其他专业建议，也不对未来作确定性断言。
 
-![A 仪式典藏正反面样稿](assets/tarot-card-style/concepts/style-concept-a-ritual-archive-v1.png)
+## 它有什么不同
 
-全套 78 张卡牌使用 A“仪式典藏”：黑灰手工版画、纤维纸与不均匀旧金。22 张大阿尔卡那与 56 张小阿尔卡那均已完成生成、逐牌语义和整套一致性验收；正式源图确定性生成分包展示图与主包缩略图，接入抽牌、结果、鉴赏大图和分组图鉴，逆位由前端旋转同一资产。
+| 设计重点 | 实现方式 |
+| --- | --- |
+| 不急着给答案 | 抽牌前保留短仪式，先看图像与直觉，再逐层展开文字 |
+| 不制造“AI 神谕” | 模型只能基于已抽卡牌事实、牌位和受控牌义组织建议 |
+| 不堆成文字墙 | 三牌一次只读一张；牌义依据默认折叠；生活方向用页签切换 |
+| 不让失败破坏流程 | 超时、非法 JSON、事实错配或安全校验失败时回退到本地受控内容 |
+| 不把隐私变成产品燃料 | 历史只保存在当前设备；不读取旧问题；分享图不展示用户原问题 |
+| 不把 78 张图当散装素材 | 牌义合同、视觉合同、共享框、分包、缩略图和逐牌验收形成完整资产流水线 |
 
-生成合同分别见 [大阿尔卡那生成包](deliverables/style-a-deck-generation-kit/README.md) 与 [小阿尔卡那生成包](deliverables/style-a-minor-arcana-generation-kit/README.md)，最终验收见 [56 张生成报告](assets/tarot-card-style/minor-arcana/generation-report.md)。
+## 一次完整体验
 
-## 文档
+<p align="center">
+  <img src="assets/readme/ritual.png" alt="三牌抽牌仪式" width="30%" />
+  &nbsp;
+  <img src="assets/readme/result.png" alt="三牌渐进式解读结果" width="30%" />
+  &nbsp;
+  <img src="assets/readme/card-preview.png" alt="沉浸式卡牌鉴赏" width="30%" />
+</p>
 
-1. [产品材料索引](docs/product/README.md)
-2. [产品定义与调研结论](docs/product/01-product-brief.md)
-3. [MVP PRD](docs/product/02-mvp-prd.md)
-4. [技术架构方案](docs/product/03-technical-architecture.md)
-5. [开发路线与作品集计划](docs/product/04-development-roadmap.md)
-6. [Claude Opus 4.8 架构审查](docs/product/05-claude-architecture-review.md)
-7. [PRD 自检报告](docs/product/06-prd-review.md)
-8. [长程开发执行基线](docs/product/07-execution-baseline.md)
-9. [v0.2 三牌与图鉴扩展 PRD](docs/product/08-v0.2-three-card-and-collection.md)
-10. [v0.3 高保真体验与解读减负](docs/product/09-v0.3-high-fidelity-experience.md)
-11. [v1.1 完整 78 张牌组](docs/product/10-v1.1-complete-78-card-deck.md)
-12. [分享图增量](docs/product/11-share-poster.md)
-13. [卡片风格基准](assets/tarot-card-style/README.md)
-14. [A 风格大阿尔卡那生成交接包](deliverables/style-a-deck-generation-kit/README.md)
-15. [A 风格小阿尔卡那生成交接包](deliverables/style-a-minor-arcana-generation-kit/README.md)
+1. 选择每日一牌、单牌或三牌，并决定使用无问题的生活指引还是一个具体问题。
+2. 依次翻开卡片；正逆位、顺序与牌位一经生成便不再改变。
+3. 先读“第一眼线索”，再按牌切换情境解释、方向洞察与可选牌义依据。
+4. 最后收束到一个反思问题和一个 24 小时内可完成的微行动。
 
-## 仓库结构
+页面截图来自微信开发者工具的真实渲染，不是概念 UI；截图使用合成测试内容，不含真实用户数据。
 
-```text
-apps/miniprogram/  # 微信原生小程序与本地适配器
-cloudfunctions/     # CloudBase 单一 api 云函数；当前用于生成小程序码
-assets/            # 卡片、品牌与界面视觉资产
-docs/              # 产品、架构、评审和验收资料
-tests/             # 领域、安全、CloudBase Provider 与解读契约测试
-workspace/         # 临时工作文件，不进入版本库
+## 78 张“仪式典藏”牌组
+
+<p align="center">
+  <img src="assets/readme/minor-arcana-showcase.jpg" alt="权杖、圣杯、宝剑、星币四组小阿尔卡那联排" width="100%" />
+</p>
+
+全套牌组采用煤黑、石墨灰、纤维纸与不均匀旧金的统一视觉语言。22 张大阿尔卡那与 56 张小阿尔卡那均从“牌义层”开始定义，再进入视觉生成和工程验收；标题、编号、共享正面框与正逆位表现由前端确定性完成。
+
+- [牌组视觉与资产索引](assets/tarot-card-style/README.md)
+- [大阿尔卡那生成交接包](deliverables/style-a-deck-generation-kit/README.md)
+- [小阿尔卡那生成交接包](deliverables/style-a-minor-arcana-generation-kit/README.md)
+- [56 张小阿尔卡那验收报告](assets/tarot-card-style/minor-arcana/generation-report.md)
+
+## 系统怎样工作
+
+```mermaid
+flowchart LR
+    UI["微信小程序界面"] --> RS["ReadingService"]
+    RS --> REPO["本地 Repository"]
+    RS --> FACTS["固定牌面事实与受控牌义"]
+    FACTS --> AI["CloudBase AI Provider（可选）"]
+    AI --> CHECK["结构 · 事实 · 焦点 · 安全校验"]
+    CHECK -->|通过| VIEW["渐进式解读"]
+    CHECK -->|失败| FALLBACK["本地受控降级"]
+    FALLBACK --> VIEW
+    REPO --> HISTORY["当前设备最近 30 条历史"]
 ```
 
-## 本地运行
+核心实现有几条刻意保持简单的不变量：
+
+- 抽牌事实先生成并固定，AI 不能更换卡牌、牌位、顺序或朝向。
+- 具体问题只作为待分析数据进入结构化边界，不能覆盖 System Prompt。
+- 输出必须匹配卡名、朝向、位置、受控牌义与当前模式；不合格内容不会直接展示。
+- 每日一牌完全使用本地内容；未配置 CloudBase 时，单牌与三牌也能安全降级。
+- 小程序包内不保存模型密钥、微信 AppSecret 或控制台凭据。
+
+更完整的契约见 [技术架构](docs/product/03-technical-architecture.md) 与 [CloudBase AI 接入及发布检查](docs/development/v1.0-ai-integration.md)。
+
+## 快速开始
+
+### 环境要求
+
+- Node.js 20+
+- npm 10+
+- 微信开发者工具
+
+### 安装与验证
 
 ```powershell
+git clone https://github.com/chenzhiyong1994/arcana-mirror.git
+cd arcana-mirror
 npm install
 npm run typecheck
 npm test
 npm run validate:assets
 ```
 
-随后在微信开发者工具中导入仓库根目录。工程已配置正式小程序 AppID，并在 `apps/miniprogram/config/cloud.ts` 中固定 CloudBase 环境 `<your-cloudbase-env-id>`、AI Provider `cloudbase` 和模型 `hy3`。基础库需不低于 3.15.1；当前工程使用 3.17.0。
+`npm install` 会根据以下模板创建两个被 Git 忽略的本地文件，并且不会覆盖已经存在的配置：
 
-`cloudfunctions/api` 已部署到同一 CloudBase 环境，开发版首页分享图已成功生成。体验版/正式版的长按识别与跨设备扫码仍按 [分享图云函数部署与验收](docs/development/share-poster.md) 完成发布前复验。
+- `project.config.example.json` → `project.config.json`
+- `apps/miniprogram/config/cloud.example.ts` → `apps/miniprogram/config/cloud.ts`
 
-每日一牌使用本地受控牌义，并按财运、事业、爱情提供三个固定方向。单牌/三牌默认生活指引，不提交或伪造用户问题；切换为具体问题后，问题会连同牌阵、卡牌事实和受控牌义发送至 CloudBase AI，由 `hy3` 直接识别重点并生成结构化建议。输出必须通过字段、牌面事实、模式焦点和安全校验，摘要不得机械复述原问题，否则自动降级为本地基础牌义。问题和历史不进入仓库，历史只保存在当前设备且不跨设备同步；CloudBase 控制台可能保留 AI 调用记录，用户不应输入姓名、电话、住址等可识别信息。
+随后在微信开发者工具中导入仓库根目录。开源模板默认使用 `touristappid`，足以浏览本地界面和受控降级路径。
 
-发布前验收与剩余门禁见 [v1.0 AI 接入与发布检查](docs/development/v1.0-ai-integration.md)。
+### 启用自己的 CloudBase AI
 
-本仓库自 2026-07-19 起作为心镜拾光项目的唯一维护源。原 ProductManager 仓库只保留迁移前快照与位置说明。
+1. 在微信开发者工具中填写自己的小程序 AppID，并创建或选择自己的 CloudBase 环境。
+2. 只在本地 `apps/miniprogram/config/cloud.ts` 中填写环境 ID；该文件已被 `.gitignore` 排除。
+3. 在自己的环境中启用 CloudBase 内置 AI，确认 Provider 与模型配置可用。
+4. 如需分享图中的小程序码，将 `cloudfunctions/api` 部署到同一环境。
+
+不同账号可用的模型、套餐与审核条件可能不同。不要复制维护者的环境标识，也不要把 AppSecret、模型密钥或控制台凭据写入任何前端文件。
+
+## 常用命令
+
+| 命令 | 用途 |
+| --- | --- |
+| `npm run setup` | 补齐缺失的本地配置，不覆盖现有文件 |
+| `npm run typecheck` | TypeScript 类型检查 |
+| `npm test` | 运行领域、安全与 Provider 契约测试 |
+| `npm run validate:assets` | 校验 78 张牌、映射、尺寸与分包资产 |
+| `npm run build:shared-card-assets` | 重新生成共享卡牌运行时资产 |
+| `npm run build:minor-contact-sheets` | 重新生成小阿尔卡那花色联排 |
+
+## 仓库结构
+
+```text
+apps/miniprogram/   微信原生小程序、领域服务与本地适配器
+cloudfunctions/     仅生成小程序码的 CloudBase 云函数
+assets/             品牌、卡牌源图、运行时图与 README 视觉素材
+deliverables/       大/小阿尔卡那生成合同与交接包
+docs/               产品、架构、路线、发布检查和验收记录
+tests/              领域、安全、AI Provider 与解读契约测试
+tools/              资产构建、配置初始化与一致性校验脚本
+```
+
+## 项目状态
+
+当前为 **v1.1 完整牌组候选版**：核心代码、78 张牌组、资源门禁与 CloudBase AI 调用链已经完成；正式上线仍需完成真机、真实 AI 样本、用量告警、隐私指引与微信审核等人工门禁。因此仓库不会把“本地测试通过”描述成“已经具备生产质量保证”。
+
+产品范围与演进材料从 [产品文档索引](docs/product/README.md) 开始。想快速理解设计取舍，可以先读：
+
+- [产品定义与调研结论](docs/product/01-product-brief.md)
+- [MVP PRD](docs/product/02-mvp-prd.md)
+- [v0.3 高保真体验与解读减负](docs/product/09-v0.3-high-fidelity-experience.md)
+- [v1.1 完整 78 张牌组](docs/product/10-v1.1-complete-78-card-deck.md)
+
+## 参与贡献
+
+Bug 复现、可访问性改进、微信机型兼容、测试补充与小型文档修正都很欢迎。开始前请阅读 [贡献指南](CONTRIBUTING.md)；安全问题请不要公开披露，改用 [安全策略](SECURITY.md) 中的私密渠道。
+
+这个项目有意保持“克制”：社区、付费、真人服务、更多复杂牌阵或确定性预测不在当前范围内。提出功能建议时，请说明它怎样帮助用户更清楚地观察自己，而不是怎样让结果显得更神秘。
+
+## 许可
+
+- `apps/`、`cloudfunctions/`、`tests/`、`tools/` 等源代码采用 [MIT License](LICENSE)。
+- `assets/`、`deliverables/` 中的原创视觉资产与牌组材料采用 [CC BY-NC-SA 4.0](ASSET_LICENSE.md)。
+- 项目名称与 Logo 的使用不得暗示作者背书或官方关联；第三方依赖继续遵循各自许可证。
+
+如果你准备基于本项目发布自己的版本，请使用自己的小程序身份、CloudBase 环境和品牌信息，并保留适用的署名与许可证说明。

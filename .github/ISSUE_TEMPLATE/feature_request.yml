@@ -1,0 +1,35 @@
+name: 功能建议
+description: 提出边界清楚、可验证的产品或工程改进
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 想解决的问题
+      description: 请描述用户现在遇到的困难，而不只是一个功能名称。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案
+      description: 说明最小可行改动、用户路径和不应改变的边界。
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收方式
+      description: 怎样证明改动有效且没有破坏隐私、安全和本地降级？
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: 范围确认
+      options:
+        - label: 该建议不依赖确定性预测、付费、社区或真人服务。
+          required: true
+        - label: 我没有附带真实用户数据、密钥或未授权素材。
+          required: true

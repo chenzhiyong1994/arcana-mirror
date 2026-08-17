@@ -11,4 +11,6 @@ workspace/
 tmp/
 *.log
 project.private.config.json
+project.config.json
+apps/miniprogram/config/cloud.ts
 output.zip
